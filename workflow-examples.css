@@ -16,6 +16,10 @@
 .wx-reversal-table caption{font-size:.85em;text-align:start;margin-bottom:.4rem}
 .wx-reversal-table th,.wx-reversal-table td{padding:.4rem;text-align:start;vertical-align:top;border-bottom:1px solid currentColor;overflow-wrap:anywhere}
 .wx-reversal-table .wx-match{background:color-mix(in srgb,currentColor 9%,transparent);font-weight:750}
+.wx-reversal-table th code,.wx-reversal-table td code{font:600 1.05rem/1.45 Consolas,monospace}
+.wx-reversal-table .wx-match{background:var(--accent-bg);color:var(--accent)}
+.wx-reversal-table .wx-match th{border-inline-start:3px solid var(--accent)}
+.wx-figure button[data-wx-run]{color:var(--bg);background:var(--accent);border-color:var(--accent);font-weight:650}
 .wx-code-details{margin:.7rem 0}.wx-code-details summary{cursor:pointer}.wx-code-details pre{max-width:100%;white-space:pre-wrap;overflow-wrap:anywhere;padding:.5rem;border-inline-start:2px solid currentColor}
 @media(max-width:450px){.wx-lexicons{grid-template-columns:minmax(0,1fr)}.wx-reversal-table{font-size:.8em}.wx-reversal-table th,.wx-reversal-table td{padding:.3rem}}
 @media print{.wx-actions{display:none}.wx-lexicons textarea{resize:none}.wx-reversal-table .wx-match{background:transparent}}
