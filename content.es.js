@@ -70,39 +70,19 @@ window.PRESENTATION_ES = {
     },
     "4": {
       "section": "Cómo recibe la tarea el modelo",
-      "title": "Las palabras se convierten en tokens",
-      "eyebrow": "Un token es una unidad propia del modelo",
-      "lead": "Los identificadores de tokens pertenecen a un tokenizador concreto. Transferir texto legible conserva el significado entre sistemas con más fiabilidad que suponer que coinciden sus identificadores o límites.",
-      "points": [
-        "Mida los tokens con el tokenizador del modelo utilizado; la longitud visible y la dificultad de razonamiento son magnitudes distintas."
-      ],
-      "notes": "Normalmente, un modelo no recibe una frase como caracteres visibles. Un tokenizador la convierte en una secuencia de identificadores. Cada identificador selecciona una representación aprendida, y el modelo procesa esas representaciones. Las palabras comunes pueden formar un token, mientras que los nombres técnicos poco familiares pueden requerir varios. Otro modelo puede utilizar otras divisiones y otros identificadores. Esto importa al estimar el contexto o el coste y al pasar información entre modelos. Enviar texto legible o un esquema de datos definido suele ser más portable que suponer que dos modelos comparten identificadores de tokens. Una expresión matemática que parece corta puede exigir bastante razonamiento.",
-      "optional": "Sin espacio inicial, cl100k_base divide strawberry en str, aw y berry. o200k_base la divide en st, raw y berry. Ambos producen tres tokens en este ejemplo, aunque cambian los límites y los identificadores. En o200k_base, al añadir un espacio al principio, el espacio y la palabra entera forman un solo token. Siguen siendo tres erres.",
+      "title": "El texto científico se convierte en tokens",
+      "eyebrow": "Texto exacto; tokenizador identificado",
+      "lead": "El mismo término científico, spectroscopy, ocupa tres tokens en cl100k_base y dos en o200k_base. Los límites dependen de la codificación.",
+      "points": [],
+      "notes": "Lea el texto ASCII exacto spectroscopy, en minúsculas y sin espacios alrededor. Cada recuadro es un token. cl100k_base produce spect / ro / scopy; o200k_base produce spect / roscopy. Ambas secuencias recuperan el mismo texto, aunque cambian su longitud y sus identificadores. Revele el ejemplo del espacio: un espacio ASCII inicial hace que todo el texto forme un solo token en o200k_base. Son codificaciones verificadas, no divisiones inventadas. Un token no es una unidad universal de palabra ni una medida de dificultad científica. Utilice el tokenizador real al presupuestar contexto o transferir texto entre modelos.",
+      "optional": "Estos ejemplos utilizan las definiciones de vocabulario de OpenAI tiktoken fijadas a una revisión, sin plantilla de chat ni tokens especiales. En o200k_base, la entrada exacta \" spectroscopy\" es el único token 119655. El espacio forma parte de la entrada; su marca visible en el diagrama sirve para explicarlo.",
       "evidence": "Establecido",
       "reading": [
-        "Normalmente, un modelo no recibe una frase como caracteres visibles. Un tokenizador la convierte en una secuencia de identificadores. Cada identificador selecciona una representación aprendida, y el modelo procesa esas representaciones. Las palabras comunes pueden formar un token, mientras que los nombres técnicos poco familiares pueden requerir varios. Otro modelo puede utilizar otras divisiones y otros identificadores. Esto importa al estimar el contexto o el coste y al pasar información entre modelos. Enviar texto legible o un esquema de datos definido suele ser más portable que suponer que dos modelos comparten identificadores de tokens. Una expresión matemática que parece corta puede exigir bastante razonamiento.",
-        "Sin espacio inicial, cl100k_base divide strawberry en str, aw y berry. o200k_base la divide en st, raw y berry. Ambos producen tres tokens en este ejemplo, aunque cambian los límites y los identificadores. En o200k_base, al añadir un espacio al principio, el espacio y la palabra entera forman un solo token. Siguen siendo tres erres."
+        "Un tokenizador convierte el texto en fragmentos numerados llamados tokens. Para el texto exacto spectroscopy, término inglés para espectroscopia, en minúsculas y sin espacios alrededor, cl100k_base produce spect / ro / scopy: tres tokens. o200k_base produce spect / roscopy: dos. Al unir cualquiera de las secuencias se recupera el mismo término científico. Los límites y los identificadores pertenecen a la codificación elegida, por lo que contar palabras no proporciona un número universal de tokens.",
+        "Añadir un espacio ASCII normal cambia la entrada exacta a \" spectroscopy\". En o200k_base, el espacio y la palabra entera forman entonces un solo token. Esto ilustra por qué importan la entrada literal y el nombre del tokenizador al estimar contexto o coste. Una petición real también puede contener una plantilla de chat y definiciones de herramientas. El número de tokens mide la entrada codificada, no cuánto razonamiento requiere la tarea científica."
       ],
       "discussion": [
-        "¿Qué habría que registrar para reproducir una comparación del número de tokens entre modelos?"
-      ],
-      "kind": "prose"
-    },
-    "5": {
-      "section": "Cómo recibe la tarea el modelo",
-      "title": "Contar las erres de strawberry",
-      "eyebrow": "Un caso documentado: 3 de noviembre de 2024",
-      "lead": "Hay tres r minúsculas, en las posiciones 3, 8 y 9. El registro muestra cómo GPT-4o comprobó su primera respuesta.",
-      "points": [],
-      "notes": "Compare la primera respuesta, 2, con el resultado ejecutado, 3. Siga text.count(\"r\") sobre la cadena exacta strawberry y compruebe las posiciones marcadas 3, 8 y 9, contando desde 1. Atribuya el registro a Krakowski (2025), figura 2. La conversación está fechada el 3 de noviembre de 2024. El contador del navegador es una demostración independiente. Este único caso no identifica la causa del primer error ni estima una tasa de fallos del modelo.",
-      "optional": "El contador opcional del navegador es una demostración independiente del registro de GPT-4o. Ejecuta código sobre la cadena editable y cuenta r minúsculas. Sobre «strawberry» devuelve 3, con coincidencias en las posiciones 3, 8 y 9 contando desde 1. No vuelve a ejecutar la conversación histórica ni su Python. La división en tokens depende del tokenizador y del texto exacto.",
-      "evidence": "Caso documentado · Krakowski (2025), figura 2",
-      "reading": [
-        "La figura 2 de Krakowski (2025) documenta una conversación de ChatGPT con GPT-4o fechada el 3 de noviembre de 2024. Ante la pregunta de cuántas r minúsculas contiene strawberry, la primera respuesta fue 2. El usuario repitió la pregunta y añadió «Use Python». El registro muestra la ejecución: text = \"strawberry\", seguido de text.count(\"r\"), devolvió 3. GPT-4o respondió después 3.",
-        "La respuesta comprobable es 3: st[r]awbe[r][r]y, con coincidencias en las posiciones 3, 8 y 9 contando desde 1. Un token puede contener varias letras, pero un modelo también puede aprender ortografía y acertar sin herramientas. Esta conversación muestra un método de cálculo distinto y una respuesta corregida. No establece por qué falló la primera respuesta ni con qué frecuencia ocurren errores similares. El contador editable del navegador es un cálculo local independiente, no una repetición de la conversación histórica."
-      ],
-      "discussion": [
-        "¿Qué cambió entre las dos respuestas de esta conversación y qué no permite concluir este único caso?"
+        "¿Por qué una estimación de tokens debe identificar tanto la entrada exacta como su tokenizador?"
       ],
       "kind": "prose"
     },

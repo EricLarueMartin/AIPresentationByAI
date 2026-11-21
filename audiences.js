@@ -50,33 +50,18 @@ window.AUDIENCE_CONTENT = {
       "kind": "comparison"
     },
     "4": {
-      "title": "Text is divided into pieces",
-      "lead": "Both tokenizers receive exactly the same word. Look at where the first piece ends in each row.",
+      "title": "One scientific word, different text pieces",
+      "lead": "The word spectroscopy becomes three pieces in one tokenizer and two in the other. Each box is one numbered text piece, not a separate scientific concept.",
       "points": [],
       "reading": [
-        "Before processing text, a language model usually receives a sequence of numbered pieces called tokens. A piece might be a complete word, part of a word or punctuation. An unfamiliar name may take several pieces even when it looks like one word on the page.",
-        "With no leading space, cl100k_base splits strawberry into str, aw and berry. The o200k_base encoding splits it into st, raw and berry. Both have three tokens in this example, but their boundaries and IDs differ. Add one leading space and o200k_base encodes the space and the whole word as a single token. The word still contains three r’s."
+        "Language models usually receive numbered pieces of text called tokens. A piece can be a whole word, part of a word or punctuation. Here the scientific word spectroscopy is divided into spect / ro / scopy by cl100k_base, but into spect / roscopy by o200k_base. The same word therefore uses three tokens in one encoding and two in the other.",
+        "Spaces are part of the input too. For \" spectroscopy\", with one space before the word, o200k_base uses one token for the space and the whole word. These are real tokenizer results for the displayed text. They explain why token counts depend on the system and the exact message. They do not tell us how difficult a scientific question will be."
       ],
       "discussion": [
-        "Why might a short technical name use more text pieces than a longer familiar word?"
+        "Why can the same word take a different number of tokens in two systems?"
       ],
-      "notes": "Before processing text, a language model usually receives a sequence of numbered pieces called tokens. A piece might be a complete word, part of a word or punctuation. An unfamiliar name may take several pieces even when it looks like one word on the page.",
-      "optional": "With no leading space, cl100k_base splits strawberry into str, aw and berry. The o200k_base encoding splits it into st, raw and berry. Both have three tokens in this example, but their boundaries and IDs differ. Add one leading space and o200k_base encodes the space and the whole word as a single token. The word still contains three r’s.",
-      "kind": "prose"
-    },
-    "5": {
-      "title": "Counting the r’s in strawberry",
-      "lead": "There are three lowercase r’s, at positions 3, 8 and 9. The recorded chat shows a first answer followed by a check using Python.",
-      "points": [],
-      "reading": [
-        "Strawberry has three lowercase r’s: st[r]awbe[r][r]y. Counting letters from 1, they appear at positions 3, 8 and 9. In a chat recorded on November 3, 2024, GPT‑4o first answered 2. The user asked the same question again and added “Use Python.” The program text.count(\"r\"), with text set to \"strawberry\", returned 3, and GPT‑4o gave that result. Sebastian Krakowski published the chat and code result in Figure 2 of his 2025 paper.",
-        "The result can be checked against the visible spelling. Writing code alone is not the same as running it: the recorded output shows that the count was executed. A model may also know the spelling and answer correctly without a tool. This exchange leaves open why the first answer was wrong and does not measure how often models miscount. The editable browser counter is a separate demonstration that checks a new input locally."
-      ],
-      "discussion": [
-        "Suppose the assistant had shown the Python code but given no output. What would you still want to check?"
-      ],
-      "notes": "Compare the two answers with the spelling: one r at position 3 and two more at positions 8 and 9. The displayed code counts lowercase r in the exact word. Krakowski (2025), Figure 2, records this GPT‑4o exchange from November 3, 2024. The browser counter is a separate demonstration. The published case does not explain why the initial answer was wrong.",
-      "optional": "Try changing a lowercase r to uppercase R in the browser counter. The count drops by one because the check matches lowercase r exactly.",
+      "notes": "Introduce tokens as numbered pieces of text. The scientific word spectroscopy is an example, not a word that must be memorized. Read the three pieces in the first row and the two in the second; both reconstruct the same word. Reveal the leading-space example to show that spaces also matter. Token counts depend on the tokenizer and exact text, so counting visible words cannot give one universal answer.",
+      "optional": "For the exact text spectroscopy, cl100k_base gives spect / ro / scopy and o200k_base gives spect / roscopy. One leading space changes the o200k_base result to a single token containing that space and the whole word.",
       "kind": "prose"
     },
     "6": {
@@ -702,37 +687,19 @@ window.AUDIENCE_CONTENT = {
       "kind": "comparison"
     },
     "4": {
-      "title": "Tokenizer boundaries are part of the interface",
-      "lead": "A tokenizer is part of a model’s input contract. Equal token IDs across different tokenizers do not imply equal text or meaning.",
-      "points": [
-        "Preserve exact text across model handoffs; re-encode it with the receiving tokenizer.",
-        "Count the complete rendered request, including templates and tool schemas, when estimating input size."
-      ],
-      "reading": [
-        "The IDs in the figure belong to two distinct vocabularies. The first two rows encode the exact ASCII string strawberry without whitespace or a chat template. Each sequence decodes to the same string, even though the first token ends at a different character.",
-        "The application may also insert a chat template or serialize tool definitions. Those additions affect the model’s actual input. For a multi-model pipeline, pass the original text or a documented representation rather than assuming token IDs are portable. Token count helps account for context and processing; it is not a calibrated measure of problem difficulty."
-      ],
-      "discussion": [
-        "What must be recorded to reproduce token counts from an agent request?",
-        "How would you detect information loss introduced by a model-to-model handoff?"
-      ],
-      "notes": "Token IDs and segmentation belong to a particular tokenizer, not a universal interchange format. Technical strings, punctuation and uncommon identifiers can change the relationship between visible length and token count. Preserve exact text when passing tasks between models, and measure with the tokenizer used by the actual inference path. Token count is a resource measure, not a direct difficulty estimate.",
-      "optional": "With no leading space, cl100k_base splits strawberry into str, aw and berry. The o200k_base encoding splits it into st, raw and berry. Both have three tokens in this example, but their boundaries and IDs differ. Add one leading space and o200k_base encodes the space and the whole word as a single token. The word still contains three r’s.",
-      "kind": "list"
-    },
-    "5": {
-      "title": "Checking a count against executed code",
-      "lead": "The tool trace exposes the exact input, counting operation and returned value. The marked positions provide an independent check of that result.",
+      "title": "Tokenizer boundaries are part of the input contract",
+      "lead": "Verified encodings of spectroscopy differ in sequence length and ID values. Token IDs are meaningful within their own encoding, not as a universal interchange format.",
       "points": [],
       "reading": [
-        "Krakowski’s Figure 2 (2025) shows a November 3, 2024 GPT‑4o chat. The direct count of lowercase r in strawberry was 2. In the same conversation the user repeated the request with “Use Python.” The analysis pane shows text = \"strawberry\", the call text.count(\"r\"), and the returned integer 3. The assistant’s subsequent answer agrees with that return value. The ground truth is visible in st[r]awbe[r][r]y: positions 3, 8 and 9, indexed from 1.",
-        "The trace establishes the literal and operation used for the tool answer. It supplies no trace of the computation behind the first answer and does not isolate tokenization as its cause. A tokenization diagram illustrates a representation. Causal attribution requires a separate experiment. This observed pair supplies no error-rate estimate for other prompts or checkpoints. The optional browser counter executes a separate local computation, rather than reproducing the historical Python session."
+        "For the exact ASCII input spectroscopy, cl100k_base returns IDs [68182, 299, 51856], whose bytes decode as spect / ro / scopy. o200k_base returns [148686, 90805], decoding as spect / roscopy. Both sequences round-trip to the identical input. These results use the pinned OpenAI tiktoken encoding definitions and hash-checked vocabularies; they are not schematic token boundaries.",
+        "Prepending one ASCII space changes the o200k_base result to [119655], a token containing the space and the whole word. The displayed example has no chat template, special tokens or tool schemas. Those additions must be counted for a real serialized request. Preserve exact text across model handoffs and encode with the receiving tokenizer. Sequence length accounts for input resources; it is not a calibrated estimate of reasoning difficulty."
       ],
       "discussion": [
-        "Which parts of the second answer can be audited from the tool trace? What would it take to attribute the first answer to tokenization?"
+        "Which exact bytes and tokenizer metadata would reproduce these sequences?",
+        "What additional input can a serving application insert before tokenization?"
       ],
-      "notes": "Audit the literal, operation and returned value together: text = \"strawberry\", text.count(\"r\"), and output 3. Verify the three positions, counting from 1. Krakowski (2025), Figure 2, identifies the GPT‑4o conversation date as November 3, 2024. The visible trace supports the tool result but supplies no internal trace explaining the initial answer. The browser computation is independent of that historical session.",
-      "optional": "The source identifies the model, date and visible exchange. It does not report a checkpoint snapshot, sampling settings or a multi-trial evaluation.",
+      "notes": "The exact bare ASCII input is spectroscopy. With the hash-pinned OpenAI vocabularies, cl100k_base returns [68182, 299, 51856], decoding as spect / ro / scopy; o200k_base returns [148686, 90805], decoding as spect / roscopy. Each round-trip recovers the original bytes. One leading ASCII space changes the o200k_base sequence to [119655]. This example has no chat template or special tokens. Estimate actual requests after serialization, and pass exact text rather than assuming token IDs are portable between model endpoints.",
+      "optional": "The pinned tiktoken definitions use commit 79dc2c0533685b893616c78160b5d9e40876e724. The official educational BPE function and hash-checked vocabularies reproduce these inputs as single pre-tokenizer matches. The leading-space input is [66425, 51856] in cl100k_base and [119655] in o200k_base.",
       "kind": "prose"
     },
     "6": {
@@ -1382,7 +1349,6 @@ window.AUDIENCE_ROUTES = {
       "2",
       "3",
       "4",
-      "5",
       "6",
       "7",
       "8",
@@ -1407,7 +1373,6 @@ window.AUDIENCE_ROUTES = {
       "2",
       "3",
       "4",
-      "5",
       "6",
       "7",
       "8",
@@ -1440,7 +1405,6 @@ window.AUDIENCE_ROUTES = {
       "2",
       "3",
       "4",
-      "5",
       "6",
       "7",
       "8",
@@ -1559,7 +1523,6 @@ window.AUDIENCE_ROUTES = {
       "2",
       "3",
       "4",
-      "5",
       "6",
       "7",
       "8",
@@ -1623,9 +1586,8 @@ window.AUDIENCE_ROUTE_SECONDS = {
       "2": 69,
       "3": 20,
       "4": 49,
-      "5": 69,
-      "6": 68,
-      "7": 68,
+      "6": 91,
+      "7": 114,
       "8": 68,
       "10": 68,
       "11": 68,
@@ -1648,9 +1610,8 @@ window.AUDIENCE_ROUTE_SECONDS = {
       "2": 100,
       "3": 25,
       "4": 75,
-      "5": 100,
-      "6": 100,
-      "7": 100,
+      "6": 133,
+      "7": 167,
       "8": 100,
       "10": 100,
       "12": 100,
@@ -1681,7 +1642,6 @@ window.AUDIENCE_ROUTE_SECONDS = {
       "2": 30,
       "3": 25,
       "4": 55,
-      "5": 60,
       "6": 80,
       "7": 90,
       "8": 60,
@@ -1800,7 +1760,6 @@ window.AUDIENCE_ROUTE_SECONDS = {
       "2": 30,
       "3": 25,
       "4": 55,
-      "5": 60,
       "6": 80,
       "7": 90,
       "8": 60,

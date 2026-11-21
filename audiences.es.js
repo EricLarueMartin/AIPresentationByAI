@@ -50,33 +50,18 @@ window.AUDIENCE_ES = {
       "kind": "comparison"
     },
     "4": {
-      "title": "El texto se divide en fragmentos",
-      "lead": "Los dos tokenizadores reciben exactamente la misma palabra. Fíjate en dónde termina el primer fragmento de cada fila.",
+      "title": "Un término científico, distintos fragmentos",
+      "lead": "La palabra inglesa spectroscopy se convierte en tres fragmentos en un tokenizador y en dos en el otro. Cada recuadro es un fragmento numerado de texto, no un concepto científico independiente.",
       "points": [],
       "reading": [
-        "Antes de procesar texto, un modelo de lenguaje suele recibir una secuencia de fragmentos numerados llamados tokens. Un fragmento puede ser una palabra completa, parte de una palabra o puntuación. Un nombre desconocido puede necesitar varios fragmentos aunque parezca una sola palabra en la página.",
-        "Sin espacio inicial, cl100k_base divide strawberry en str, aw y berry. o200k_base la divide en st, raw y berry. Ambos producen tres tokens en este ejemplo, aunque cambian los límites y los identificadores. En o200k_base, al añadir un espacio al principio, el espacio y la palabra entera forman un solo token. Siguen siendo tres erres."
+        "Los modelos de lenguaje suelen recibir fragmentos numerados de texto llamados tokens. Un fragmento puede ser una palabra completa, parte de una palabra o puntuación. Aquí el término inglés spectroscopy, espectroscopia, se divide en spect / ro / scopy con cl100k_base, pero en spect / roscopy con o200k_base. La misma palabra utiliza, por tanto, tres tokens en una codificación y dos en la otra.",
+        "Los espacios también forman parte de la entrada. Para \" spectroscopy\", con un espacio antes de la palabra, o200k_base utiliza un solo token para el espacio y la palabra entera. Son resultados reales de tokenizadores para el texto mostrado. Explican por qué el número de tokens depende del sistema y del mensaje exacto. No indican lo difícil que será una pregunta científica."
       ],
       "discussion": [
-        "¿Por qué un nombre técnico corto podría necesitar más fragmentos que una palabra familiar más larga?"
+        "¿Por qué una misma palabra puede ocupar distintos números de tokens en dos sistemas?"
       ],
-      "notes": "Antes de procesar texto, un modelo de lenguaje suele recibir una secuencia de fragmentos numerados llamados tokens. Un fragmento puede ser una palabra completa, parte de una palabra o puntuación. Un nombre desconocido puede necesitar varios fragmentos aunque parezca una sola palabra en la página.",
-      "optional": "Sin espacio inicial, cl100k_base divide strawberry en str, aw y berry. o200k_base la divide en st, raw y berry. Ambos producen tres tokens en este ejemplo, aunque cambian los límites y los identificadores. En o200k_base, al añadir un espacio al principio, el espacio y la palabra entera forman un solo token. Siguen siendo tres erres.",
-      "kind": "prose"
-    },
-    "5": {
-      "title": "Contar las erres de strawberry",
-      "lead": "Hay tres r minúsculas, en las posiciones 3, 8 y 9. La conversación muestra una primera respuesta seguida de una comprobación con Python.",
-      "points": [],
-      "reading": [
-        "Strawberry, que significa fresa en inglés, tiene tres r minúsculas: st[r]awbe[r][r]y. Contando las letras desde 1, aparecen en las posiciones 3, 8 y 9. En una conversación del 3 de noviembre de 2024, GPT-4o respondió primero 2. El usuario repitió la pregunta y añadió «Use Python». El programa text.count(\"r\"), con text igual a \"strawberry\", devolvió 3 y GPT-4o dio ese resultado. Sebastian Krakowski publicó la conversación y el resultado del código en la figura 2 de su artículo de 2025.",
-        "El resultado se puede comprobar con las letras visibles. Escribir código no equivale a ejecutarlo: la salida registrada muestra que se realizó el recuento. Un modelo también puede conocer la palabra y acertar sin herramientas. Este intercambio no explica por qué falló la primera respuesta ni mide con qué frecuencia se equivocan los modelos. El contador editable del navegador es otra demostración, que comprueba una entrada nueva mediante un cálculo local."
-      ],
-      "discussion": [
-        "¿Qué aportó ejecutar el programa que no aportaba por sí sola la primera respuesta?"
-      ],
-      "notes": "Compare las dos respuestas con la palabra: una r en la posición 3 y otras dos en las posiciones 8 y 9. El código mostrado cuenta r minúsculas en la palabra exacta. Krakowski (2025), figura 2, documenta esta conversación de GPT-4o del 3 de noviembre de 2024. El contador del navegador es una demostración independiente. El caso publicado no explica por qué falló la primera respuesta.",
-      "optional": "El contador opcional permite editar la palabra y ejecutar un programa en el navegador. Para «strawberry» devuelve 3 r, en las posiciones 3, 8 y 9 contando desde 1. Es una demostración distinta del caso publicado. No llama a GPT-4o ni reproduce su sesión de Python.",
+      "notes": "Presente los tokens como fragmentos numerados de texto. El término inglés spectroscopy, espectroscopia, es un ejemplo que no hace falta memorizar. Lea los tres fragmentos de la primera fila y los dos de la segunda; ambos reconstruyen la misma palabra. Revele el ejemplo del espacio inicial para mostrar que los espacios también importan. El número de tokens depende del tokenizador y del texto exacto, por lo que contar palabras visibles no da una respuesta universal.",
+      "optional": "Para el texto exacto spectroscopy, cl100k_base produce spect / ro / scopy y o200k_base produce spect / roscopy. Un espacio inicial cambia el resultado de o200k_base a un solo token que contiene ese espacio y la palabra entera.",
       "kind": "prose"
     },
     "6": {
@@ -702,37 +687,19 @@ window.AUDIENCE_ES = {
       "kind": "comparison"
     },
     "4": {
-      "title": "Los límites del tokenizador forman parte de la interfaz",
-      "lead": "Un tokenizador forma parte del contrato de entrada de un modelo. La igualdad de identificadores de tokens entre distintos tokenizadores no implica igualdad de texto o significado.",
-      "points": [
-        "Conserve el texto exacto en los traspasos entre modelos; vuelva a codificarlo con el tokenizador receptor.",
-        "Cuente la petición completa tal como se entrega, incluidas las plantillas y los esquemas de herramientas, al estimar el tamaño de la entrada."
-      ],
-      "reading": [
-        "Los identificadores de la figura pertenecen a dos vocabularios distintos. Las dos primeras filas codifican la secuencia ASCII exacta strawberry sin espacios ni plantilla de chat. Usa los límites de la figura para reconstruir la palabra a partir de cada secuencia.",
-        "La aplicación también puede insertar una plantilla de chat o serializar definiciones de herramientas. Esos añadidos afectan a la entrada real del modelo. En un flujo con varios modelos, transfiera el texto original o una representación documentada en lugar de suponer que los identificadores de tokens son portables. El número de tokens ayuda a contabilizar contexto y procesamiento; no es una medida calibrada de la dificultad del problema."
-      ],
-      "discussion": [
-        "¿Qué debe registrarse para reproducir el número de tokens de una petición de un agente?",
-        "¿Cómo detectaría la pérdida de información introducida por un traspaso entre modelos?"
-      ],
-      "notes": "Los identificadores y la división de tokens pertenecen a un tokenizador concreto, no a un formato universal de intercambio. Las cadenas técnicas, la puntuación y los identificadores poco comunes pueden cambiar la relación entre longitud visible y tokens. Conserve el texto exacto al pasar tareas entre modelos y mida con el tokenizador de la ruta real de inferencia. Los tokens miden recursos, no directamente dificultad.",
-      "optional": "Sin espacio inicial, cl100k_base divide strawberry en str, aw y berry. o200k_base la divide en st, raw y berry. Ambos producen tres tokens en este ejemplo, aunque cambian los límites y los identificadores. En o200k_base, al añadir un espacio al principio, el espacio y la palabra entera forman un solo token. Siguen siendo tres erres.",
-      "kind": "list"
-    },
-    "5": {
-      "title": "Comprobar un recuento con código ejecutado",
-      "lead": "El registro de la herramienta muestra la entrada exacta, la operación y el valor devuelto. Las posiciones marcadas permiten comprobar ese resultado de forma independiente.",
+      "title": "Los límites del tokenizador forman parte del contrato de entrada",
+      "lead": "Las codificaciones verificadas de spectroscopy difieren en longitud e identificadores. Los identificadores de tokens tienen sentido dentro de su codificación, no como formato universal de intercambio.",
       "points": [],
       "reading": [
-        "La figura 2 de Krakowski (2025) muestra una conversación de GPT-4o del 3 de noviembre de 2024. El recuento directo de r minúsculas en strawberry fue 2. En la misma conversación, el usuario repitió la solicitud añadiendo «Use Python». El panel de análisis muestra text = \"strawberry\", la llamada text.count(\"r\") y el entero devuelto, 3. La respuesta posterior del asistente coincide con ese valor. El resultado correcto se ve en st[r]awbe[r][r]y: posiciones 3, 8 y 9, contando desde 1.",
-        "El registro establece la cadena y la operación usadas para la respuesta con herramienta. No muestra el cálculo detrás de la primera respuesta ni aísla la tokenización como su causa. Un diagrama de tokens ilustra una representación. Atribuir una causa requiere otro experimento. Este par observado no estima tasas de error para otras solicitudes o versiones del modelo. El contador opcional del navegador ejecuta un cálculo local independiente, sin reproducir la sesión histórica de Python."
+        "Para la entrada ASCII exacta spectroscopy, cl100k_base devuelve los identificadores [68182, 299, 51856], cuyos bytes se decodifican como spect / ro / scopy. o200k_base devuelve [148686, 90805], que se decodifican como spect / roscopy. Ambas secuencias recuperan la misma entrada al decodificarse. Estos resultados utilizan las definiciones de codificación de OpenAI tiktoken fijadas a una revisión y vocabularios verificados por hash; los límites de tokens no son esquemáticos.",
+        "Anteponer un espacio ASCII cambia el resultado de o200k_base a [119655], un token que contiene el espacio y la palabra entera. El ejemplo mostrado no incluye plantilla de chat, tokens especiales ni esquemas de herramientas. Estos añadidos deben contarse en una petición real serializada. Conserve el texto exacto en los traspasos entre modelos y codifíquelo con el tokenizador receptor. La longitud de la secuencia contabiliza recursos de entrada; no es una estimación calibrada de la dificultad de razonamiento."
       ],
       "discussion": [
-        "¿Qué evidencia distingue el cálculo ejecutado de la respuesta generada y qué afirmación causal no queda aislada por este caso?"
+        "¿Qué bytes exactos y metadatos del tokenizador permitirían reproducir estas secuencias?",
+        "¿Qué entrada adicional puede insertar la aplicación que sirve el modelo antes de tokenizar?"
       ],
-      "notes": "Examine juntos la cadena, la operación y el valor devuelto: text = \"strawberry\", text.count(\"r\") y resultado 3. Compruebe las tres posiciones, contando desde 1. Krakowski (2025), figura 2, fecha la conversación de GPT-4o el 3 de noviembre de 2024. El registro visible respalda el resultado de la herramienta, pero no muestra un cálculo interno que explique la respuesta inicial. El cálculo del navegador es independiente de aquella sesión histórica.",
-      "optional": "El contador opcional opera sobre la entrada editable del navegador y cuenta r minúsculas. Para la cadena ASCII «strawberry», el resultado es 3 y las posiciones son 3, 8 y 9 contando desde 1. Esa ejecución es independiente de la sesión histórica de Python. Cualquier ejemplo de tokenización se refiere al tokenizador nombrado y a su literal exacto, no a una segmentación universal ni a una prueba causal del error de GPT-4o.",
+      "notes": "La entrada ASCII exacta sin espacios es spectroscopy. Con los vocabularios de OpenAI fijados por hash, cl100k_base devuelve [68182, 299, 51856], que se decodifican como spect / ro / scopy; o200k_base devuelve [148686, 90805], que se decodifican como spect / roscopy. Cada recorrido de codificación y decodificación recupera los bytes originales. Un espacio ASCII inicial cambia la secuencia de o200k_base a [119655]. Este ejemplo no incluye plantilla de chat ni tokens especiales. Estime las peticiones reales después de serializarlas y transfiera texto exacto sin suponer que los identificadores son portables entre servicios de modelos.",
+      "optional": "Las definiciones de tiktoken están fijadas al commit 79dc2c0533685b893616c78160b5d9e40876e724. La función BPE educativa oficial y los vocabularios verificados por hash reproducen estas entradas, cada una como una única coincidencia del pretokenizador. La entrada con espacio inicial es [66425, 51856] en cl100k_base y [119655] en o200k_base.",
       "kind": "prose"
     },
     "6": {

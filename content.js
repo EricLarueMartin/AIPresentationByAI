@@ -27,11 +27,6 @@ window.PRESENTATION = {
       "url": "https://arxiv.org/abs/1706.03762",
       "year": "2017"
     },
-    "counting": {
-      "title": "Fu et al. — Why Do Large Language Models (LLMs) Struggle to Count Letters?",
-      "url": "https://arxiv.org/abs/2412.18626",
-      "year": "2024 preprint"
-    },
     "prompting": {
       "title": "Claude documentation — Prompting best practices",
       "url": "https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices",
@@ -246,16 +241,6 @@ window.PRESENTATION = {
       "title": "OpenAI — tiktoken encoding definitions and vocabulary files",
       "url": "https://github.com/openai/tiktoken/blob/79dc2c0533685b893616c78160b5d9e40876e724/tiktoken_ext/openai_public.py",
       "year": "Encoding definitions"
-    },
-    "countEncoding": {
-      "title": "Datta et al. — From Early Encoding to Late Suppression: Interpreting LLMs on Character Counting Tasks",
-      "url": "https://aclanthology.org/2026.findings-aacl.70/",
-      "year": "2026"
-    },
-    "strawberryChat": {
-      "title": "Sebastian Krakowski — Human-AI agency in the age of generative AI, Figure 2 (chat and Python output)",
-      "year": "2025",
-      "url": "https://doi.org/10.1016/j.infoandorg.2025.100560"
     }
   },
   "slides": [
@@ -352,15 +337,13 @@ window.PRESENTATION = {
     {
       "id": "4",
       "section": "How the model sees a task",
-      "title": "Words become tokens",
-      "eyebrow": "A token is a model-specific unit",
-      "lead": "Token IDs belong to a particular tokenizer. Passing readable text preserves meaning across systems more reliably than assuming their IDs or boundaries match.",
-      "points": [
-        "Measure token counts with the tokenizer used by the actual model; visible length and reasoning difficulty are separate quantities."
-      ],
+      "title": "Scientific text becomes tokens",
+      "eyebrow": "Exact text; named tokenizer",
+      "lead": "The same scientific term, spectroscopy, is three tokens in cl100k_base and two in o200k_base. Token boundaries are an encoding choice.",
+      "points": [],
       "visual": "tokens",
-      "notes": "A model does not usually receive a sentence as visible characters. A tokenizer converts it into a sequence of IDs. Each ID selects a learned representation, and the model processes those representations. Common words may form one token, while unfamiliar technical names may require several. Another model can use different boundaries and different IDs. That matters when estimating context or cost, and when passing information between models. Passing readable text or a defined data schema is usually more portable than assuming two models share token IDs. A short-looking mathematical expression can still require substantial reasoning.",
-      "optional": "With no leading space, cl100k_base splits strawberry into str, aw and berry. The o200k_base encoding splits it into st, raw and berry. Both have three tokens in this example, but their boundaries and IDs differ. Add one leading space and o200k_base encodes the space and the whole word as a single token. The word still contains three r’s.",
+      "notes": "Read the exact lowercase ASCII text spectroscopy, without surrounding whitespace. Each box is one token. cl100k_base gives spect / ro / scopy; o200k_base gives spect / roscopy. Both decode to the same text, but the sequence lengths and IDs differ. Reveal the space example: one leading ASCII space makes the complete text one o200k_base token. These are verified encodings, not invented divisions. A token is neither a universal word unit nor a measure of scientific difficulty. Use the actual tokenizer when budgeting context or passing text between models.",
+      "optional": "These examples use the pinned OpenAI tiktoken vocabulary definitions, without a chat template or special tokens. In o200k_base, the exact input \" spectroscopy\" is the single token 119655. Whitespace is part of the input; the visible space marker in the diagram is explanatory.",
       "sources": [
         "transformer",
         "inference",
@@ -369,38 +352,11 @@ window.PRESENTATION = {
       "evidence": "Established",
       "seconds": 55,
       "reading": [
-        "A model does not usually receive a sentence as visible characters. A tokenizer converts it into a sequence of IDs. Each ID selects a learned representation, and the model processes those representations. Common words may form one token, while unfamiliar technical names may require several. Another model can use different boundaries and different IDs. That matters when estimating context or cost, and when passing information between models. Passing readable text or a defined data schema is usually more portable than assuming two models share token IDs. A short-looking mathematical expression can still require substantial reasoning.",
-        "With no leading space, cl100k_base splits strawberry into str, aw and berry. The o200k_base encoding splits it into st, raw and berry. Both have three tokens in this example, but their boundaries and IDs differ. Add one leading space and o200k_base encodes the space and the whole word as a single token. The word still contains three r’s."
+        "A tokenizer converts text into numbered pieces called tokens. For the exact lowercase text spectroscopy, with no surrounding whitespace, cl100k_base produces spect / ro / scopy: three tokens. o200k_base produces spect / roscopy: two. Joining either sequence recovers the same scientific term. The boundaries and IDs belong to the selected encoding, so a word count is not a universal token count.",
+        "Adding one ordinary ASCII space changes the exact input to \" spectroscopy\". In o200k_base, the space and the whole word then form one token. This illustrates why the literal input and tokenizer name matter when estimating context or cost. A real request may also contain a chat template and tool definitions. Token count measures the encoded input, not how much reasoning the scientific task requires."
       ],
       "discussion": [
-        "What would need to be recorded to reproduce a token-count comparison across models?"
-      ],
-      "kind": "prose"
-    },
-    {
-      "id": "5",
-      "section": "How the model sees a task",
-      "title": "Counting the r’s in strawberry",
-      "eyebrow": "One conversation, two methods",
-      "lead": "There are three lowercase r’s, at positions 3, 8 and 9. The chat record shows how GPT‑4o checked its first answer.",
-      "points": [],
-      "visual": "characters",
-      "notes": "Compare the first answer, 2, with the executed result, 3. Trace text.count(\"r\") on the exact string strawberry and verify the marked positions 3, 8 and 9, counting from 1. Attribute the recorded exchange to Krakowski (2025), Figure 2, with a conversation date of November 3, 2024. The browser counter is a separate demonstration. This single case neither identifies the cause of the first error nor estimates a model’s error rate.",
-      "optional": "Try changing a lowercase r to uppercase R in the browser counter. The count drops by one because the check matches lowercase r exactly.",
-      "sources": [
-        "strawberryChat",
-        "counting",
-        "countEncoding",
-        "tokenVocab"
-      ],
-      "evidence": "Practice",
-      "seconds": 60,
-      "reading": [
-        "On November 3, 2024, GPT‑4o answered 2 when asked how many times r occurs in strawberry. The user repeated the question and added “Use Python.” Figure 2 in Sebastian Krakowski’s 2025 paper shows the resulting Python execution: text = \"strawberry\", followed by text.count(\"r\"), returned 3. GPT‑4o then reported 3.",
-        "The checkable answer is 3: st[r]awbe[r][r]y, with matches at positions 3, 8 and 9 counting from 1. A subword can contain several letters, but a model can also learn spelling and sometimes count correctly without tools. This conversation shows a changed computation method and a corrected answer. It does not establish why the first answer was wrong or how frequently similar errors occur. The editable browser counter is a separate local computation, not a replay of the historical chat."
-      ],
-      "discussion": [
-        "What evidence shows that the second answer came from running the count, and what evidence would you need to explain the first error?"
+        "Why must a token-count estimate identify both the exact input and its tokenizer?"
       ],
       "kind": "prose"
     },
@@ -1433,7 +1389,6 @@ window.PRESENTATION = {
       "2",
       "3",
       "4",
-      "5",
       "6",
       "7",
       "8",
@@ -1526,9 +1481,8 @@ window.PRESENTATION = {
       "2": 29,
       "3": 25,
       "4": 53,
-      "5": 58,
-      "6": 78,
-      "7": 87,
+      "6": 97,
+      "7": 126,
       "8": 58,
       "9": 44,
       "10": 53,
@@ -1567,7 +1521,7 @@ window.PRESENTATION = {
     "2a": "2",
     "2b": "3",
     "3a": "4",
-    "4a": "5",
+    "4a": "4",
     "5b": "6",
     "5c": "7",
     "6a": "8",

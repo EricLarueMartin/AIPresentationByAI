@@ -6,4 +6,4 @@ GitHub Pages serves the root of the `main` branch in [EricLarueMartin/AIPresenta
 
 Before publishing an edit, open the site through a static web server. Exercise the changed topic in both languages and check the selected audience, the next-slide preview and the outline on a narrow display. The HTML uses relative asset paths so the same files work under the repository’s Pages subpath.
 
-Share a specific topic by keeping the audience, duration, mode and slide number in its URL. For example, [the MoE diagram](https://ericlaruemartin.github.io/AIPresentationByAI/?route=all&audience=general&view=present#33) opens the general-audience presentation directly at slide 33.
+Share a specific topic by copying its URL. The link includes the audience, duration, mode and slide number. For example, [the MoE diagram](https://ericlaruemartin.github.io/AIPresentationByAI/?route=all&audience=general&view=present#slide-32) opens the general-audience presentation at slide 32.
