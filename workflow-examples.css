@@ -4,22 +4,3 @@
   .wx-panel{min-width:0;padding:1rem;border:1px solid currentColor;border-radius:.55rem}.wx-old{border-style:dashed}.wx-active{border-inline-start-width:5px}.wx-state{font-size:.78em;font-weight:750;display:block;margin-bottom:.4rem}.wx-number{font-size:clamp(1.35rem,4vw,2rem);font-variant-numeric:tabular-nums;display:block;margin:.4rem 0}.wx-equation{padding:.9rem;margin:1rem 0;text-align:center;background:color-mix(in srgb,currentColor 7%,transparent);border-radius:.45rem;font-size:1.1em;font-variant-numeric:tabular-nums}.wx-equation span{display:inline-block}.wx-check{border-top:2px solid currentColor;padding-top:.65rem;margin-top:1rem!important}.wx-figure code{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.88em;color:inherit;background:transparent}.wx-code{display:block;margin:.6rem 0;padding:.65rem;border-inline-start:3px solid currentColor}.wx-input,.wx-gate{padding:.65rem 1rem;text-align:center;border:1px solid currentColor;border-radius:.5rem}.wx-flow{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1rem;margin:.5rem 0}.wx-lane{min-width:0;position:relative;padding:.7rem 1rem;border-inline-start:2px solid currentColor}.wx-arrow{display:block;text-align:center;font-size:1.4em;line-height:1.2}.wx-lane ol{margin:.5rem 0;padding-inline-start:1.25rem}.wx-lane li{margin:.4rem 0}.wx-gate{border-width:2px}.wx-revision{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.5rem .8rem;margin:.7rem 0}.wx-revision dt{font-weight:750}.wx-revision dd{margin:0}.wx-source{font-size:.88em;border-bottom:1px solid currentColor;padding-bottom:.65rem;margin-bottom:1rem!important}.wx-note{font-size:.88em;margin-top:.8rem!important}.wx-figure s{text-decoration-thickness:2px}
   @media(max-width:600px){.wx-pair,.wx-flow{grid-template-columns:minmax(0,1fr)}.wx-figure{padding:.8rem}.wx-panel,.wx-lane{padding:.75rem}.wx-number{font-size:1.5rem}.wx-revision{grid-template-columns:minmax(0,1fr)}.wx-revision dd{margin-bottom:.35rem}}
   @media print{.wx-figure{break-inside:avoid}.wx-equation{background:transparent}}
-.wx-lexicons{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:.8rem;margin:.8rem 0}
-.wx-lexicons label{font-size:.9em;font-weight:700;min-width:0}
-.wx-lexicons textarea{display:block;width:100%;min-height:3.8em;resize:vertical;padding:.5rem;margin-top:.35rem;border:1px solid currentColor;border-radius:.35rem;font:inherit;font-weight:400;color:inherit;background:transparent}
-.wx-actions{display:flex;flex-wrap:wrap;gap:.6rem;margin:.8rem 0}
-.wx-actions button{max-width:100%;padding:.5rem .8rem;border:1px solid currentColor;border-radius:.35rem;font:inherit;color:inherit;background:transparent;cursor:pointer;white-space:normal}
-.wx-actions button:hover{background:color-mix(in srgb,currentColor 10%,transparent)}
-.wx-actions button:focus-visible,.wx-lexicons textarea:focus-visible,.wx-code-details summary:focus-visible{outline:3px solid currentColor;outline-offset:3px}
-.wx-run-status{font-size:.9em;font-weight:650}
-.wx-reversal-table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:.9em;margin:.8rem 0}
-.wx-reversal-table caption{font-size:.85em;text-align:start;margin-bottom:.4rem}
-.wx-reversal-table th,.wx-reversal-table td{padding:.4rem;text-align:start;vertical-align:top;border-bottom:1px solid currentColor;overflow-wrap:anywhere}
-.wx-reversal-table .wx-match{background:color-mix(in srgb,currentColor 9%,transparent);font-weight:750}
-.wx-reversal-table th code,.wx-reversal-table td code{font:600 1.05rem/1.45 Consolas,monospace}
-.wx-reversal-table .wx-match{background:var(--accent-bg);color:var(--accent)}
-.wx-reversal-table .wx-match th{border-inline-start:3px solid var(--accent)}
-.wx-figure button[data-wx-run]{color:var(--bg);background:var(--accent);border-color:var(--accent);font-weight:650}
-.wx-code-details{margin:.7rem 0}.wx-code-details summary{cursor:pointer}.wx-code-details pre{max-width:100%;white-space:pre-wrap;overflow-wrap:anywhere;padding:.5rem;border-inline-start:2px solid currentColor}
-@media(max-width:450px){.wx-lexicons{grid-template-columns:minmax(0,1fr)}.wx-reversal-table{font-size:.8em}.wx-reversal-table th,.wx-reversal-table td{padding:.3rem}}
-@media print{.wx-actions{display:none}.wx-lexicons textarea{resize:none}.wx-reversal-table .wx-match{background:transparent}}

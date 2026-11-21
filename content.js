@@ -256,11 +256,6 @@ window.PRESENTATION = {
       "title": "Sebastian Krakowski — Human-AI agency in the age of generative AI, Figure 2 (chat and Python output)",
       "year": "2025",
       "url": "https://doi.org/10.1016/j.infoandorg.2025.100560"
-    },
-    "wordnetCategories": {
-      "title": "Princeton WordNet · lexicographer file categories (05 and 20)",
-      "year": "3.0",
-      "url": "https://wordnet.princeton.edu/documentation/lexnames5wn"
     }
   },
   "slides": [
@@ -396,19 +391,16 @@ window.PRESENTATION = {
         "strawberryChat",
         "counting",
         "countEncoding",
-        "tokenVocab",
-        "wordnetCategories"
+        "tokenVocab"
       ],
       "evidence": "Practice",
       "seconds": 60,
       "reading": [
         "On November 3, 2024, GPT‑4o answered 2 when asked how many times r occurs in strawberry. The user repeated the question and added “Use Python.” Figure 2 in Sebastian Krakowski’s paper shows the resulting Python execution. It set text to the same word, evaluated text.count(\"r\") and returned 3. GPT‑4o then reported 3.",
-        "You can trace the matches yourself: st[r]awbe[r][r]y. A subword can contain several letters, so identifying a token and tallying its characters are separate operations. This conversation demonstrates that changing the method changed the answer. It leaves open why the first answer was wrong.",
-        "A fresh Codex session was asked for an English animal name whose letters, reversed, spell a plant. It answered deer → reed directly. In the same session it ran Python over five animal names and five plant names and confirmed this as the only match in those lists. An independent search of WordNet 3.0 also found that one pair among 5,934 eligible animal spellings and 4,762 plant spellings. The vocabulary and category definitions determine what counts as a solution."
+        "You can trace the matches yourself: st[r]awbe[r][r]y. A subword can contain several letters, so identifying a token and tallying its characters are separate operations. This conversation demonstrates that changing the method changed the answer. It leaves open why the first answer was wrong."
       ],
       "discussion": [
-        "What evidence shows that the second answer came from running the count, and what evidence would you need to explain the first error?",
-        "What would you need to specify before saying you had found every solution?"
+        "What evidence shows that the second answer came from running the count, and what evidence would you need to explain the first error?"
       ],
       "kind": "prose"
     },

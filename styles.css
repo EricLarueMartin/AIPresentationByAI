@@ -91,14 +91,3 @@ body[data-view=discuss] .slide .discussion-figure[open] .visual {display:block;m
 .visual-worked-example .lead {margin-bottom:.4rem}
 .worked-notes {border-top:1px solid var(--line);padding:.6rem 0}
 .worked-notes summary {cursor:pointer;color:var(--accent);font-size:.9rem}
-.riddle-example {border-top:1px solid var(--line);margin-top:1rem;padding:.9rem 0 1.15rem;min-width:0}
-.riddle-example summary {cursor:pointer;color:var(--accent)}
-.riddle-example>summary {font-weight:650}
-.riddle-example[open]>figure {margin:1rem 0}
-.riddle-trial {margin:.8rem 0}
-.riddle-trial pre {overflow:auto;background:var(--bg);padding:1rem;font-size:.85rem}
-.reversal-letters {margin:1rem 0}
-.reversal-letters>div {display:grid;grid-template-columns:4.5rem repeat(4,minmax(0,3.1rem));align-items:center}
-.reversal-letters span {margin:.1rem;text-align:center;border:1px solid var(--line);background:var(--bg)}
-.reversal-letters strong,.reversal-letters small {display:block;font-family:Consolas,monospace}
-.reversal-letters strong {font-size:1.3rem}.reversal-letters small {font-size:.72rem;color:var(--muted)}

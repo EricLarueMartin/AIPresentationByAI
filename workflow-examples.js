@@ -61,98 +61,13 @@
     const revisionText=value=>audience==='engineer'?`<code>${esc(value)}</code>`:`<p>${esc(value)}</p>`;
     return wrap(lang,t.title,`<p class="wx-source"><strong>${esc(s.source)}:</strong> ${esc(t.source)}</p><div class="wx-pair"><section class="wx-panel wx-old"><h4>${esc(s.superseded)}</h4>${revisionText(t.old)}</section><section class="wx-panel wx-active"><h4>${esc(s.active)}</h4>${revisionText(t.active)}</section></div><dl class="wx-revision"><dt>${esc(s.reason)}</dt><dd>${esc(t.correction)}</dd><dt>${esc(s.request)}</dt><dd>${esc(t.request)}</dd></dl><p class="wx-note">${esc(t.note)}</p>`);
   }
-  const reversalFixture = Object.freeze({animals:'hare, deer, wolf, fox, bear', plants:'rose, fern, reed, moss, flax'});
-  const reversalCopy = {
-    en:{
-      title:'Reverse, then check the supplied list', animals:'Animal list', plants:'Plant list', run:'Check every word', reset:'Reset lists',
-      instruction:'Which listed animal becomes a listed plant when its spelling is reversed?',
-      edit:'List format',
-      format:'Separate words with commas or spaces. Use letters a–z; case is ignored and duplicates are removed. Limit: 40 words per list, 30 letters per word.',
-      ready:'Not run yet. Run to check every candidate.', stale:'Lists changed. Run again to check the edited inputs.',
-      invalid:'Cannot run: each list must contain 1–40 words, each 1–30 letters a–z, separated by commas or whitespace.',
-      candidate:'Animal candidate', reversed:'Reversed spelling', member:'In supplied plant list?', yes:'Yes · match', no:'No',
-      result:(n,h)=>`Executed locally: ${n} distinct candidates checked; ${h} ${h===1?'match':'matches'} in the supplied plant list.`,
-      code:'Show the executed comparison function', normalization:'The inputs are validated, lowercased and deduplicated before this function runs.',
-      scope:'The labels “animal” and “plant” come from the supplied lists. The code checks spelling and membership, not biological categories. Edited or synthetic lists change the question.',
-      limits:'This is a classroom code demonstration, not a recorded AI failure. It cannot diagnose tokenization or measure a model’s accuracy.',
-      general:'A direct answer proposes a word. Running this small check shows how every candidate was tested—and which names were included.',
-      technical:'Enumerate the finite candidate set, reverse each spelling and test membership in the supplied plant set. A unique hit here establishes uniqueness only within these lists.',
-      engineer:'Keep the lexicons and transformation explicit. The table exposes every candidate; the displayed function is the same function executed locally. This ASCII-only task does not test Unicode grapheme handling or semantic classification.'
-    },
-    es:{
-      title:'Invierta las letras y compruebe la lista', animals:'Lista de animales', plants:'Lista de plantas', run:'Comprobar cada palabra', reset:'Restaurar listas',
-      instruction:'¿Qué nombre inglés de animal da el nombre de una planta al invertir sus letras?',
-      edit:'Formato de las listas',
-      format:'Separe las palabras con comas o espacios. Use letras a–z; se ignoran las mayúsculas y se eliminan duplicados. Límite: 40 palabras por lista, 30 letras por palabra.',
-      ready:'Aún no se ha ejecutado. Ejecute para comprobar todos los candidatos.', stale:'Las listas han cambiado. Ejecute de nuevo para comprobar las entradas editadas.',
-      invalid:'No se puede ejecutar: cada lista debe contener entre 1 y 40 palabras de 1–30 letras a–z, separadas por comas o espacios en blanco.',
-      candidate:'Animal candidato', reversed:'Letras invertidas', member:'¿Está en la lista de plantas?', yes:'Sí · coincidencia', no:'No',
-      result:(n,h)=>`Ejecutado localmente: ${n} candidatos distintos comprobados; ${h} ${h===1?'coincidencia':'coincidencias'} en la lista de plantas suministrada.`,
-      code:'Ver la función de comparación ejecutada', normalization:'Antes de ejecutar esta función se validan las entradas, se convierten a minúsculas y se eliminan duplicados.',
-      scope:'Las categorías «animal» y «planta» proceden de las listas suministradas. El código comprueba letras y pertenencia, no categorías biológicas. Las listas editadas o sintéticas cambian la pregunta.',
-      limits:'Es una demostración de código para el aula, no un fallo de IA registrado. No permite diagnosticar la tokenización ni medir la precisión de un modelo.',
-      general:'Una respuesta directa propone una palabra. Esta pequeña comprobación muestra cómo se probó cada candidato y qué nombres se incluyeron.',
-      technical:'Enumere el conjunto finito de candidatos, invierta sus letras y compruebe su pertenencia al conjunto de plantas suministrado. Una coincidencia única solo demuestra unicidad dentro de estas listas.',
-      engineer:'Mantenga explícitos los vocabularios y la transformación. La tabla muestra cada candidato; la función visible es la misma que se ejecuta localmente. Esta tarea limitada a ASCII no prueba grafemas Unicode ni clasificación semántica.'
-    }
-  };
-  // Called by the UI and exposed for deterministic integration checks.
-  function enumerateReversals(animals, plants) {
-    const plantSet = new Set(plants);
-    return animals.map(animal => {
-      const reversed = Array.from(animal).reverse().join('');
-      return {animal, reversed, match: plantSet.has(reversed)};
-    });
-  }
-  function parseLexicon(text) {
-    if(typeof text!=='string' || text.length>2000 || !/^[a-zA-Z,\s]+$/.test(text)) throw new Error('Invalid lexicon');
-    const words = Array.from(new Set(text.trim().toLowerCase().split(/[,\s]+/).filter(Boolean)));
-    if(!words.length || words.length>40 || words.some(word=>word.length>30)) throw new Error('Invalid lexicon');
-    return words;
-  }
-  function reversalFigure(lang,audience) {
-    const t=reversalCopy[lang], prefix='wx-reversal-'+(++serial);
-    return wrap(lang,t.title,`<div class="wx-reversal" data-wx-reversal data-wx-language="${lang}"><p><strong>${esc(t.instruction)}</strong></p><p class="wx-note">${esc(t[audience])}</p><div class="wx-lexicons"><label for="${prefix}-animals">${esc(t.animals)}<textarea id="${prefix}-animals" data-wx-animals rows="2" maxlength="2000" spellcheck="false" autocapitalize="none" aria-describedby="${prefix}-format">${esc(reversalFixture.animals)}</textarea></label><label for="${prefix}-plants">${esc(t.plants)}<textarea id="${prefix}-plants" data-wx-plants rows="2" maxlength="2000" spellcheck="false" autocapitalize="none" aria-describedby="${prefix}-format">${esc(reversalFixture.plants)}</textarea></label></div><details class="wx-code-details"><summary>${esc(t.edit)}</summary><p id="${prefix}-format" class="wx-note">${esc(t.format)}</p></details><div class="wx-actions"><button type="button" data-wx-run>${esc(t.run)}</button><button type="button" data-wx-reset>${esc(t.reset)}</button></div><p class="wx-run-status" data-wx-status role="status" aria-live="polite" aria-atomic="true">${esc(t.ready)}</p><div data-wx-results></div><details class="wx-code-details"><summary>${esc(t.code)}</summary><p class="wx-note">${esc(t.normalization)}</p><pre><code>${esc(enumerateReversals.toString())}</code></pre></details><p class="wx-note">${esc(t.scope)}</p><p class="wx-note">${esc(t.limits)}</p></div>`);
-  }
-  const boundReversals = new WeakSet();
-  function bind(root) {
-    root = root || document;
-    const panels = Array.from(root.querySelectorAll('[data-wx-reversal]'));
-    if(root.matches && root.matches('[data-wx-reversal]')) panels.unshift(root);
-    panels.forEach(panel=>{
-      if(boundReversals.has(panel)) return;
-      boundReversals.add(panel);
-      const t=reversalCopy[panel.dataset.wxLanguage==='es'?'es':'en'];
-      const animals=panel.querySelector('[data-wx-animals]'), plants=panel.querySelector('[data-wx-plants]');
-      const status=panel.querySelector('[data-wx-status]'), results=panel.querySelector('[data-wx-results]');
-      const clear=message=>{results.replaceChildren();status.textContent=message;};
-      panel.addEventListener('input',event=>{
-        if(event.target===animals || event.target===plants) clear(t.stale);
-      });
-      panel.querySelector('[data-wx-reset]').addEventListener('click',()=>{
-        animals.value=reversalFixture.animals; plants.value=reversalFixture.plants; clear(t.ready);
-      });
-      panel.querySelector('[data-wx-run]').addEventListener('click',()=>{
-        let rows;
-        try { rows=enumerateReversals(parseLexicon(animals.value),parseLexicon(plants.value)); }
-        catch { clear(t.invalid); return; }
-        const hits=rows.filter(row=>row.match).length;
-        status.textContent=t.result(rows.length,hits);
-        results.innerHTML=`<table class="wx-reversal-table"><caption class="sr-only">${esc(t.instruction)}</caption><thead><tr><th scope="col">${esc(t.candidate)}</th><th scope="col">${esc(t.reversed)}</th><th scope="col">${esc(t.member)}</th></tr></thead><tbody>${rows.map(row=>`<tr${row.match?' class="wx-match"':''}><th scope="row"><code>${esc(row.animal)}</code></th><td><code>${esc(row.reversed)}</code></td><td>${esc(row.match?t.yes:t.no)}</td></tr>`).join('')}</tbody></table>`;
-      });
-    });
-  }
   window.WorkflowExamples = Object.freeze({
-    bind,
-    bindRiddle: bind,
-    enumerateReversals,
     render(id,language,audience) {
       const lang=language==='es'?'es':'en';
       const level=['general','technical','engineer'].includes(audience)?audience:'technical';
       if(String(id)==='8') return unitFigure(lang,level);
       if(String(id)==='9') return goalFigure(lang,level);
       if(String(id)==='12') return contextFigure(lang,level);
-      if(String(id)==='riddle') return reversalFigure(lang,level);
       return '';
     }
   });
