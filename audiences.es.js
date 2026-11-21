@@ -67,25 +67,19 @@ window.AUDIENCE_ES = {
       "kind": "prose"
     },
     "5": {
-      "title": "Pruebe un experimento pequeño de comprobación",
-      "lead": "Pruebe a contar una letra en una palabra y compare la respuesta con una comprobación exacta de los caracteres. Una respuesta correcta del modelo también es un resultado válido.",
-      "points": [
-        "Elija una cadena e indique si cuentan las letras mayúsculas.",
-        "Registre la respuesta del asistente antes de comprobarla.",
-        "Compárela con un desglose de caracteres o con el programa de recuento.",
-        "Conserve tanto las pruebas acertadas como los fallos."
-      ],
+      "title": "Las tres r de «strawberry»",
+      "lead": "Reconocer una palabra no garantiza llevar bien la cuenta de sus letras. En «strawberry», las tres r están en las posiciones 3, 8 y 9, contando desde 1.",
+      "points": [],
       "reading": [
-        "Pida a un asistente contar una letra concreta en una palabra o cadena poco familiar. Después solicite separar los caracteres y comprobar el conteo con un programa pequeño. El objetivo es comparar métodos. El modelo puede responder correctamente; este ejemplo no supone ni prepara un fallo.",
-        "Los tokens pueden hacer menos directo el trabajo con letras, pero no explican todos los errores. Importan el modelo, la redacción y el método de comprobación. Conserve aciertos y fallos, registrando la petición y el modelo. Defina también la regla: contar solo letras minúsculas es distinto de tratar mayúsculas y minúsculas como el mismo carácter."
+        "«Strawberry» significa fresa en inglés. Escrita en minúsculas, «strawberry» tiene una r en la posición 3 y otras dos seguidas en las posiciones 8 y 9. Como vimos antes, el modelo suele recibir fragmentos de texto llamados tokens, que pueden contener varias letras. Puede aprender cómo se escribe una palabra y a veces contar sus letras directamente. Pero reconocerlas y llevar una cuenta exacta son trabajos distintos; las repeticiones pueden dificultar el recuento.",
+        "El panel muestra las letras y permite ejecutar un pequeño programa sobre la palabra escrita. Para la cadena exacta «strawberry», ese programa cuenta 3 r. Escribir el programa no basta para obtener el resultado: hay que ejecutarlo. Aquí el número procede del código que se ejecuta, no de consultar a una IA. Los tokens ayudan a entender la dificultad, aunque no explican por sí solos todos los posibles errores."
       ],
       "discussion": [
-        "¿Qué incluiría una colección justa de palabras de prueba?",
-        "¿Qué regla de conteo debe acordarse antes de comparar respuestas?"
+        "¿Qué diferencia hay entre reconocer las letras de una palabra y llevar la cuenta de cuántas veces aparece una?"
       ],
-      "notes": "Pida a un asistente contar una letra concreta en una palabra o cadena poco familiar. Después solicite separar los caracteres y comprobar el conteo con un programa pequeño. El objetivo es comparar métodos. El modelo puede responder correctamente; este ejemplo no supone ni prepara un fallo.",
-      "optional": "Para reproducir la prueba, registre el modelo, la fecha, la petición, el nivel de esfuerzo y el acceso a herramientas. Un programa determinista puede contar los caracteres suministrados, pero la operación requiere una definición precisa: pueden importar las mayúsculas, la normalización Unicode y los caracteres visualmente parecidos. Compare respuestas directas, separación explícita de caracteres y respuestas con código en varias cadenas. Informe de las pruebas en vez de seleccionar solo un fallo llamativo.",
-      "kind": "steps"
+      "notes": "Después de los tokens, explique la diferencia entre reconocer y contar. Los fragmentos de entrada pueden contener varias letras, pero el modelo también puede aprender ortografía y acertar sin herramientas. En «strawberry» hay tres r: posiciones 3, 8 y 9 contando desde 1. Las dos r seguidas pueden complicar el recuento aunque se reconozcan. Muestre después el contador: ejecutar el código correcto sobre esa palabra produce 3; limitarse a escribirlo no produce el resultado.",
+      "optional": "La palabra puede editarse en el panel. El programa cuenta las r minúsculas de lo que esté escrito en ese momento. El ejemplo de tokens depende del tokenizador nombrado y de su entrada literal; no representa la división de todos los modelos.",
+      "kind": "prose"
     },
     "6": {
       "title": "Escriba una petición útil",
@@ -729,24 +723,19 @@ window.AUDIENCE_ES = {
       "kind": "list"
     },
     "5": {
-      "title": "Contar caracteres es una microevaluación reproducible",
-      "lead": "Contar letras resulta útil como una pequeña evaluación controlada solo cuando se especifican la operación y el protocolo de inferencia.",
-      "points": [
-        "Defina el tratamiento de mayúsculas y minúsculas y si un carácter significa un punto de código o un grafema visible.",
-        "Fije las cadenas y conserve todas las pruebas, incluidas las respuestas acertadas.",
-        "Compare la generación directa con un protocolo asistido por código bajo la misma definición de tarea.",
-        "Registre la versión del modelo y sus ajustes para interpretar el resultado como una observación fechada."
-      ],
+      "title": "De la representación subléxica al recuento exacto",
+      "lead": "El conocimiento de la ortografía y la ejecución fiable de un recuento son capacidades distintas. La predicción directa no impone por sí misma un algoritmo de conteo.",
+      "points": [],
       "reading": [
-        "Construya casos de prueba pequeños con semántica explícita de conteo y conserve todos los intentos. Compare predicción directa, separación de caracteres y verificación mediante programa con las mismas cadenas. Registre versión del modelo, esfuerzo y herramientas. La tokenización es un mecanismo a investigar, pero un error aislado no identifica su contribución. La ruta de código también necesita políticas definidas de normalización y mayúsculas.",
-        "Para reproducir la prueba, registre el modelo, la fecha, la petición, el nivel de esfuerzo y el acceso a herramientas. Un programa determinista puede contar los caracteres suministrados, pero la operación requiere una definición precisa: pueden importar las mayúsculas, la normalización Unicode y los caracteres visualmente parecidos. Compare respuestas directas, separación explícita de caracteres y respuestas con código en varias cadenas. Informe de las pruebas en vez de seleccionar solo un fallo llamativo."
+        "Una representación subléxica puede agrupar varias letras en un token. La correspondencia concreta depende del tokenizador y de la cadena literal, por lo que este ejemplo no presupone la segmentación de un modelo concreto. El entrenamiento puede enseñar relaciones ortográficas y permitir respuestas directas correctas. Sin embargo, identificar una secuencia de letras no garantiza acumular correctamente sus repeticiones. En «strawberry», el recuento exacto de r minúsculas es 3, con coincidencias en las posiciones 3, 8 y 9 contando desde 1. La tokenización no es por sí sola una causa demostrada de cualquier error.",
+        "La vía ejecutable cambia de representación: el programa recorre la cadena exacta y suma las coincidencias con r. Al ejecutarse correctamente sobre «strawberry», devuelve 3. Generar código fuente solo especifica una operación posible; no demuestra que se haya realizado ni devuelve automáticamente su resultado. El contador del panel ejecuta esa operación localmente, sin una llamada a un modelo. Así se distinguen la respuesta generada, el procedimiento descrito y el resultado efectivamente calculado."
       ],
       "discussion": [
-        "¿Qué experimento podría comprobar si la tokenización causó un error de recuento en vez de limitarse a acompañarlo?"
+        "¿Qué aporta recorrer explícitamente la cadena que no garantiza una respuesta directa, incluso cuando el modelo conoce su ortografía?"
       ],
-      "notes": "El contador interactivo ejecuta un programa definido y no llama a un modelo de lenguaje. No se ha proporcionado ninguna grabación auténtica y fechada de un fallo del modelo. Utilice varias cadenas reservadas si realiza una comparación en directo; elegir un fallo memorable no permite aislar la tokenización como causa. Una tarea que reconozca grafemas necesita código distinto del que cuenta puntos de código r minúscula exactos.",
-      "optional": "Para reproducir la prueba, registre el modelo, la fecha, la petición, el nivel de esfuerzo y el acceso a herramientas. Un programa determinista puede contar los caracteres suministrados, pero la operación requiere una definición precisa: pueden importar las mayúsculas, la normalización Unicode y los caracteres visualmente parecidos. Compare respuestas directas, separación explícita de caracteres y respuestas con código en varias cadenas. Informe de las pruebas en vez de seleccionar solo un fallo llamativo.",
-      "kind": "steps"
+      "notes": "Presente el problema como un cambio entre una representación subléxica aprendida y una operación explícita sobre caracteres. Un token puede contener varias letras y el modelo puede haber aprendido su ortografía. Las repeticiones aún exigen mantener un recuento y pueden provocar errores aunque las letras se reconozcan. No atribuya a un modelo una segmentación que no se haya mostrado. Para la cadena ASCII exacta «strawberry», las r están en 3, 8 y 9 contando desde 1. El código correcto ejecutado devuelve 3; generar el código sin ejecutarlo no constituye ese resultado.",
+      "optional": "En esta cadena ASCII, las posiciones de caracteres son inequívocas. El contador busca r minúsculas en la entrada editable; el ejemplo de tokenización se refiere al tokenizador nombrado y a su literal exacto. La visualización de tokens ilustra una representación, mientras que el contador ejecuta una operación distinta sobre los caracteres.",
+      "kind": "prose"
     },
     "6": {
       "title": "Redacte peticiones como especificaciones comprobables",

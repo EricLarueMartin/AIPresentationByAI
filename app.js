@@ -125,6 +125,49 @@ function slideBody(s) {
     }
     return `<div class="authored-${s.kind}">${points.map(p=>`<p>${E(p)}</p>`).join('')}</div>`;
   }
+function characterExample(){
+    return `<div class="character-example">
+      <label for="count-word">${L('Word to count','Palabra para el recuento')}</label>
+      <input id="count-word" type="text" spellcheck="false" autocapitalize="none" autocomplete="off" value="strawberry">
+      <div id="token-example"><span>${L('How o200k_base encodes this input','Cómo codifica o200k_base esta entrada')}</span>
+        <div class="tokens" id="count-tokens"></div>
+        <button type="button" id="word-spacing"></button>
+      </div>
+      <div class="count-output"><span>${L('Characters checked by the browser','Caracteres que examina el navegador')}</span>
+        <div id="count-spelling" aria-hidden="true"></div>
+        <output for="count-word" aria-live="polite"><b id="letter-result">3</b> ${L('lowercase r matches','coincidencias de r minúscula')}</output>
+      </div>
+      <code>[...word].filter(c =&gt; c === 'r').length</code>
+    </div>`;
+  }
+function bindCharacterExample(){
+    const input=$('count-word');
+    const toggle=$('word-spacing');
+    // Exact outputs of o200k_base for these two literals. Arbitrary text
+    // still has a character count, but requires a tokenizer to show its IDs.
+    const pieces=new Map([
+      ['strawberry',['st','raw','berry']],
+      [' strawberry',[' strawberry']]
+    ]);
+    function update(){
+      const word=input.value;
+      $('letter-result').textContent=String([...word].filter(c=>c==='r').length);
+      $('count-spelling').innerHTML=word.split('r').map(E).join('<mark>r</mark>');
+      const tokens=pieces.get(word);
+      $('token-example').hidden=!tokens;
+      if(tokens){
+        $('count-tokens').innerHTML=tokens.map(t=>`<span class="token">${E(t.replace(' ','␣'))}</span>`).join('');
+        toggle.textContent=word.startsWith(' ')?L('Remove the leading space','Quitar el espacio inicial'):L('Add a leading space','Añadir un espacio inicial');
+      }
+    }
+    input.oninput=update;
+    toggle.onclick=()=>{
+      input.value=input.value.startsWith(' ')?'strawberry':' strawberry';
+      update();
+    };
+    update();
+  }
+
 function standardVisual(s){
   switch(s.visual){
     case 'timeline':return `<div class="timeline">${[['1958','Perceptron',L('Learned weights','Pesos aprendidos')],['1966','ELIZA',L('Scripted conversation','Conversación con reglas')],['1986',L('Backpropagation','Retropropagación'),L('Multilayer learning','Aprendizaje multicapa')],['2003',L('Neural language model','Modelo de lenguaje neuronal'),L('Distributed representations','Representaciones distribuidas')],['2017','Transformer',L('Attention + feedforward layers','Atención + capas densas')],['2020s',L('Models + tools','Modelos + herramientas'),L('From responses to workflows','De respuestas a tareas')]].map(x=>`<div class="timeline-item"><span>${E(x[0])}</span><b>${E(x[1])}</b><small>${E(x[2])}</small></div>`).join('')}</div>`;
@@ -133,7 +176,7 @@ function standardVisual(s){
     case 'lora':return `<div class="mono-box">W′ = W + BA</div><div class="lora-diagram"><div>${matrix()}<div class="math-label">${L('Frozen W','W congelada')}</div></div><span class="math-symbol">+</span><div>${matrix(true)}<div class="math-label">B</div></div><span class="math-symbol">×</span><div>${matrix(true)}<div class="math-label">A</div></div></div>${caption('The learned factors B and A supply the update. The diagram absorbs the usual scaling factor into B.','Los factores aprendidos B y A aportan la actualización. En este esquema, B incorpora el factor de escala habitual.')}`;
     case 'memory':return `${table([L('Quantity','Magnitud'),L('Simple scaling','Crecimiento aproximado')],[[L('Weight storage','Almacenamiento de pesos'),'∝ N × bits'],[L('KV cache','Caché KV'),'∝ context × layers'],[L('Dense prompt attention work','Trabajo de atención densa'),'∝ context²']])}<div class="scaling-grid"><div class="scaling-cell">L</div><div class="scaling-cell">2L</div><div class="scaling-cell">4L</div><div class="scaling-cell">1×</div><div class="scaling-cell">4×</div><div class="scaling-cell">16×</div></div>${caption('Bottom row: relative dense-attention work only, keeping other dimensions fixed. KV cache also depends on heads, width, precision and batching.','Fila inferior: solo trabajo relativo de atención densa, con las demás dimensiones fijas. La caché KV también depende de cabezas, anchura, precisión y lotes.')}`;
     case 'pi':return `<div class="horizontal-diagram">${card(L('Camera','Cámara'),L('Images of the physical setup','Imágenes del montaje'))}${card('USB',L('Microphones, adapters, peripherals','Micrófonos, adaptadores, periféricos'))}</div><div class="diagram-arrow" aria-hidden="true">↓</div>${card('Raspberry Pi',L('Capture · develop · inspect · run compatible models','Capturar · desarrollar · revisar · ejecutar modelos'),true)}<div class="diagram-arrow" aria-hidden="true">↓</div>${card(L('Observable result','Resultado observable'),L('A saved image, measured value or checked action','Imagen guardada, valor medido o acción comprobada'))}${caption('A general workflow: give the AI access to relevant evidence and a development environment, with explicit scope.','Flujo general: dar acceso a evidencia relevante y un entorno de desarrollo, con alcance explícito.')}`;
-    case 'characters':return `<label for="count-word" class="visual-title">${L('TRY A CHARACTER CHECK','PRUEBA UN RECUENTO')}</label><input id="count-word" value="strawberry" style="width:100%;padding:12px;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:6px;font:16px Consolas,monospace" aria-label="Word to count letter r"><div class="big-number" style="margin-top:18px"><span id="letter-result">3</span> <small>r</small></div><div class="mono-box" style="margin-top:15px">[...word].filter(c => c === 'r').length</div>${caption('The control runs a character-by-character count of lowercase r. Compare it with the answer from the model you are testing.','El control cuenta cada r minúscula del texto. Compara el resultado con la respuesta del modelo que estás probando.')}`;
+    case 'characters': return characterExample();
     default: return '';
   }
 }
@@ -184,7 +227,7 @@ function standardVisual(s){
     document.title=`${audienceLabel()} · ${s.id} · ${s.title} — AI at the workbench`;
   }
 
-  function bindVisual(s){if($('science-demo')){if(window.ScienceDemo)window.ScienceDemo.mount($('science-demo'),state.lang);else $('science-demo').textContent=L('Scientific demo could not load.','No se pudo cargar la demostración.');}if($('count-word'))$('count-word').oninput=()=>{$('letter-result').textContent=[...$('count-word').value].filter(c=>c==='r').length};if($('params')){const update=()=>{$('params-label').textContent=`${$('params').value}B`;$('precision-label').textContent=$('precision').value;$('weight-result').textContent=(Number($('params').value)*Number($('precision').value)/8).toLocaleString(state.lang,{maximumFractionDigits:2})};$('params').oninput=update;$('precision').oninput=update;update();}}
+  function bindVisual(s){if($('science-demo')){if(window.ScienceDemo)window.ScienceDemo.mount($('science-demo'),state.lang);else $('science-demo').textContent=L('Scientific demo could not load.','No se pudo cargar la demostración.');}if($('count-word'))bindCharacterExample();if($('params')){const update=()=>{$('params-label').textContent=`${$('params').value}B`;$('precision-label').textContent=$('precision').value;$('weight-result').textContent=(Number($('params').value)*Number($('precision').value)/8).toLocaleString(state.lang,{maximumFractionDigits:2})};$('params').oninput=update;$('precision').oninput=update;update();}}
   function go(id){id=resolveId(id);if(!map.has(id))return;state.id=id;render();$('main').focus({preventScroll:true});window.scrollTo({top:0,behavior:'instant'});}
   function step(d){const ids=slides();const id=ids[ids.indexOf(state.id)+d];if(id)go(id);}
   function panel(name){const p=$(name+'-panel'),b=$(name+'-toggle');p.hidden=!p.hidden;b.setAttribute('aria-expanded',String(!p.hidden));}

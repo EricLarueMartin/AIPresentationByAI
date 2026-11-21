@@ -42,3 +42,13 @@ body[data-view=discuss] .slide .authored-comparison,body[data-view=discuss] .sli
 body[data-view=read] .text-slide .slide-grid {min-height:0}
 .visual-moe .authored-prose p {margin-top:0}
 @media (max-width:600px) {.slide.text-slide .slide-copy{max-width:100%}.worked-brief{padding-inline:.8em}}
+
+.character-example {display:grid;gap:.75rem;min-width:0}
+.character-example label,.character-example #token-example>span,.character-example .count-output>span {display:block;font-weight:600;font-size:.9rem}
+.character-example input {width:100%;box-sizing:border-box;padding:.65em .8em;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:6px;font:1rem Consolas,monospace}
+.character-example .tokens {margin:.5em 0}
+.character-example button {font:inherit;font-size:.88rem;text-decoration:underline;text-underline-offset:.2em}
+.character-example .count-output {border-top:1px solid var(--line);padding-top:1em}
+.character-example #count-spelling {font:1.6rem/1.6 Consolas,monospace;letter-spacing:.05em;overflow-wrap:anywhere;white-space:pre-wrap;min-height:1.6em}
+.character-example mark {background:var(--accent);color:var(--bg);border-radius:.08em;font-weight:bold}
+.character-example code {white-space:normal;overflow-wrap:anywhere;font-size:.84rem;color:var(--muted)}

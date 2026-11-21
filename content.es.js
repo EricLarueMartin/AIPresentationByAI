@@ -90,27 +90,21 @@ window.PRESENTATION_ES = {
     },
     "5": {
       "section": "Cómo recibe la tarea el modelo",
-      "title": "¿Puede contar las letras?",
-      "eyebrow": "Un experimento reproducible para el público",
-      "lead": "Utilice el recuento de caracteres como una comparación reproducible de métodos, sin preparar de antemano un fallo del modelo.",
-      "points": [
-        "Fije la cadena de entrada y las reglas del recuento.",
-        "Registre la versión del modelo, la petición, el nivel de esfuerzo y el acceso a herramientas.",
-        "Compare la predicción directa con la descomposición explícita y la comprobación mediante código.",
-        "Informe de todas las pruebas; un error de recuento por sí solo no identifica la tokenización como su causa."
-      ],
-      "notes": "Contar caracteres ofrece un ejemplo compacto de verificación. Pida al modelo contar una letra concreta en una palabra o cadena poco familiar y después solicite separar los caracteres y realizar una comprobación ejecutable. Registre la entrada y la salida exactas, incluidos los aciertos. Aquí no se proporciona una grabación de un fallo de modelo: es un experimento propuesto, y el modelo probado podría responder correctamente. La tokenización hace menos directas las operaciones con caracteres, pero no explica por completo los errores de conteo. Los caracteres repetidos, la formulación de la tarea, el entrenamiento del modelo y el procedimiento de comprobación disponible también influyen.",
-      "optional": "Para reproducir la prueba, registre el modelo, la fecha, la petición, el nivel de esfuerzo y el acceso a herramientas. Un programa determinista puede contar los caracteres suministrados, pero la operación requiere una definición precisa: pueden importar las mayúsculas, la normalización Unicode y los caracteres visualmente parecidos. Compare respuestas directas, separación explícita de caracteres y respuestas con código en varias cadenas. Informe de las pruebas en vez de seleccionar solo un fallo llamativo.",
-      "evidence": "Práctica",
+      "title": "De reconocer una palabra a contar sus letras",
+      "eyebrow": "El caso de «strawberry»",
+      "lead": "Los tokens pueden contener varias letras. Contar las r de «strawberry» exige recuperar su secuencia de caracteres y mantener un recuento exacto, aunque se reconozca la palabra.",
+      "points": [],
+      "notes": "Enlace este ejemplo con la tokenización de la sección anterior. Un modelo puede aprender la ortografía durante el entrenamiento y a veces responder correctamente de forma directa. Sin embargo, reconocer una palabra o sus letras no garantiza llevar bien un recuento con repeticiones. En «strawberry», las r ocupan las posiciones 3, 8 y 9, contando desde 1. La tokenización puede hacer menos directo el acceso a cada letra, pero no explica por sí sola cualquier error. El panel distingue la cadena literal, su representación y el resultado de ejecutar el contador. Escribir código correcto todavía no produce ese resultado: hace falta ejecutarlo sobre la cadena exacta.",
+      "optional": "El contador opera sobre la cadena literal suministrada y busca r minúsculas. Al ejecutarlo sobre «strawberry», el resultado es 3. La división en tokens depende del tokenizador y del texto exacto; no se atribuye una división concreta a todos los modelos ni se demuestra con ella la causa de un error de un modelo.",
+      "evidence": "Ejemplo explicado",
       "reading": [
-        "Contar caracteres ofrece un ejemplo compacto de verificación. Pida al modelo contar una letra concreta en una palabra o cadena poco familiar y después solicite separar los caracteres y realizar una comprobación ejecutable. Registre la entrada y la salida exactas, incluidos los aciertos. Aquí no se proporciona una grabación de un fallo de modelo: es un experimento propuesto, y el modelo probado podría responder correctamente. La tokenización hace menos directas las operaciones con caracteres, pero no explica por completo los errores de conteo. Los caracteres repetidos, la formulación de la tarea, el entrenamiento del modelo y el procedimiento de comprobación disponible también influyen.",
-        "Para reproducir la prueba, registre el modelo, la fecha, la petición, el nivel de esfuerzo y el acceso a herramientas. Un programa determinista puede contar los caracteres suministrados, pero la operación requiere una definición precisa: pueden importar las mayúsculas, la normalización Unicode y los caracteres visualmente parecidos. Compare respuestas directas, separación explícita de caracteres y respuestas con código en varias cadenas. Informe de las pruebas en vez de seleccionar solo un fallo llamativo."
+        "La palabra «strawberry» contiene tres r, en las posiciones 3, 8 y 9 si contamos desde 1. Tras la explicación de los tokens, conviene distinguir la representación del texto de la operación solicitada. Un token subléxico puede contener varias letras; el modelo no recibe necesariamente una posición de entrada independiente por carácter. A través del entrenamiento puede aprender ortografía y, en ocasiones, contar correctamente sin herramientas. Aun así, las letras repetidas pueden complicar la acumulación del recuento incluso cuando las letras se reconocen.",
+        "El panel permite ver los caracteres y ejecutar una operación definida sobre la cadena literal. El código correcto, ejecutado sobre «strawberry», devuelve 3. Mostrar o generar ese código todavía no es ejecutar el cálculo. El resultado del contador procede del programa que se ha ejecutado, no de una respuesta de un modelo de lenguaje. La tokenización ayuda a entender por qué trabajar con letras puede requerir otra representación, pero no constituye una explicación única de todos los errores de recuento."
       ],
       "discussion": [
-        "¿Cómo cambiarían las mayúsculas y la normalización Unicode la especificación del conteo?",
-        "¿Qué conjunto de pruebas distinguiría una debilidad repetible de un fallo seleccionado?"
+        "¿Por qué reconocer la ortografía de «strawberry» no garantiza mantener correctamente el recuento de sus r?"
       ],
-      "kind": "steps"
+      "kind": "prose"
     },
     "6": {
       "section": "Peticiones y correcciones",

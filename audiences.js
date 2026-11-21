@@ -67,25 +67,19 @@ window.AUDIENCE_CONTENT = {
       "kind": "prose"
     },
     "5": {
-      "title": "Try a small checking experiment",
-      "lead": "Try counting a letter in a word, then compare the answer with an exact character check. A correct model answer is a valid result too.",
-      "points": [
-        "Choose a string and specify whether uppercase letters count.",
-        "Record the assistant’s answer before checking it.",
-        "Compare it with a character breakdown or the counting program.",
-        "Keep the successful trials as well as the failures."
-      ],
+      "title": "How many r’s are in strawberry?",
+      "lead": "There’s one near the beginning and a pair near the end. You can point to each letter. A language model usually receives the word in larger pieces, so it has to work out what letters those pieces contain.",
+      "points": [],
       "reading": [
-        "Ask an assistant to count a particular letter in a word or unfamiliar string. Then ask for a character-by-character breakdown and a check using a small program. The purpose is to compare methods. A model may answer correctly; no failure is assumed or staged in this example.",
-        "Tokens can make letter-level work less direct, but they do not explain every mistake. The model, wording and checking method all matter. Keep both successful and unsuccessful trials, recording the prompt and model used. Define the counting rule too: counting only lowercase letters is different from treating uppercase and lowercase as the same character."
+        "The spelling is still there. A model can learn that berry ends in two r’s followed by y, and it can answer “three” directly. Recognizing the pieces and keeping track of every occurrence are different jobs. A wrong answer doesn’t tell us exactly where it went wrong.",
+        "Try adding an r to the word in the box. The browser runs a short program that checks each character for a lowercase r and totals the matches. An assistant with a code tool can do the same thing. Writing down the program is only the first step. Running it on your word produces the count."
       ],
       "discussion": [
-        "What would a fair collection of test words include?",
-        "Which counting rule must be agreed before comparing answers?"
+        "What happens to the count if you change one lowercase r to an uppercase R?"
       ],
-      "notes": "Ask an assistant to count a particular letter in a word or unfamiliar string. Then ask for a character-by-character breakdown and a check using a small program. The purpose is to compare methods. A model may answer correctly; no failure is assumed or staged in this example.",
-      "optional": "For reproducibility, record the model, date, prompt, effort setting and tool access. A deterministic program can count the supplied characters, but the operation still needs a precise definition: case sensitivity, Unicode normalization and visually similar characters can matter. Compare direct answers, explicit character decomposition and code-assisted answers over several strings. Report the trials rather than selecting only a striking failure.",
-      "kind": "steps"
+      "notes": "Invite the audience to point to the first r and the adjacent pair. Change one of the highlighted r’s to R. The lowercase count should drop by one. This check works on a made-up word just as it does on strawberry.",
+      "optional": "A clip records what one assistant answered on one occasion. To see whether another assistant can count directly, try a made-up word as well. The original word might already be familiar.",
+      "kind": "prose"
     },
     "6": {
       "title": "Write a useful request",
@@ -729,24 +723,19 @@ window.AUDIENCE_CONTENT = {
       "kind": "list"
     },
     "5": {
-      "title": "Character counting is a reproducible micro-evaluation",
-      "lead": "Letter counting is useful as a small controlled evaluation only when the operation and inference protocol are specified.",
-      "points": [
-        "Define case handling and whether a character means a code point or a displayed grapheme.",
-        "Freeze the strings and retain every trial, including successful answers.",
-        "Compare direct generation with a code-assisted protocol under the same task definition.",
-        "Record model version and settings so the result can be interpreted as a dated observation."
-      ],
+      "title": "Where can a letter count go wrong?",
+      "lead": "A token ID selects a learned embedding. Character composition can be learned from data, but direct decoding still has to retrieve that information and aggregate repeated characters into the output digit.",
+      "points": [],
       "reading": [
-        "Build a small fixture set with explicit counting semantics and retain all trials. Compare direct prediction, character decomposition and program-assisted verification with the same strings. Log model version, effort and available tools. Tokenization is one mechanism to investigate, but a single error does not isolate its contribution. The code path also needs a defined normalization and case policy.",
-        "For reproducibility, record the model, date, prompt, effort setting and tool access. A deterministic program can count the supplied characters, but the operation still needs a precise definition: case sensitivity, Unicode normalization and visually similar characters can matter. Compare direct answers, explicit character decomposition and code-assisted answers over several strings. Report the trials rather than selecting only a striking failure."
+        "An incorrect count does not establish that the input representation lost the spelling. In single-forward-pass tests on Llama, Qwen and Gemma variants, Datta and colleagues found count information in intermediate activations even when the final prediction was wrong. Those results concern the tested next-token protocol.",
+        "For an exact reference, pass the original string to an executable counter and compare its returned integer with the direct answer. In this example the predicate is equality with the ASCII lowercase r. Token count, capitalization and the model’s ability to explain the algorithm are separate from that predicate."
       ],
       "discussion": [
-        "Which experiment could test whether tokenization caused a counting error rather than merely accompanying it?"
+        "What can you infer if a frozen checkpoint counts more accurately when the same letters are separated by spaces? Which other input properties changed?"
       ],
-      "notes": "The interactive counter executes a defined program and does not call a language model. No authentic dated model-failure recording has been supplied. Use several held-out strings if conducting a live comparison; selecting one memorable failure cannot isolate tokenization as the cause. A grapheme-aware task needs different code from counting exact lowercase r code points.",
-      "optional": "For reproducibility, record the model, date, prompt, effort setting and tool access. A deterministic program can count the supplied characters, but the operation still needs a precise definition: case sensitivity, Unicode normalization and visually similar characters can matter. Compare direct answers, explicit character decomposition and code-assisted answers over several strings. Report the trials rather than selecting only a striking failure.",
-      "kind": "steps"
+      "notes": "Distinguish the tokenizer’s reversible encoding from the operations the model learns on embeddings. A model can answer correctly from memory, derive the tally in generated text, or call a tool. Only the last path has an external execution result.",
+      "optional": "Fu et al. found repeated-letter structure more predictive of errors than the number of tokens in their all-letter frequency task. A token-boundary visualization illustrates the representation. It does not trace the computation that produced a specific answer.",
+      "kind": "prose"
     },
     "6": {
       "title": "Write prompts as testable specifications",

@@ -28,9 +28,9 @@ window.PRESENTATION = {
       "year": "2017"
     },
     "counting": {
-      "title": "When Do Large Language Models Struggle to Count Letters?",
-      "url": "https://doi.org/10.1145/3818606",
-      "year": "2026"
+      "title": "Fu et al. — Why Do Large Language Models (LLMs) Struggle to Count Letters?",
+      "url": "https://arxiv.org/abs/2412.18626",
+      "year": "2024 preprint"
     },
     "prompting": {
       "title": "Claude documentation — Prompting best practices",
@@ -241,6 +241,16 @@ window.PRESENTATION = {
       "title": "Jiang et al. — Mixtral of Experts",
       "url": "https://arxiv.org/abs/2401.04088",
       "year": "2024"
+    },
+    "tokenVocab": {
+      "title": "OpenAI — tiktoken encoding definitions and vocabulary files",
+      "url": "https://github.com/openai/tiktoken/blob/79dc2c0533685b893616c78160b5d9e40876e724/tiktoken_ext/openai_public.py",
+      "year": "Encoding definitions"
+    },
+    "countEncoding": {
+      "title": "Datta et al. — From Early Encoding to Late Suppression: Interpreting LLMs on Character Counting Tasks",
+      "url": "https://aclanthology.org/2026.findings-aacl.70/",
+      "year": "2026"
     }
   },
   "slides": [
@@ -364,32 +374,28 @@ window.PRESENTATION = {
     {
       "id": "5",
       "section": "How the model sees a task",
-      "title": "Can it count the letters?",
-      "eyebrow": "A reproducible audience experiment",
-      "lead": "Use character counting as a reproducible comparison of methods, not a staged model failure.",
-      "points": [
-        "Fix the input string and counting semantics.",
-        "Record model version, prompt, effort setting and tool access.",
-        "Compare direct prediction with explicit decomposition and code-assisted checking.",
-        "Report all trials; a counting error alone does not isolate tokenization as its cause."
-      ],
+      "title": "Why can a model miscount the r’s in strawberry?",
+      "eyebrow": "From tokens to letters",
+      "lead": "Answering from tokens takes two operations. The model has to recover the spelling inside each piece and keep a tally across the pieces. It can get either step right while missing the final count.",
+      "points": [],
       "visual": "characters",
-      "notes": "A character-counting task provides a compact example of verification. Ask a model to count a specified letter in a word or an unfamiliar string, then request a character breakdown and an executable check. Record the exact input and output, including successful answers. No recorded model failure is supplied here; this is a proposed experiment, and a tested model may answer correctly. Tokenization makes character operations less direct, but it is not a complete explanation of counting errors. Repeated characters, task formulation, model training and the available checking procedure also affect performance.",
-      "optional": "For reproducibility, record the model, date, prompt, effort setting and tool access. A deterministic program can count the supplied characters, but the operation still needs a precise definition: case sensitivity, Unicode normalization and visually similar characters can matter. Compare direct answers, explicit character decomposition and code-assisted answers over several strings. Report the trials rather than selecting only a striking failure.",
+      "notes": "Ask for a prediction before revealing the character positions. Trace the first r, then the adjacent pair near the end. A model may answer correctly without a tool. Ask what evidence the audience has that a counting rule was actually applied.",
+      "optional": "To compare methods, give the same unfamiliar string to a model twice, once for a direct answer and once with an executable string counter. Confirm which literal the tool received and read its returned value. Using a familiar word alone makes recall hard to distinguish from counting.",
       "sources": [
-        "counting"
+        "counting",
+        "countEncoding",
+        "tokenVocab"
       ],
       "evidence": "Practice",
       "seconds": 60,
       "reading": [
-        "A character-counting task provides a compact example of verification. Ask a model to count a specified letter in a word or an unfamiliar string, then request a character breakdown and an executable check. Record the exact input and output, including successful answers. No recorded model failure is supplied here; this is a proposed experiment, and a tested model may answer correctly. Tokenization makes character operations less direct, but it is not a complete explanation of counting errors. Repeated characters, task formulation, model training and the available checking procedure also affect performance.",
-        "For reproducibility, record the model, date, prompt, effort setting and tool access. A deterministic program can count the supplied characters, but the operation still needs a precise definition: case sensitivity, Unicode normalization and visually similar characters can matter. Compare direct answers, explicit character decomposition and code-assisted answers over several strings. Report the trials rather than selecting only a striking failure."
+        "In strawberry, the lowercase r occurs at positions 3, 8 and 9, counting from one. A subword tokenizer can put both final r’s inside the same token. The token ID identifies a piece of text. A language model can learn that piece’s spelling, but the ID supplies no explicit tally.",
+        "Fu and colleagues asked models to report the frequency of every letter across 10,000 words. Errors were associated with repeated letters even when the models identified which letters were present. One wrong answer in a video cannot identify the cause of that particular error. Here the browser runs a counter on the exact input. Add a fourth r and watch which result changes."
       ],
       "discussion": [
-        "How would case sensitivity and Unicode normalization change the counting specification?",
-        "What trial set would distinguish a repeatable weakness from one selected failure?"
+        "If a model spells a word correctly and still gives the wrong count, which part of the task might have failed?"
       ],
-      "kind": "steps"
+      "kind": "prose"
     },
     {
       "id": "6",
