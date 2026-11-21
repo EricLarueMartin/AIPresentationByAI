@@ -1,0 +1,54 @@
+/* All selectors belong to the two worked examples. Theme colors come from the viewer. */
+.fx-example{margin:0;min-width:0;color:var(--text);font-size:14px;line-height:1.5}
+.fx-example .fx-disclosure{display:inline-block;margin:0 0 13px;padding:5px 8px;border:1px solid var(--warm);border-radius:3px;color:var(--warm);font:10px/1.5 Consolas,monospace;letter-spacing:.025em}
+.fx-example .fx-title{font-size:22px;line-height:1.25;letter-spacing:-.025em;font-weight:600;margin:0 0 9px;text-wrap:balance}
+.fx-example .fx-context{font-size:12px;color:var(--muted);margin:0 0 16px;max-width:57ch}
+.fx-example .fx-legend{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;margin-bottom:3px}
+.fx-example .fx-legend>span{display:flex;gap:7px;align-items:center}
+.fx-example .fx-legend i{display:inline-block;width:10px;height:10px;flex-shrink:0;border:2px solid var(--accent);border-radius:50%}
+.fx-example .fx-legend i.fx-key-b{border-color:var(--warm);border-radius:0}
+.fx-example .fx-plot{display:block;width:100%;max-width:510px;margin:0 auto;overflow:visible}
+.fx-example .fx-plot text{font-family:inherit;fill:var(--text);font-size:18px}
+.fx-example .fx-plot .fx-axis-label{font-size:15px;fill:var(--muted)}
+.fx-example .fx-gridline path{stroke:var(--line);stroke-width:1;fill:none}
+.fx-example .fx-gridline text{text-anchor:end;fill:var(--muted);font-size:16px}
+.fx-example .fx-axis{stroke:var(--muted);stroke-width:1;fill:none}
+.fx-example .fx-series-a,.fx-example .fx-series-b{fill:none;stroke:var(--accent);stroke-width:3.5}
+.fx-example .fx-series-b{stroke:var(--warm);stroke-dasharray:7 5}
+.fx-example .fx-marker-a{fill:var(--paper);stroke:var(--accent);stroke-width:3}
+.fx-example .fx-marker-b{fill:var(--paper);stroke:var(--warm);stroke-width:3}
+.fx-example .fx-counts text{font-weight:600;font-size:18px;paint-order:stroke;stroke:var(--paper);stroke-width:5px;stroke-linejoin:round}
+.fx-example .fx-phase text{text-anchor:middle;font-size:16px;fill:var(--muted)}
+.fx-example .fx-change-strip{display:flex;gap:16px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:10px;margin-top:0}
+.fx-example .fx-change-strip>span{display:flex;gap:8px;align-items:baseline;font:22px/1.3 Consolas,monospace}
+.fx-example .fx-change-strip small{font:11px/1.5 Segoe UI,Arial,sans-serif;color:var(--muted)}
+.fx-example .fx-loss{color:var(--bad)}
+.fx-example .fx-gain{color:var(--good)}
+.fx-example figcaption{font-size:11px;line-height:1.6;color:var(--muted);margin:13px 0 0;max-width:80ch}
+.fx-example .fx-brief{margin:15px 0 17px;border-left:3px solid var(--accent);padding:0 0 0 13px;font-size:13px}
+.fx-example .fx-brief>span{display:block;font:10px/1.5 Consolas,monospace;color:var(--accent);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em}
+.fx-example .fx-artifact{border:1px solid var(--line);border-radius:6px;background:var(--bg);padding:14px 17px;min-width:0}
+.fx-example .fx-file-heading{display:flex;justify-content:space-between;gap:12px;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:9px;font-size:11px;color:var(--muted)}
+.fx-example .fx-file-heading strong{font:13px/1.5 Consolas,monospace;color:var(--text)}
+.fx-example .fx-csv{border-collapse:collapse;width:auto;max-width:100%;font:13px/1.5 Consolas,monospace;margin:0}
+.fx-example .fx-csv th,.fx-example .fx-csv td{border:0;padding:2px 24px 2px 0;text-align:right;font-weight:400;font-size:13px;color:var(--text)}
+.fx-example .fx-csv th{text-align:left}
+.fx-example .fx-csv mark{background:var(--accent-bg);color:var(--accent);border-radius:2px;padding:1px 3px;margin-left:-3px}
+.fx-example .fx-header-note{font-size:11px;color:var(--muted);margin:8px 0 12px}
+.fx-example .fx-diagnostic{font-size:11px;color:var(--muted);margin:0 0 13px;line-height:1.6}
+.fx-example .fx-diagnostic s{color:var(--bad);font:13px/1.5 Consolas,monospace;white-space:nowrap;text-decoration-thickness:1.5px}
+.fx-example .fx-conversion{display:grid;gap:3px;border-top:1px solid var(--line);padding-top:10px;font-size:11px;color:var(--muted)}
+.fx-example .fx-conversion code{font:14px/1.6 Consolas,monospace;color:var(--text);overflow-wrap:anywhere}
+.fx-example .fx-result{display:grid;gap:4px;padding:10px 0 12px}
+.fx-example .fx-result>span{font-size:11px;color:var(--muted)}
+.fx-example .fx-result output{font:14px/1.6 Consolas,monospace;overflow-wrap:anywhere}
+.fx-example .fx-result output strong{color:var(--accent);font-size:18px;white-space:nowrap}
+.fx-example .fx-check{border-top:1px solid var(--line);padding-top:10px}
+.fx-example .fx-check h3{font:10px/1.5 Consolas,monospace;color:var(--muted);margin:0 0 8px;text-transform:uppercase;letter-spacing:.03em}
+.fx-example .fx-check-row{display:grid;grid-template-columns:auto 1fr;gap:3px 8px;align-items:baseline;margin:4px 0;font-size:12px}
+.fx-example .fx-check-row strong{font:11px/1.5 Consolas,monospace;letter-spacing:.03em}
+.fx-example .fx-check-row code{grid-column:2;overflow-wrap:anywhere;font:10px/1.5 Consolas,monospace;color:var(--muted)}
+.fx-example .fx-pass{color:var(--good)}
+.fx-example .fx-fail{color:var(--bad)}
+@media(max-width:600px){.fx-example .fx-title{font-size:20px}.fx-example .fx-artifact{padding:12px}.fx-example .fx-brief{font-size:13px}.fx-example .fx-disclosure{font-size:9px}.fx-example .fx-change-strip{gap:12px}.fx-example .fx-change-strip>span{font-size:20px}.fx-example .fx-file-heading{flex-wrap:wrap;gap:3px 12px}.fx-example .fx-result output{font-size:12px}.fx-example .fx-result output strong{font-size:16px}}
+@media print{.fx-example{break-inside:avoid}.fx-example .fx-disclosure{color:inherit;border-color:currentColor}.fx-example .fx-artifact{background:transparent}}

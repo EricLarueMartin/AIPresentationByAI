@@ -20,4 +20,4 @@ Serve the repository root with any static web server, for example `python -m htt
 
 ## Edit the guide
 
-The English slide data lives in `content.js` and `audiences.js`. Their `.es.js` counterparts hold Spanish text. Slides use consecutive numbers across audiences. Route definitions select from the same sequence. The viewer is in `app.js`, the diagrams in `visuals.js`, and the numerical example in `demo.js`. Browser review notes can be exported as JSON.
+The English slide data lives in `content.js` and `audiences.js`. Their `.es.js` counterparts hold Spanish text. Slides use consecutive numbers across audiences. Route definitions select from the same sequence. The viewer is in `app.js`, the model diagrams in `visuals.js`, and the numerical fit in `demo.js`. The `workflow-examples`, `training-examples`, and `field-examples` files contain worked figures for the three audiences. Browser review notes can be exported as JSON.

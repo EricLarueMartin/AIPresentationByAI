@@ -64,3 +64,30 @@ body[data-view=read] .text-slide .slide-grid {min-height:0}
 .python-followup pre {margin:.6rem 0;padding:.55rem .85rem;background:var(--bg);color:var(--text);border-radius:.35rem;white-space:pre-wrap;overflow-wrap:anywhere}
 .count-citation {display:inline-block;text-underline-offset:.2em}
 .count-playground {margin-top:1rem}.count-playground .character-example {margin-top:.8rem}
+.count-positions {display:flex;max-width:22rem}
+.count-positions>span {flex:1;min-width:0;text-align:center;border-bottom:2px solid transparent;font:1.08rem/1.4 Consolas,monospace}
+.count-positions b,.count-positions small {display:block}
+.count-positions small {color:var(--muted);font-size:.7rem}
+.count-positions .match {border-color:var(--accent);background:var(--bg);color:var(--accent)}
+.token-compare,.weight-bars {margin:0}
+.token-compare figcaption,.weight-bars figcaption {font-weight:650;font-size:1.05rem;margin-bottom:1rem}
+.token-compare figcaption code {display:block;font-size:1.3rem;letter-spacing:.03em;margin-top:.4rem}
+.encoding-line {margin:1rem 0}.encoding-line>b {font: .85rem Consolas,monospace;color:var(--muted)}
+.encoding-pieces {display:flex;margin-top:.3rem}
+.encoding-pieces>span {flex-basis:0;min-width:0;text-align:center;border:1px solid var(--accent);background:var(--bg);padding:.38rem 0}
+.encoding-pieces>span+span {border-left:0}.encoding-pieces strong,.encoding-pieces small {display:block;font-family:Consolas,monospace}
+.encoding-pieces small {margin-top:.2rem;color:var(--muted);font-size:.75rem}
+.space-experiment {margin-top:1rem;border-top:1px solid var(--line);padding-top:.65rem}
+.space-experiment summary {cursor:pointer;color:var(--accent);font-weight:650}
+.space-experiment .encoding-pieces>span {flex-grow:1}
+.weight-row {display:grid;grid-template-columns:4rem minmax(0,1fr) 4.7rem;align-items:center;gap:.55rem;margin:1rem 0;font-variant-numeric:tabular-nums}
+.weight-row>b {text-align:right}.weight-track {height:1.05rem;border-bottom:1px solid var(--line)}
+.weight-track>i {display:block;height:100%;background:var(--accent)}
+.discussion-figure>summary {color:var(--accent);cursor:pointer;font-size:.95rem}
+body[data-view=discuss] .slide .discussion-figure[open] .visual {display:block;margin-top:1.25rem}
+.visual-worked-example .slide-grid {grid-template-columns:minmax(0,1fr);gap:.7rem;align-content:start}
+.visual-worked-example .slide-copy {max-width:80ch}
+.visual-worked-example .visual {width:100%;max-width:100%;margin:0}
+.visual-worked-example .lead {margin-bottom:.4rem}
+.worked-notes {border-top:1px solid var(--line);padding:.6rem 0}
+.worked-notes summary {cursor:pointer;color:var(--accent);font-size:.9rem}

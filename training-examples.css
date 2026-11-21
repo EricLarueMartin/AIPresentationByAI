@@ -1,0 +1,72 @@
+/* Native radio controls select worked figures. Every rule is scoped to tx-. */
+.tx-example{color:var(--text);font-size:14px;line-height:1.55;min-width:0}
+.tx-example .tx-badge{font:10px/1.5 Consolas,monospace;letter-spacing:.08em;color:var(--accent);margin:0 0 10px}
+.tx-example .tx-heading{font-size:25px;line-height:1.2;letter-spacing:-.025em;margin:0 0 12px;font-weight:600}
+.tx-example .tx-intro{color:var(--muted);font-size:13px;margin:0 0 18px}
+.tx-example fieldset{position:relative;border:0;padding:0;margin:0;display:grid;gap:8px;min-width:0}
+.tx-example legend{font-size:12px;color:var(--muted);padding:0;margin:0 0 8px}
+.tx-methods{grid-template-columns:repeat(4,minmax(0,1fr))}
+.tx-thresholds{grid-template-columns:repeat(2,minmax(0,1fr))}
+.tx-example .tx-choice{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.tx-example .tx-option{display:flex;align-items:center;justify-content:center;text-align:center;border:1px solid var(--line);border-radius:7px;padding:9px 7px;cursor:pointer;font-size:12px;line-height:1.35;background:var(--panel);color:var(--muted);margin:0}
+.tx-example .tx-choice:checked+.tx-option{border-color:var(--accent);background:var(--accent-bg,var(--panel));color:var(--accent);font-weight:700;box-shadow:inset 0 -2px var(--accent)}
+.tx-example .tx-choice:focus-visible+.tx-option{outline:3px solid var(--accent);outline-offset:3px}
+.tx-example .tx-panels{grid-column:1/-1;min-width:0}
+.tx-example .tx-panel{display:none}
+.tx-methods input[value="scratch"]:checked~.tx-panels>[data-tx-panel="scratch"],.tx-methods input[value="full"]:checked~.tx-panels>[data-tx-panel="full"],.tx-methods input[value="lora"]:checked~.tx-panels>[data-tx-panel="lora"],.tx-methods input[value="qlora"]:checked~.tx-panels>[data-tx-panel="qlora"],.tx-thresholds input[value="0.35"]:checked~.tx-panels>[data-tx-threshold="0.35"],.tx-thresholds input[value="0.65"]:checked~.tx-panels>[data-tx-threshold="0.65"]{display:block}
+.tx-example .tx-training-svg{display:block;width:100%;height:auto;max-height:360px;overflow:visible}
+.tx-example .tx-training-portrait{display:none}
+.tx-training-svg text{fill:var(--text);font-family:inherit;text-anchor:middle}
+.tx-training-svg .tx-svg-title{font-size:21px;font-weight:550}
+.tx-training-svg .tx-svg-small{font-size:17px;fill:var(--muted)}
+.tx-training-svg .tx-svg-math{font-size:34px;fill:var(--muted)}
+.tx-example .tx-cell.tx-adjustable{fill:var(--accent);stroke:var(--accent);stroke-width:1.2}
+.tx-example .tx-cell.tx-fixed{fill:var(--muted);stroke:var(--muted);stroke-dasharray:3 2;stroke-width:1}
+.tx-example .tx-data-line{fill:none;stroke:var(--muted);stroke-width:2}
+.tx-example .tx-update-line{fill:none;stroke:var(--accent);stroke-width:3}
+.tx-example .tx-arrowhead{fill:var(--accent)}
+.tx-example .tx-numbers{display:grid;grid-template-columns:1fr 1fr;gap:13px 20px;border-top:1px solid var(--line);padding:13px 0 0;margin:0}
+.tx-example .tx-numbers>div:last-child{grid-column:1/-1}
+.tx-example dt{font-size:11px;color:var(--muted);margin:0 0 4px}
+.tx-example dd{margin:0;font-size:14px}
+.tx-example .tx-value{font:24px/1.2 Consolas,monospace;color:var(--accent);letter-spacing:-.04em}
+.tx-example .tx-explanation{font-size:13px;line-height:1.65;margin:15px 0;border-left:3px solid var(--accent);padding:6px 0 6px 12px}
+.tx-example .tx-legend{display:flex;gap:7px 20px;flex-wrap:wrap;font-size:10px;line-height:1.5;color:var(--muted);margin:12px 0}
+.tx-example .tx-legend>span{display:flex;align-items:center;gap:7px}
+.tx-example .tx-swatch{display:inline-block;width:14px;height:14px;border:1.5px solid var(--accent);background:var(--accent-bg,var(--panel))}
+.tx-example .tx-swatch.tx-fixed{border-color:var(--muted);border-style:dashed;background:var(--panel)}
+.tx-example .tx-caption{font-size:12px;line-height:1.7;color:var(--muted);margin:12px 0}
+.tx-example .tx-details{border-top:1px solid var(--line);padding-top:10px;margin-top:12px;font-size:11px;color:var(--muted)}
+.tx-example .tx-details summary{cursor:pointer;color:var(--accent)}
+.tx-example .tx-details p{margin:10px 0;font-size:11px;line-height:1.7}
+.tx-example .tx-evaluation-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:20px;align-items:start;margin:17px 0}
+.tx-example .tx-tile-figure{margin:0}
+.tx-example .tx-clips{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:3px}
+.tx-example .tx-clip{aspect-ratio:1;min-width:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-style:normal;font-weight:700;line-height:1;border:1px solid var(--line);border-radius:2px}
+.tx-example .tx-clip.tx-wake{border-radius:50%}
+.tx-example .tx-tp{color:var(--accent);background:var(--accent-bg,var(--panel));border-color:var(--accent)}
+.tx-example .tx-fn{color:var(--warm,#b77721);background:var(--panel);border-color:var(--warm,#b77721);border-style:dashed}
+.tx-example .tx-fp{color:var(--bad,#c45151);background:var(--panel);border-color:var(--bad,#c45151)}
+.tx-example .tx-tn{color:var(--muted);background:var(--panel);border-color:var(--line)}
+.tx-example .tx-tile-figure figcaption{font-size:10px;line-height:1.6;color:var(--muted);margin:10px 0 0}
+.tx-example .tx-confusion{width:100%;border-collapse:separate;border-spacing:3px;margin:0;font-size:11px;line-height:1.35;table-layout:fixed}
+.tx-example .tx-confusion caption{text-align:left;font-size:10px;line-height:1.5;color:var(--muted);margin:0 0 7px}
+.tx-example .tx-confusion td,.tx-example .tx-confusion th{padding:9px 4px;text-align:center;border:0;vertical-align:middle;font-size:11px}
+.tx-example .tx-confusion thead th{color:var(--muted);font-weight:500}
+.tx-example .tx-confusion tbody th{color:var(--text);font-weight:500;padding-left:0}
+.tx-example .tx-confusion th small{display:block;color:var(--muted);font:12px Consolas,monospace;margin-top:5px}
+.tx-example .tx-confusion td{border:1px solid var(--line);border-radius:5px}
+.tx-example .tx-confusion td.tx-tp{border-color:var(--accent)}
+.tx-example .tx-confusion td.tx-fn{border-color:var(--warm,#b77721);border-style:dashed}
+.tx-example .tx-confusion td.tx-fp{border-color:var(--bad,#c45151)}
+.tx-example .tx-confusion strong{display:block;font:29px/1.2 Consolas,monospace;letter-spacing:-.035em;margin-bottom:5px}
+.tx-example .tx-confusion td span{display:block;font-size:10px}
+.tx-example .tx-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:18px 0 0}
+.tx-example .tx-metrics>div{border-top:1px solid var(--line);padding-top:9px}
+.tx-example .tx-metrics dd{font:23px/1.3 Consolas,monospace;color:var(--accent)}
+.tx-example .tx-metrics small{display:block;color:var(--muted);font-size:9px;line-height:1.5;margin-top:5px}
+.tx-example .tx-outcome-legend .tx-clip{width:17px;height:17px;aspect-ratio:auto;font-size:11px}
+.tx-example .tx-same-data{font-size:11px;font-weight:600;color:var(--text);margin:12px 0}
+@media(max-width:900px){.tx-example .tx-evaluation-grid{gap:16px}.tx-example .tx-heading{font-size:23px}.tx-example .tx-training-svg{min-height:180px}}
+@media(max-width:600px){.tx-methods{grid-template-columns:repeat(2,minmax(0,1fr))}.tx-example .tx-option{padding:11px 6px;font-size:11px}.tx-example .tx-training-landscape{display:none}.tx-example .tx-training-portrait{display:block;min-height:0;max-height:none}.tx-training-portrait .tx-svg-title{font-size:18px}.tx-training-portrait .tx-svg-small{font-size:15px}.tx-training-portrait .tx-svg-math{font-size:29px}.tx-example .tx-evaluation-grid{grid-template-columns:1fr}.tx-example .tx-tile-figure{max-width:330px;width:100%;margin:auto}.tx-example .tx-clips{gap:4px}.tx-example .tx-clip{font-size:14px}.tx-example .tx-confusion{font-size:12px}.tx-example .tx-confusion td,.tx-example .tx-confusion th{padding:12px 5px;font-size:12px}.tx-example .tx-confusion td span{font-size:11px}.tx-example .tx-confusion strong{font-size:32px}.tx-example .tx-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.tx-example .tx-metrics small{font-size:10px}.tx-example .tx-metrics dd{font-size:25px}.tx-example .tx-value{font-size:22px}.tx-example .tx-heading{font-size:22px}.tx-example .tx-numbers{gap:13px 12px}.tx-example .tx-numbers dd{font-size:12px}.tx-example .tx-numbers dd.tx-value{font-size:22px}.tx-example .tx-caption{font-size:12px}.tx-example .tx-explanation{font-size:13px}}
+@media(prefers-reduced-motion:reduce){.tx-example *{scroll-behavior:auto}}

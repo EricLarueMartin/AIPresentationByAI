@@ -58,6 +58,12 @@
 function visual(s) {
     const V = window.PresentationVisuals;
     switch (s.visual) {
+      case 'worked-example':
+        for(const examples of [window.WorkflowExamples,window.TrainingExamples,window.FieldExamples]){
+          const figure=examples?.render(s.id,state.lang,state.audience);
+          if(figure) return figure;
+        }
+        return '';
       case 'moe': return V.moe(state.lang,s.id);
       case 'network': return V.network(state.lang);
       case 'tool-hub': return V.toolHub(state.lang);
@@ -125,6 +131,23 @@ function slideBody(s) {
     }
     return `<div class="authored-${s.kind}">${points.map(p=>`<p>${E(p)}</p>`).join('')}</div>`;
   }
+const bareWordEncodings=[["cl100k_base",["str","aw","berry"],[496,675,15717]],["o200k_base",["st","raw","berry"],[302,1618,19772]]];
+function tokenFigure(){
+    return `<figure class="token-compare"><figcaption>${L('Two tokenizers read the same word','Dos tokenizadores leen la misma palabra')} <code>strawberry</code></figcaption>
+      ${bareWordEncodings.map(([encoding,pieces,ids])=>`<div class="encoding-line"><b>${encoding}</b><div class="encoding-pieces">${pieces.map((p,i)=>`<span style="flex-grow:${p.length}"><strong>${p}</strong>${state.audience==='engineer'?`<small>ID ${ids[i]}</small>`:''}</span>`).join('')}</div></div>`).join('')}
+      <p class="visual-caption">${L('Each box is one token. Both rows encode the ten letters with no leading space.','Cada recuadro es un token. Ambas filas codifican las diez letras sin espacio inicial.')}</p>
+      <details class="space-experiment"><summary>${L('What changes if a space comes first?','¿Qué cambia al añadir un espacio al principio?')}</summary>
+        <div class="encoding-line"><b>o200k_base</b><div class="encoding-pieces"><span><strong>␣strawberry</strong>${state.audience==='engineer'?'<small>ID 101830</small>':''}</span></div></div>
+        <p class="visual-caption">${L('Here ␣ marks one ordinary space. The space and the whole word now share one token. There are still three r’s.','Aquí ␣ representa un espacio normal. El espacio y la palabra entera forman ahora un solo token. Sigue habiendo tres erres.')}</p>
+      </details></figure>`;
+  }
+function compressionFigure(){
+    const rows=[[16,14],[8,7],[4,3.5]];
+    return `<figure class="weight-bars"><figcaption>${L('Storing seven billion weights','Almacenar siete mil millones de pesos')}</figcaption>
+      ${rows.map(([bits,gb])=>`<div class="weight-row"><span>${bits} bits</span><div class="weight-track" aria-hidden="true"><i style="width:${100*bits/16}%"></i></div><b>${gb.toLocaleString(state.lang)} GB</b></div>`).join('')}
+      <p class="visual-caption">${state.audience==='general'?L('Halving the bits per weight halves the raw storage. Test the smaller version on the same task to see how its answers change.','Reducir a la mitad los bits por peso reduce a la mitad el espacio bruto. Prueba la versión más pequeña con la misma tarea para ver cómo cambian sus respuestas.'):L('Raw decimal GB = parameters × bits / 8 / 10⁹. Quantization scales, activations and temporary buffers add memory. These sizes alone tell us neither throughput nor retained accuracy.','GB decimales brutos = parámetros × bits / 8 / 10⁹. Las escalas de cuantización, las activaciones y los búferes temporales añaden memoria. Para conocer la velocidad y la precisión hay que medirlas.')}</p></figure>`;
+  }
+
 function characterExample(){
     const figureUrl=E(db.sources.strawberryChat.url);
     return `<figure class="recorded-count">
@@ -138,7 +161,9 @@ function characterExample(){
 count = text.count("r")
 count</code></pre>
         <p class="recorded-answer"><strong>3</strong><span>${L('Python output. GPT‑4o then answered 3.','Resultado de Python. GPT‑4o respondió entonces que eran 3.')}</span></p>
+        <div class="count-positions" role="img" aria-label="${L('The three r’s are at positions 3, 8 and 9.','Las tres erres están en las posiciones 3, 8 y 9.')}">${Array.from('strawberry',(c,i)=>`<span class="${c==='r'?'match':''}"><b>${c}</b><small>${i+1}</small></span>`).join('')}</div>
       </details>
+      <p class="visual-caption">${L('The transcript shows what GPT‑4o answered. The cause of its first error is unknown.','El registro muestra qué respondió GPT‑4o. Se desconoce la causa de su primer error.')}</p>
       <a class="count-citation" href="${figureUrl}" target="_blank" rel="noopener noreferrer">${L('Original screenshots · Krakowski (2025), Figure 2','Capturas originales · Krakowski (2025), figura 2')}</a>
     </figure>
     <details class="count-playground"><summary>${L('Try the browser counter on another word','Probar el contador del navegador con otra palabra')}</summary><div class="character-example">
@@ -186,7 +211,8 @@ function bindCharacterExample(){
 function standardVisual(s){
   switch(s.visual){
     case 'timeline':return `<div class="timeline">${[['1958','Perceptron',L('Learned weights','Pesos aprendidos')],['1966','ELIZA',L('Scripted conversation','Conversación con reglas')],['1986',L('Backpropagation','Retropropagación'),L('Multilayer learning','Aprendizaje multicapa')],['2003',L('Neural language model','Modelo de lenguaje neuronal'),L('Distributed representations','Representaciones distribuidas')],['2017','Transformer',L('Attention + feedforward layers','Atención + capas densas')],['2020s',L('Models + tools','Modelos + herramientas'),L('From responses to workflows','De respuestas a tareas')]].map(x=>`<div class="timeline-item"><span>${E(x[0])}</span><b>${E(x[1])}</b><small>${E(x[2])}</small></div>`).join('')}</div>`;
-    case 'tokens':return `<div class="visual-title">${L('ONE STRING / TWO TOY VOCABULARIES','UN TEXTO / DOS VOCABULARIOS DE EJEMPLO')}</div><div class="mono-box">strawberry</div><div class="tokens"><span class="token">straw</span><span class="token">berry</span></div><div class="tokens"><span class="token">str</span><span class="token">aw</span><span class="token">berry</span></div>${caption('Schematic splits, not outputs from a real tokenizer. Real boundaries and token IDs depend on the model’s tokenizer.','Divisiones ilustrativas, no resultados de un tokenizador real. Los límites e identificadores dependen del tokenizador.')}`;
+    case 'tokens': return tokenFigure();
+    case 'efficiency': return compressionFigure();
     case 'cost':return `<div class="visual-title">${L('ILLUSTRATIVE WEIGHT STORAGE','ALMACENAMIENTO ILUSTRATIVO DE PESOS')}</div><div class="cost-controls"><label for="params">${L('Parameters','Parámetros')}: <b id="params-label">7B</b></label><input id="params" type="range" min="1" max="70" value="7" aria-label="Billions of parameters"><label for="precision">${L('Bits per weight','Bits por peso')}: <b id="precision-label">16</b></label><input id="precision" type="range" min="2" max="16" step="2" value="16" aria-label="Bits per weight"></div><div class="cost-result"><span id="weight-result">14</span> GB</div>${caption('Decimal GB, raw weights only. Training also needs gradients, optimizer state, activations and temporary buffers. 4-bit storage also has metadata.','GB decimales, solo pesos brutos. El entrenamiento necesita gradientes, estados del optimizador, activaciones y búferes. 4 bits también requiere metadatos.')}<div class="mono-box" style="margin-top:17px">C ≈ 6 × N × D</div>${caption('Dense pretraining approximation: N parameters, D training tokens. Not a device benchmark or time estimate.','Aproximación de preentrenamiento denso: N parámetros, D tokens. No es una prueba de dispositivo ni una estimación de tiempo.')}`;
     case 'lora':return `<div class="mono-box">W′ = W + BA</div><div class="lora-diagram"><div>${matrix()}<div class="math-label">${L('Frozen W','W congelada')}</div></div><span class="math-symbol">+</span><div>${matrix(true)}<div class="math-label">B</div></div><span class="math-symbol">×</span><div>${matrix(true)}<div class="math-label">A</div></div></div>${caption('The learned factors B and A supply the update. The diagram absorbs the usual scaling factor into B.','Los factores aprendidos B y A aportan la actualización. En este esquema, B incorpora el factor de escala habitual.')}`;
     case 'memory':return `${table([L('Quantity','Magnitud'),L('Simple scaling','Crecimiento aproximado')],[[L('Weight storage','Almacenamiento de pesos'),'∝ N × bits'],[L('KV cache','Caché KV'),'∝ context × layers'],[L('Dense prompt attention work','Trabajo de atención densa'),'∝ context²']])}<div class="scaling-grid"><div class="scaling-cell">L</div><div class="scaling-cell">2L</div><div class="scaling-cell">4L</div><div class="scaling-cell">1×</div><div class="scaling-cell">4×</div><div class="scaling-cell">16×</div></div>${caption('Bottom row: relative dense-attention work only, keeping other dimensions fixed. KV cache also depends on heads, width, precision and batching.','Fila inferior: solo trabajo relativo de atención densa, con las demás dimensiones fijas. La caché KV también depende de cabezas, anchura, precisión y lotes.')}`;
@@ -220,8 +246,16 @@ function standardVisual(s){
     ui();
     outline();
     const figure=visual(s);
+    const figurePanel=figure?`<div class="visual">${figure}</div>`:'';
+    const displayedFigure=figure && state.view==='discuss'
+      ? `<details class="discussion-figure"><summary>${L('Look at the example','Ver el ejemplo')}</summary>${figurePanel}</details>`
+      : figurePanel;
+    const points=slideBody(s);
+    const focusFigure=s.visual==='worked-example' && state.view==='present' && !!figure;
+    const supplementary=focusFigure && points
+      ? `<details class="worked-notes"><summary>${L('More on the method','Más sobre el método')}</summary>${points}</details>`:'';
     $('slide').className=`slide visual-${s.visual} ${figure?'with-figure':'text-slide'} ${s.visual==='cover'?'cover':''} ${s.visual==='fit'?'full-visual':''}`;
-    $('slide').innerHTML=`<div class="slide-grid"><div class="slide-copy"><span class="eyebrow">${E(s.eyebrow||s.section)}</span><h1 id="slide-title">${E(s.title)}</h1><p class="lead">${E(s.lead)}</p>${slideBody(s)}</div>${figure?`<div class="visual">${figure}</div>`:''}</div><span class="slide-id">${E(t.slide)} ${E(s.id)}</span>`;
+    $('slide').innerHTML=`<div class="slide-grid"><div class="slide-copy"><span class="eyebrow">${E(s.eyebrow||s.section)}</span><h1 id="slide-title">${E(s.title)}</h1><p class="lead">${E(s.lead)}</p>${focusFigure?'':points}</div>${displayedFigure}${supplementary}</div><span class="slide-id">${E(t.slide)} ${E(s.id)}</span>`;
     const seconds=routeSeconds()?.[state.route]?.[s.id] || s.seconds || 60;
     $('chapter-label').textContent=s.section.toUpperCase();
     $('slide-counter').textContent=`${t.slide} ${s.id} · ${t.target} ${Math.round(seconds)}s`;

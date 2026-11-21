@@ -51,19 +51,17 @@ window.AUDIENCE_CONTENT = {
     },
     "4": {
       "title": "Text is divided into pieces",
-      "lead": "A tokenizer divides text into numbered pieces. The illustrated splits show why a model’s text pieces need not match the letters or words a reader sees.",
-      "points": [
-        "Different tokenizers can divide the same text differently. The chips here are schematic, not measured tokenizer output."
-      ],
+      "lead": "Both tokenizers receive exactly the same word. Look at where the first piece ends in each row.",
+      "points": [],
       "reading": [
         "Before processing text, a language model usually receives a sequence of numbered pieces called tokens. A piece might be a complete word, part of a word or punctuation. An unfamiliar name may take several pieces even when it looks like one word on the page.",
-        "Different models can divide the same text differently. Token counts therefore do not provide a universal measure of message length or difficulty. They matter because services may limit or charge for the amount processed. A short question can still require difficult work, while a long passage may be straightforward to summarize. Exact character tasks need their own checks."
+        "With no leading space, cl100k_base splits strawberry into str, aw and berry. The o200k_base encoding splits it into st, raw and berry. Both have three tokens in this example, but their boundaries and IDs differ. Add one leading space and o200k_base encodes the space and the whole word as a single token. The word still contains three r’s."
       ],
       "discussion": [
         "Why might a short technical name use more text pieces than a longer familiar word?"
       ],
       "notes": "Before processing text, a language model usually receives a sequence of numbered pieces called tokens. A piece might be a complete word, part of a word or punctuation. An unfamiliar name may take several pieces even when it looks like one word on the page.",
-      "optional": "The illustrated token boundaries are conceptual unless a tokenizer name and version are specified. A reproducible demonstration uses actual tokenizer output and records that version. Multimodal systems also encode images or audio into representations that are not ordinary word pieces. Text length, token length and the difficulty of the underlying task are therefore distinct quantities.",
+      "optional": "With no leading space, cl100k_base splits strawberry into str, aw and berry. The o200k_base encoding splits it into st, raw and berry. Both have three tokens in this example, but their boundaries and IDs differ. Add one leading space and o200k_base encodes the space and the whole word as a single token. The word still contains three r’s.",
       "kind": "prose"
     },
     "5": {
@@ -72,7 +70,7 @@ window.AUDIENCE_CONTENT = {
       "points": [],
       "reading": [
         "In a conversation recorded on November 3, 2024, GPT‑4o first answered 2. The user asked the same question about strawberry again and added “Use Python.” Python counted 3, and GPT‑4o gave that result to the user. Sebastian Krakowski published screenshots of the chat and of the code’s result in Figure 2 of his paper.",
-        "There is one r near the beginning and a pair near the end: st[r]awbe[r][r]y. A model can learn the spelling of a whole piece of text and sometimes answer directly. A program can check every character in turn. Open the separate browser counter and add another r to see that rule work on a new input."
+        "There is one r near the beginning and a pair near the end: st[r]awbe[r][r]y. A model can learn the spelling of a whole piece of text and sometimes answer directly. A program can check every character in turn. The exchange leaves open why the first answer was wrong. Open the separate browser counter and add another r to see that rule work on a new input."
       ],
       "discussion": [
         "Suppose the assistant had shown the Python code but given no output. What would you still want to check?"
@@ -711,7 +709,7 @@ window.AUDIENCE_CONTENT = {
         "Count the complete rendered request, including templates and tool schemas, when estimating input size."
       ],
       "reading": [
-        "Tokenization maps an input string into IDs from a particular vocabulary. Segmentation and special-token conventions belong to that tokenizer and serving path. A technical identifier can occupy several tokens even when a familiar longer word occupies one. Conceptual token chips in a diagram are not reproducible tokenizer output unless the actual tokenizer and version are supplied.",
+        "The IDs in the figure belong to two distinct vocabularies. The first two rows encode the exact ASCII string strawberry without whitespace or a chat template. Each sequence decodes to the same string, even though the first token ends at a different character.",
         "The application may also insert a chat template or serialize tool definitions. Those additions affect the model’s actual input. For a multi-model pipeline, pass the original text or a documented representation rather than assuming token IDs are portable. Token count helps account for context and processing; it is not a calibrated measure of problem difficulty."
       ],
       "discussion": [
@@ -719,7 +717,7 @@ window.AUDIENCE_CONTENT = {
         "How would you detect information loss introduced by a model-to-model handoff?"
       ],
       "notes": "Token IDs and segmentation belong to a particular tokenizer, not a universal interchange format. Technical strings, punctuation and uncommon identifiers can change the relationship between visible length and token count. Preserve exact text when passing tasks between models, and measure with the tokenizer used by the actual inference path. Token count is a resource measure, not a direct difficulty estimate.",
-      "optional": "The illustrated token boundaries are conceptual unless a tokenizer name and version are specified. A reproducible demonstration uses actual tokenizer output and records that version. Multimodal systems also encode images or audio into representations that are not ordinary word pieces. Text length, token length and the difficulty of the underlying task are therefore distinct quantities.",
+      "optional": "With no leading space, cl100k_base splits strawberry into str, aw and berry. The o200k_base encoding splits it into st, raw and berry. Both have three tokens in this example, but their boundaries and IDs differ. Add one leading space and o200k_base encodes the space and the whole word as a single token. The word still contains three r’s.",
       "kind": "list"
     },
     "5": {

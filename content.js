@@ -360,16 +360,17 @@ window.PRESENTATION = {
       ],
       "visual": "tokens",
       "notes": "A model does not usually receive a sentence as visible characters. A tokenizer converts it into a sequence of IDs. Each ID selects a learned representation, and the model processes those representations. Common words may form one token, while unfamiliar technical names may require several. Another model can use different boundaries and different IDs. That matters when estimating context or cost, and when passing information between models. Passing readable text or a defined data schema is usually more portable than assuming two models share token IDs. A short-looking mathematical expression can still require substantial reasoning.",
-      "optional": "The illustrated token boundaries are conceptual unless a tokenizer name and version are specified. A reproducible demonstration uses actual tokenizer output and records that version. Multimodal systems also encode images or audio into representations that are not ordinary word pieces. Text length, token length and the difficulty of the underlying task are therefore distinct quantities.",
+      "optional": "With no leading space, cl100k_base splits strawberry into str, aw and berry. The o200k_base encoding splits it into st, raw and berry. Both have three tokens in this example, but their boundaries and IDs differ. Add one leading space and o200k_base encodes the space and the whole word as a single token. The word still contains three r’s.",
       "sources": [
         "transformer",
-        "inference"
+        "inference",
+        "tokenVocab"
       ],
       "evidence": "Established",
       "seconds": 55,
       "reading": [
         "A model does not usually receive a sentence as visible characters. A tokenizer converts it into a sequence of IDs. Each ID selects a learned representation, and the model processes those representations. Common words may form one token, while unfamiliar technical names may require several. Another model can use different boundaries and different IDs. That matters when estimating context or cost, and when passing information between models. Passing readable text or a defined data schema is usually more portable than assuming two models share token IDs. A short-looking mathematical expression can still require substantial reasoning.",
-        "The illustrated token boundaries are conceptual unless a tokenizer name and version are specified. A reproducible demonstration uses actual tokenizer output and records that version. Multimodal systems also encode images or audio into representations that are not ordinary word pieces. Text length, token length and the difficulty of the underlying task are therefore distinct quantities."
+        "With no leading space, cl100k_base splits strawberry into str, aw and berry. The o200k_base encoding splits it into st, raw and berry. Both have three tokens in this example, but their boundaries and IDs differ. Add one leading space and o200k_base encodes the space and the whole word as a single token. The word still contains three r’s."
       ],
       "discussion": [
         "What would need to be recorded to reproduce a token-count comparison across models?"
@@ -471,7 +472,7 @@ window.PRESENTATION = {
       "points": [
         "Inspect the revised computation. A convincing diagnosis of the earlier error does not validate the repair."
       ],
-      "visual": "none",
+      "visual": "worked-example",
       "notes": "A useful correction names the mismatch between the result and your goal. 'This is wrong' communicates dissatisfaction but leaves the model guessing about the repair. 'You treated milliseconds as seconds; correct the conversion and recompute the fit' gives it something actionable. For a more subtle problem, show evidence and ask for alternatives: 'The late-time residuals have structure. Compare the two models under the same assumptions and explain whether the extra parameter is justified.' Preserve good work explicitly when a broad rewrite would be disruptive. Keep a small list of acceptance criteria and revisit it after a revision. Feedback improves the current interaction; do not assume it has permanently changed the model's weights.",
       "optional": "When the model challenges your interpretation, evaluate the evidence instead of forcing agreement. Conversely, a fluent explanation of its earlier error is not proof that the repair is correct. Check the changed artifact or computation itself.",
       "sources": [
@@ -500,7 +501,7 @@ window.PRESENTATION = {
         "Goal-level task: define the objective and acceptance criteria, then inspect the proposed method.",
         "Method-constrained task: specify the calibration or reproduction procedure and the assumptions that must remain fixed."
       ],
-      "visual": "none",
+      "visual": "worked-example",
       "notes": "Reasoning models can often choose a better sequence of steps than an unnecessarily rigid prompt gives them. For an open task, describe the destination, the constraints and what a successful result must contain. Let the model decide how to get there. If you must reproduce a published method, use a specified calibration procedure or satisfy a particular interface, those steps are real requirements and should be explicit. The useful output is an answer supported by inspectable evidence, code, calculations or sources. A long verbal explanation can still contain mistakes. Treat the reasoning setting as a resource choice to evaluate on your task, not a promise of correctness.",
       "optional": "Provider guidance changes with models. Compare a goal-level prompt and a prescribed workflow on representative tasks before treating either style as a universal rule. An explanation is useful for review, but length is not a direct measure of reliability.",
       "sources": [
@@ -588,7 +589,7 @@ window.PRESENTATION = {
         "Preserve units and exceptions when summarizing.",
         "Retain source links so a compressed claim can be checked."
       ],
-      "visual": "none",
+      "visual": "worked-example",
       "notes": "A model's working context can include instructions, your messages, tool descriptions, retrieved files and earlier results. More context can help when it supplies needed evidence, but a large pile of obsolete or repetitive material can make the task harder. Keep a clear current brief, distinguish old decisions from current ones and retain links to authoritative sources. Retrieval can bring in relevant passages when needed instead of loading every document. Summaries are useful, but they can lose constraints or turn tentative statements into facts. For a long project, record decisions in an inspectable document and check that the model actually received the relevant parts. A larger context window is capacity, not a guarantee of perfect recall.",
       "optional": "An application may compact or retrieve conversation history rather than send every past message on every call. Context, persistent notes and trained weights have different lifetimes. When a requirement is critical, put it in the current task or an authoritative document the agent can read.",
       "sources": [
@@ -910,7 +911,7 @@ window.PRESENTATION = {
         "LoRA trains compact updates while freezing the base.",
         "QLoRA adds a quantized frozen base to the adapter recipe."
       ],
-      "visual": "none",
+      "visual": "worked-example",
       "notes": "Training from scratch starts without the pretrained representations that make a foundation model useful. At foundation-model scale it requires enormous data and computation, usually beyond modest personal hardware. That does not make all from-scratch training impractical: a small classifier or wake-word detector can be a sensible local project. Full fine-tuning starts with an existing model and updates its parameters using a much smaller, targeted workload. LoRA trains a small set of added updates while keeping the base frozen. QLoRA combines those adapters with a quantized base. The useful comparison is what capability you need, what data you have and what the complete training state requires. Running pretrained weights is a much smaller undertaking than recreating their original training.",
       "optional": "Continued pretraining usually continues a broad prediction objective on additional domain data; supervised fine-tuning uses task demonstrations. Full fine-tuning describes which parameters change, not whether the model began from scratch. Adapter tuning still needs forward and backward computation through the relevant model layers.",
       "sources": [
@@ -1057,7 +1058,7 @@ window.PRESENTATION = {
         "Measure useful success alongside important failure modes and retention.",
         "Use development data for iteration; keep final evaluation untouched and replicate promising findings."
       ],
-      "visual": "none",
+      "visual": "worked-example",
       "notes": "The experimental habits of physics and engineering transfer well here. State the question, specify the intervention and decide what result would count as improvement. A higher overall score can hide a regression in a rare but important operation. A model that refuses everything may produce no dangerous action while being useless for its intended task. Report both unwanted actions and missed valid actions, plus relevant format, context and retention checks. Use development cases to diagnose and revise. An untouched evaluation set answers a different question: whether the selected method generalizes beyond those adaptive choices. One seed on a small, repeatedly inspected set is exploratory evidence, even when the comparison is carefully controlled.",
       "optional": "A benchmark evaluates a model plus prompts, tools, budgets and scoring rules. Code-based checks, model judges and human review have different strengths and failure modes. Keep the scoring rubric inspectable and distinguish actual task outcomes from the assistant's description of its own success.",
       "sources": [
@@ -1170,7 +1171,7 @@ window.PRESENTATION = {
         "Distillation transfers selected behavior from a teacher.",
         "Expert expansion and sleep-inspired consolidation require explicit recipes and retention tests."
       ],
-      "visual": "none",
+      "visual": "worked-example",
       "notes": "Catastrophic forgetting describes a loss of previously learned performance after new training. It is different from a chat losing access to an earlier message. There are several ways to address it: replay representative old examples, constrain changes to important parameters or outputs, separate task adapters, or use a teacher to preserve behavior. Mixture-of-Experts systems can add or isolate capacity, but routing and shared components still matter. Lifelong-MoE is a particular method that combines added experts with regularization. Sleep-inspired methods also define actual learning operations; idle time alone is not consolidation. The practical requirement is a retention evaluation against the starting model, on capabilities that matter, before accepting a candidate.",
       "optional": "No single method guarantees lifelong learning across all tasks. Replay can require storing data; generated replay can repeat errors; freezing limits adaptation; expert expansion increases storage and routing complexity. An adapter can be swapped back to restore a base behavior, but the adapted system can still regress while that adapter is active.",
       "sources": [
@@ -1356,7 +1357,7 @@ window.PRESENTATION = {
       "eyebrow": "Brief → equip → check → improve",
       "lead": "Leave with a reproducible workflow and evidence of where it helps. Added autonomy or training should respond to a measured limitation.",
       "points": [],
-      "visual": "none",
+      "visual": "worked-example",
       "notes": "Close on a concrete evaluation plan. Use a known-answer calculation or an inspectable script as the first workload, name the baseline, and include verification effort in the comparison.",
       "optional": "For a first scientific exercise, choose a published calculation, a synthetic dataset with a known answer or a small script with observable behavior. Compare an unaided baseline with the AI-assisted workflow, including verification time. The objective is a useful and reproducible result. More autonomy, longer reasoning or additional training should follow from a demonstrated need rather than being assumed improvements.",
       "sources": [

@@ -51,19 +51,17 @@ window.AUDIENCE_ES = {
     },
     "4": {
       "title": "El texto se divide en fragmentos",
-      "lead": "Un tokenizador divide el texto en fragmentos numerados. Las divisiones ilustradas muestran por qué esos fragmentos no tienen que coincidir con las letras o palabras que ve quien lee.",
-      "points": [
-        "Distintos tokenizadores pueden dividir el mismo texto de distinta manera. Las fichas de este ejemplo son esquemáticas, no resultados medidos de un tokenizador."
-      ],
+      "lead": "Los dos tokenizadores reciben exactamente la misma palabra. Fíjate en dónde termina el primer fragmento de cada fila.",
+      "points": [],
       "reading": [
         "Antes de procesar texto, un modelo de lenguaje suele recibir una secuencia de fragmentos numerados llamados tokens. Un fragmento puede ser una palabra completa, parte de una palabra o puntuación. Un nombre desconocido puede necesitar varios fragmentos aunque parezca una sola palabra en la página.",
-        "Distintos modelos pueden dividir el mismo texto de otra manera. Por ello, contar tokens no mide universalmente la longitud o dificultad de un mensaje. Importan porque los servicios pueden limitar o cobrar la cantidad procesada. Una pregunta breve puede exigir trabajo difícil, mientras que un texto largo puede ser fácil de resumir. Las tareas de caracteres exactos necesitan comprobaciones propias."
+        "Sin espacio inicial, cl100k_base divide strawberry en str, aw y berry. o200k_base la divide en st, raw y berry. Ambos producen tres tokens en este ejemplo, aunque cambian los límites y los identificadores. En o200k_base, al añadir un espacio al principio, el espacio y la palabra entera forman un solo token. Siguen siendo tres erres."
       ],
       "discussion": [
         "¿Por qué un nombre técnico corto podría necesitar más fragmentos que una palabra familiar más larga?"
       ],
       "notes": "Antes de procesar texto, un modelo de lenguaje suele recibir una secuencia de fragmentos numerados llamados tokens. Un fragmento puede ser una palabra completa, parte de una palabra o puntuación. Un nombre desconocido puede necesitar varios fragmentos aunque parezca una sola palabra en la página.",
-      "optional": "Las divisiones de tokens ilustradas son conceptuales salvo que se especifiquen un tokenizador y su versión. Una demostración reproducible utiliza la salida real del tokenizador y registra esa versión. Los sistemas multimodales también codifican imágenes o audio en representaciones distintas de los fragmentos de palabras habituales. Por ello, la longitud del texto, la longitud en tokens y la dificultad de la tarea son magnitudes distintas.",
+      "optional": "Sin espacio inicial, cl100k_base divide strawberry en str, aw y berry. o200k_base la divide en st, raw y berry. Ambos producen tres tokens en este ejemplo, aunque cambian los límites y los identificadores. En o200k_base, al añadir un espacio al principio, el espacio y la palabra entera forman un solo token. Siguen siendo tres erres.",
       "kind": "prose"
     },
     "5": {
@@ -711,7 +709,7 @@ window.AUDIENCE_ES = {
         "Cuente la petición completa tal como se entrega, incluidas las plantillas y los esquemas de herramientas, al estimar el tamaño de la entrada."
       ],
       "reading": [
-        "La tokenización transforma una cadena de entrada en identificadores de un vocabulario concreto. La segmentación y las convenciones de tokens especiales pertenecen a ese tokenizador y a la ruta de servicio. Un identificador técnico puede ocupar varios tokens aunque una palabra familiar más larga ocupe uno. Las fichas conceptuales de tokens de un diagrama no son una salida reproducible del tokenizador si no se indican el tokenizador real y su versión.",
+        "Los identificadores de la figura pertenecen a dos vocabularios distintos. Las dos primeras filas codifican la secuencia ASCII exacta strawberry sin espacios ni plantilla de chat. Usa los límites de la figura para reconstruir la palabra a partir de cada secuencia.",
         "La aplicación también puede insertar una plantilla de chat o serializar definiciones de herramientas. Esos añadidos afectan a la entrada real del modelo. En un flujo con varios modelos, transfiera el texto original o una representación documentada en lugar de suponer que los identificadores de tokens son portables. El número de tokens ayuda a contabilizar contexto y procesamiento; no es una medida calibrada de la dificultad del problema."
       ],
       "discussion": [
@@ -719,7 +717,7 @@ window.AUDIENCE_ES = {
         "¿Cómo detectaría la pérdida de información introducida por un traspaso entre modelos?"
       ],
       "notes": "Los identificadores y la división de tokens pertenecen a un tokenizador concreto, no a un formato universal de intercambio. Las cadenas técnicas, la puntuación y los identificadores poco comunes pueden cambiar la relación entre longitud visible y tokens. Conserve el texto exacto al pasar tareas entre modelos y mida con el tokenizador de la ruta real de inferencia. Los tokens miden recursos, no directamente dificultad.",
-      "optional": "Las divisiones de tokens ilustradas son conceptuales salvo que se especifiquen un tokenizador y su versión. Una demostración reproducible utiliza la salida real del tokenizador y registra esa versión. Los sistemas multimodales también codifican imágenes o audio en representaciones distintas de los fragmentos de palabras habituales. Por ello, la longitud del texto, la longitud en tokens y la dificultad de la tarea son magnitudes distintas.",
+      "optional": "Sin espacio inicial, cl100k_base divide strawberry en str, aw y berry. o200k_base la divide en st, raw y berry. Ambos producen tres tokens en este ejemplo, aunque cambian los límites y los identificadores. En o200k_base, al añadir un espacio al principio, el espacio y la palabra entera forman un solo token. Siguen siendo tres erres.",
       "kind": "list"
     },
     "5": {
