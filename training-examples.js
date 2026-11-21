@@ -24,7 +24,7 @@
       dimension:'One linear weight matrix: 4,096 × 4,096; adapter rank r = 8.',
       trainable:'TRAINABLE', frozen:'FROZEN', initial:'Initialization', count:'Trainable parameters', raw:'Raw stored weights',
       random:'Random initialization', pretrained:'Pretrained checkpoint', quantized:'Pretrained base, stored at 4 bits',
-      base:'Base W', factors:'Trainable factors', effective:'Effective transformation W′', output:'Output', optimizer:'Optimizer updates W',
+      base:'Base W', factors:'Trainable factors', effective:'Effective transformation W′', effectiveShort:'Effective W′', output:'Output', optimizer:'Optimizer updates W',
       baseLabel:'4,096 × 4,096', bLabel:'B: 4,096 × 8', aLabel:'A: 8 × 4,096',
       scratchExplanation:'Every coefficient in this example matrix is eligible for learning. Starting from random weights requires learning representations as well as the target task.',
       fullExplanation:'The same 16,777,216 coefficients are eligible for updates, but training begins with pretrained weights. The initialization and data workload distinguish this from training from scratch.',
@@ -61,7 +61,7 @@
       dimension:'Una matriz de pesos lineal: 4.096 × 4.096; rango del adaptador r = 8.',
       trainable:'AJUSTABLE', frozen:'FIJO', initial:'Inicialización', count:'Parámetros ajustables', raw:'Pesos almacenados en bruto',
       random:'Inicialización aleatoria', pretrained:'Punto de partida preentrenado', quantized:'Base preentrenada almacenada a 4 bits',
-      base:'Base W', factors:'Factores ajustables', effective:'Transformación efectiva W′', output:'Salida', optimizer:'El optimizador actualiza W',
+      base:'Base W', factors:'Factores ajustables', effective:'Transformación efectiva W′', effectiveShort:'Transformación W′', output:'Salida', optimizer:'El optimizador actualiza W',
       baseLabel:'4.096 × 4.096', bLabel:'B: 4.096 × 8', aLabel:'A: 8 × 4.096',
       scratchExplanation:'Todos los coeficientes de esta matriz pueden aprenderse. Empezar con pesos aleatorios exige aprender representaciones además de la tarea deseada.',
       fullExplanation:'Los mismos 16.777.216 coeficientes pueden actualizarse, pero se parte de pesos preentrenados. La inicialización y la cantidad de datos procesados lo distinguen del entrenamiento desde cero.',
@@ -105,7 +105,7 @@
     return cells;
   }
   function trainingDiagram(method,t,uid) {
-    const adapter=method==='lora'||method==='qlora',fixed=adapter;
+    const adapter=method==='lora'||method==='qlora';
     let shape='';
     if(adapter){
       shape=grid(24,91,150,false,false,method==='qlora');
@@ -113,7 +113,7 @@
       for(let i=0;i<8;i++)shape+=`<rect x="235" y="${91+i*150/8}" width="23" height="${150/8-2}" rx="2" class="tx-cell tx-adjustable"/><rect x="${302+i*150/8}" y="153" width="${150/8-2}" height="23" rx="2" class="tx-cell tx-adjustable"/>`;
       shape+=`<text x="344" y="58" class="tx-svg-title">${escape(t.factors)}</text><text x="344" y="78" class="tx-svg-small">${escape(t.trainable)} · 16-bit</text><text x="278" y="175" class="tx-svg-math">×</text><text x="247" y="264" class="tx-svg-small">${escape(t.bLabel)}</text><text x="377" y="205" class="tx-svg-small">${escape(t.aLabel)}</text><text x="480" y="175" class="tx-svg-math">=</text>`;
       shape+=grid(520,91,150,true);
-      shape+=`<text x="595" y="58" class="tx-svg-title">${escape(t.effective)}</text><text x="595" y="264" class="tx-svg-small">W′ = W + (α/r)BA</text>`;
+      shape+=`<text x="595" y="58" class="tx-svg-title">${escape(t.effectiveShort)}</text><text x="595" y="264" class="tx-svg-small">W′ = W + (α/r)BA</text>`;
     }else{
       shape=grid(210,91,160,true,method==='scratch');
       shape+=`<text x="290" y="57" class="tx-svg-title">W · 4,096 × 4,096</text><text x="290" y="78" class="tx-svg-small">${escape(t.trainable)} · 16-bit</text><path d="M56 172 H189 M392 172 H559" class="tx-data-line" marker-end="url(#${uid}-arrow)"/><text x="94" y="150" class="tx-svg-title">x</text><text x="512" y="150" class="tx-svg-title">${escape(t.output)}</text><path d="M290 297 V263" class="tx-update-line" marker-end="url(#${uid}-arrow)"/><text x="464" y="308" class="tx-svg-small">${escape(t.optimizer)}</text>`;

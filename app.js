@@ -180,6 +180,30 @@ count</code></pre>
       <code>[...word].filter(c =&gt; c === 'r').length</code>
     </div></details>`;
   }
+function reversalExample(){
+    const reveal=state.view==='read'||new URLSearchParams(location.search).get('example')==='reversal';
+    return `<details class="riddle-example"${reveal?' open':''}><summary>${L('Word riddle · Which animal spells a plant backward?','Acertijo · ¿Qué nombre de animal se convierte en planta al revés?')}</summary>
+      ${window.WorkflowExamples.render('riddle',state.lang,state.audience)}
+      <details class="riddle-trial"><summary>${L('What happened when an assistant tried it?','¿Qué ocurrió cuando un asistente lo intentó?')}</summary>
+        <p>${L('In a fresh Codex session, the assistant received only the English riddle and a request to answer without tools. Its first answer was “Deer spelled backward is reed.”','En una sesión nueva de Codex, el asistente recibió solo el acertijo en inglés y la indicación de responder sin herramientas. Respondió «Deer spelled backward is reed» (deer al revés es reed).')}</p>
+        <div class="reversal-letters" role="img" aria-label="${L('Reading deer from position four back to position one spells reed.','Leer deer desde la cuarta letra hasta la primera da reed.')}">
+          ${[[0,1,2,3],[3,2,1,0]].map((indices,row)=>`<div><b>${row?L('Plant','Planta'):L('Animal','Animal')}</b>${indices.map(i=>`<span><strong>${'deer'[i]}</strong><small>${i+1}</small></span>`).join('')}</div>`).join('')}
+        </div>
+        <p>${L('In the same session it then ran Python on the five animal and five plant names shown in the original lists above. The only line printed was','En la misma sesión ejecutó Python con los cinco animales y las cinco plantas de las listas originales de arriba. La única línea de salida fue')} <samp>deer reed</samp>.</p>
+        <pre><code>animals = 'hare deer wolf fox bear'.lower().split()
+plants = set('rose fern reed moss flax'.lower().split())
+for animal in animals:
+    reverse = animal[::-1]
+    if reverse in plants:
+        print(animal, reverse)</code></pre>
+      </details>
+      <details class="riddle-trial"><summary>${L('How many pairs occur in WordNet 3.0?','¿Cuántos pares aparecen en WordNet 3.0?')}</summary>
+        <p>${L('We ran the search on Princeton’s English lexical database. Among 5,934 distinct animal spellings and 4,762 plant spellings, exactly one pair matched','Ejecutamos la búsqueda en la base de datos léxica inglesa de Princeton. Entre 5934 formas distintas de animales y 4762 de plantas hubo una sola coincidencia')} <strong>deer → reed</strong>.</p>
+        <p>${L('We used the animal and plant noun categories, lowercased their entries, kept only single words made of letters a–z, and reversed each animal spelling. A different dictionary or a different definition of “plant” can change the result.','Usamos las categorías de sustantivos de animales y plantas. Pasamos las entradas a minúsculas, conservamos solo palabras formadas por letras de la a a la z e invertimos cada nombre de animal. Otro diccionario u otra definición de «planta» puede cambiar el resultado.')}</p>
+        <a href="wordnet_reversals.py" download>${L('Download the Python search','Descargar la búsqueda en Python')}</a> · <a href="https://wordnetcode.princeton.edu/3.0/WNdb-3.0.tar.gz">${L('WordNet 3.0 data','Datos de WordNet 3.0')}</a>
+      </details>
+    </details>`;
+  }
 function bindCharacterExample(){
     const input=$('count-word');
     const toggle=$('word-spacing');
@@ -255,7 +279,8 @@ function standardVisual(s){
     const supplementary=focusFigure && points
       ? `<details class="worked-notes"><summary>${L('More on the method','Más sobre el método')}</summary>${points}</details>`:'';
     $('slide').className=`slide visual-${s.visual} ${figure?'with-figure':'text-slide'} ${s.visual==='cover'?'cover':''} ${s.visual==='fit'?'full-visual':''}`;
-    $('slide').innerHTML=`<div class="slide-grid"><div class="slide-copy"><span class="eyebrow">${E(s.eyebrow||s.section)}</span><h1 id="slide-title">${E(s.title)}</h1><p class="lead">${E(s.lead)}</p>${focusFigure?'':points}</div>${displayedFigure}${supplementary}</div><span class="slide-id">${E(t.slide)} ${E(s.id)}</span>`;
+    $('slide').innerHTML=`<div class="slide-grid"><div class="slide-copy"><span class="eyebrow">${E(s.eyebrow||s.section)}</span><h1 id="slide-title">${E(s.title)}</h1><p class="lead">${E(s.lead)}</p>${focusFigure?'':points}</div>${displayedFigure}${supplementary}</div>${s.id==='5'?reversalExample():''}<span class="slide-id">${E(t.slide)} ${E(s.id)}</span>`;
+    if(s.id==='5') window.WorkflowExamples.bindRiddle($('slide'));
     const seconds=routeSeconds()?.[state.route]?.[s.id] || s.seconds || 60;
     $('chapter-label').textContent=s.section.toUpperCase();
     $('slide-counter').textContent=`${t.slide} ${s.id} · ${t.target} ${Math.round(seconds)}s`;

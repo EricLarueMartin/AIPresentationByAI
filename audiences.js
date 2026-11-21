@@ -70,10 +70,12 @@ window.AUDIENCE_CONTENT = {
       "points": [],
       "reading": [
         "In a conversation recorded on November 3, 2024, GPT‑4o first answered 2. The user asked the same question about strawberry again and added “Use Python.” Python counted 3, and GPT‑4o gave that result to the user. Sebastian Krakowski published screenshots of the chat and of the code’s result in Figure 2 of his paper.",
-        "There is one r near the beginning and a pair near the end: st[r]awbe[r][r]y. A model can learn the spelling of a whole piece of text and sometimes answer directly. A program can check every character in turn. The exchange leaves open why the first answer was wrong. Open the separate browser counter and add another r to see that rule work on a new input."
+        "There is one r near the beginning and a pair near the end: st[r]awbe[r][r]y. A model can learn the spelling of a whole piece of text and sometimes answer directly. A program can check every character in turn. The exchange leaves open why the first answer was wrong. Open the separate browser counter and add another r to see that rule work on a new input.",
+        "A fresh Codex session was asked for an English animal name whose letters, reversed, spell a plant. It answered deer → reed directly. In the same session it ran Python over five animal names and five plant names and confirmed this as the only match in those lists. An independent search of WordNet 3.0 also found that one pair among 5,934 eligible animal spellings and 4,762 plant spellings. The vocabulary and category definitions determine what counts as a solution."
       ],
       "discussion": [
-        "Suppose the assistant had shown the Python code but given no output. What would you still want to check?"
+        "Suppose the assistant had shown the Python code but given no output. What would you still want to check?",
+        "What would you need to specify before saying you had found every solution?"
       ],
       "notes": "Show the direct answer first. Give the audience a moment to find the three letters, then open the Python follow-up and trace the code from its input to its return value. The editable browser counter below is a separate demonstration.",
       "optional": "Try changing a lowercase r to uppercase R in the browser counter. The count drops by one because the check matches lowercase r exactly.",
@@ -726,10 +728,12 @@ window.AUDIENCE_CONTENT = {
       "points": [],
       "reading": [
         "Krakowski’s Figure 2 shows a November 3, 2024 GPT‑4o chat. The direct count of lowercase r in strawberry was 2. In the same conversation the user repeated the request with “Use Python.” The analysis pane shows the binding text = \"strawberry\", the call text.count(\"r\"), and the returned integer 3. The assistant’s subsequent answer agrees with that return value.",
-        "The trace establishes the literal and operation used for the tool answer. It supplies no trace of the computation behind the first answer. A tokenization diagram can illustrate one representational difficulty, while attribution of a specific error requires a separate experiment. This one observed pair also supplies no estimate of error rates for other prompts or checkpoints."
+        "The trace establishes the literal and operation used for the tool answer. It supplies no trace of the computation behind the first answer. A tokenization diagram can illustrate one representational difficulty, while attribution of a specific error requires a separate experiment. This one observed pair also supplies no estimate of error rates for other prompts or checkpoints.",
+        "A fresh Codex session was asked for an English animal name whose letters, reversed, spell a plant. It answered deer → reed directly. In the same session it ran Python over five animal names and five plant names and confirmed this as the only match in those lists. An independent search of WordNet 3.0 also found that one pair among 5,934 eligible animal spellings and 4,762 plant spellings. The vocabulary and category definitions determine what counts as a solution."
       ],
       "discussion": [
-        "Which parts of the second answer can be audited from the tool trace? What would it take to attribute the first answer to tokenization?"
+        "Which parts of the second answer can be audited from the tool trace? What would it take to attribute the first answer to tokenization?",
+        "What would you need to specify before saying you had found every solution?"
       ],
       "notes": "Show the direct answer first. Give the audience a moment to find the three letters, then open the Python follow-up and trace the code from its input to its return value. The editable browser counter below is a separate demonstration.",
       "optional": "The source identifies the model, date and visible exchange. It does not report a checkpoint snapshot, sampling settings or a multi-trial evaluation.",

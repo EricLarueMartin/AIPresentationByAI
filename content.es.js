@@ -99,10 +99,12 @@ window.PRESENTATION_ES = {
       "evidence": "Caso documentado · Krakowski (2025), figura 2",
       "reading": [
         "La figura 2 de Krakowski (2025) documenta una conversación de ChatGPT con GPT-4o fechada el 3 de noviembre de 2024. Ante una pregunta sobre cuántas r minúsculas contiene «strawberry», la primera respuesta fue 2. En esa misma conversación, el usuario repitió exactamente la pregunta y añadió «Use Python». El registro muestra un programa que cuenta r en la cadena «strawberry», el resultado de Python 3 y, después, una respuesta de GPT-4o que indica 3. El artículo original está enlazado en las fuentes. Esta lectura conserva la secuencia completa aunque no se utilice la revelación de la presentación.",
-        "El cambio relevante es pasar de una respuesta generada a un recuento ejecutado. Escribir código correcto no produce por sí solo su resultado: hay que ejecutarlo sobre la cadena exacta. Los tokens pueden contener varias letras, pero un modelo también puede aprender ortografía y contar correctamente de forma directa. Las repeticiones pueden complicar el recuento incluso cuando las letras se reconocen; esta conversación no demuestra qué causó el error ni caracteriza a todos los modelos. El contador opcional del navegador es una demostración separada: también devuelve 3 para «strawberry», con r en las posiciones 3, 8 y 9 contando desde 1."
+        "El cambio relevante es pasar de una respuesta generada a un recuento ejecutado. Escribir código correcto no produce por sí solo su resultado: hay que ejecutarlo sobre la cadena exacta. Los tokens pueden contener varias letras, pero un modelo también puede aprender ortografía y contar correctamente de forma directa. Las repeticiones pueden complicar el recuento incluso cuando las letras se reconocen; esta conversación no demuestra qué causó el error ni caracteriza a todos los modelos. El contador opcional del navegador es una demostración separada: también devuelve 3 para «strawberry», con r en las posiciones 3, 8 y 9 contando desde 1.",
+        "En otro acertijo, se preguntó a una nueva sesión de Codex qué animal en inglés, al revés, da el nombre de una planta. Respondió «deer» (ciervo), que se convierte en «reed» (junco). Luego ejecutó Python con cinco animales y cinco plantas y confirmó ese único par en las listas. Una búsqueda independiente en WordNet 3.0 obtuvo el mismo par entre 5934 formas de animales y 4762 de plantas. El resultado depende del vocabulario y las categorías elegidos."
       ],
       "discussion": [
-        "¿Qué cambió entre las dos respuestas de esta conversación y qué no permite concluir este único caso?"
+        "¿Qué cambió entre las dos respuestas de esta conversación y qué no permite concluir este único caso?",
+        "¿Qué información haría falta para afirmar que se han encontrado todas las soluciones?"
       ],
       "kind": "prose"
     },
