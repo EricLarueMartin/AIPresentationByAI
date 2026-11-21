@@ -153,16 +153,18 @@ function characterExample(){
     return `<figure class="recorded-count">
       <figcaption>GPT‑4o · ${L('November 3, 2024','3 de noviembre de 2024')}</figcaption>
       <p class="count-prompt">${L('How many times does lowercase r occur in','¿Cuántas veces aparece la r minúscula en')} <code>strawberry</code>?</p>
-      <p class="recorded-answer"><strong>2</strong><span>${L('GPT‑4o’s first answer','Primera respuesta de GPT‑4o')}</span></p>
-      <details class="python-followup"${state.view==='present'?'':' open'}>
-        <summary>${L('Reveal the Python follow-up','Ver qué ocurrió al pedir Python')}</summary>
-        <p>${L('The user repeated the question and added “Use Python.”','El usuario repitió la pregunta y añadió «Use Python» (usa Python).')}</p>
+      <div class="count-comparison">
+        <p class="recorded-answer"><span>${L('GPT‑4o’s first answer','Primera respuesta de GPT‑4o')}</span><strong>2</strong></p>
+        <p class="recorded-answer checked-count"><span>${L('Python’s count','Recuento de Python')}</span><strong>3</strong></p>
+      </div>
+      <div class="count-positions" role="img" aria-label="${L('The three r’s are at positions 3, 8 and 9.','Las tres erres están en las posiciones 3, 8 y 9.')}">${Array.from('strawberry',(c,i)=>`<span class="${c==='r'?'match':''}"><b>${c}</b><small>${i+1}</small></span>`).join('')}</div>
+      <div class="python-followup">
+        <p>${L('The user added “Use Python.” GPT‑4o ran this code and reported the returned count.','El usuario añadió «Use Python» (usa Python). GPT‑4o ejecutó este código y comunicó el resultado.')}</p>
         <pre><code>text = "strawberry"
 count = text.count("r")
 count</code></pre>
-        <p class="recorded-answer"><strong>3</strong><span>${L('Python output. GPT‑4o then answered 3.','Resultado de Python. GPT‑4o respondió entonces que eran 3.')}</span></p>
-        <div class="count-positions" role="img" aria-label="${L('The three r’s are at positions 3, 8 and 9.','Las tres erres están en las posiciones 3, 8 y 9.')}">${Array.from('strawberry',(c,i)=>`<span class="${c==='r'?'match':''}"><b>${c}</b><small>${i+1}</small></span>`).join('')}</div>
-      </details>
+        <p class="count-return">${L('Output','Resultado')} <samp>3</samp></p>
+      </div>
       <p class="visual-caption">${L('The transcript shows what GPT‑4o answered. The cause of its first error is unknown.','El registro muestra qué respondió GPT‑4o. Se desconoce la causa de su primer error.')}</p>
       <a class="count-citation" href="${figureUrl}" target="_blank" rel="noopener noreferrer">${L('Original screenshots · Krakowski (2025), Figure 2','Capturas originales · Krakowski (2025), figura 2')}</a>
     </figure>
@@ -248,7 +250,7 @@ function standardVisual(s){
     const figure=visual(s);
     const figurePanel=figure?`<div class="visual">${figure}</div>`:'';
     const displayedFigure=figure && state.view==='discuss'
-      ? `<details class="discussion-figure"><summary>${L('Look at the example','Ver el ejemplo')}</summary>${figurePanel}</details>`
+      ? `<details class="discussion-figure"${s.visual==='characters'?' open':''}><summary>${L('Look at the example','Ver el ejemplo')}</summary>${figurePanel}</details>`
       : figurePanel;
     const points=slideBody(s);
     const focusFigure=s.visual==='worked-example' && state.view==='present' && !!figure;

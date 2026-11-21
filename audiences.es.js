@@ -65,18 +65,18 @@ window.AUDIENCE_ES = {
       "kind": "prose"
     },
     "5": {
-      "title": "Una respuesta equivocada y una herramienta útil",
-      "lead": "En una conversación publicada, GPT-4o respondió 2 al contar las r de «strawberry». La continuación muestra qué ocurrió cuando se le pidió usar Python.",
+      "title": "Contar las erres de strawberry",
+      "lead": "Hay tres r minúsculas, en las posiciones 3, 8 y 9. La conversación muestra una primera respuesta seguida de una comprobación con Python.",
       "points": [],
       "reading": [
-        "Krakowski publicó en 2025 una conversación de ChatGPT con GPT-4o, fechada el 3 de noviembre de 2024 y reproducida en la figura 2 del artículo enlazado. El usuario preguntó cuántas r minúsculas hay en «strawberry», que significa fresa en inglés. GPT-4o respondió primero 2. En la misma conversación, el usuario repitió exactamente la pregunta y añadió la indicación de usar Python. El programa devolvió 3 y GPT-4o respondió después 3. La palabra contiene una r en la posición 3 y otras dos en las posiciones 8 y 9, contando desde 1.",
-        "La herramienta realizó un recuento sobre el texto exacto. Escribir un programa no basta: debe ejecutarse para obtener su resultado. Los modelos pueden aprender cómo se escriben las palabras y a veces contar bien directamente, aunque las letras repetidas pueden complicar la cuenta. Los tokens pueden contener varias letras, pero eso no demuestra la causa del error de esta conversación. El contador opcional de esta página es otro ejemplo, ejecutado en el navegador; no repite la conversación publicada. Aquí la lectura incluye también el desenlace que quien presenta puede revelar con un clic."
+        "Strawberry, que significa fresa en inglés, tiene tres r minúsculas: st[r]awbe[r][r]y. Contando las letras desde 1, aparecen en las posiciones 3, 8 y 9. En una conversación del 3 de noviembre de 2024, GPT-4o respondió primero 2. El usuario repitió la pregunta y añadió «Use Python». El programa text.count(\"r\"), con text igual a \"strawberry\", devolvió 3 y GPT-4o dio ese resultado. Sebastian Krakowski publicó la conversación y el resultado del código en la figura 2 de su artículo de 2025.",
+        "El resultado se puede comprobar con las letras visibles. Escribir código no equivale a ejecutarlo: la salida registrada muestra que se realizó el recuento. Un modelo también puede conocer la palabra y acertar sin herramientas. Este intercambio no explica por qué falló la primera respuesta ni mide con qué frecuencia se equivocan los modelos. El contador editable del navegador es otra demostración, que comprueba una entrada nueva mediante un cálculo local."
       ],
       "discussion": [
         "¿Qué aportó ejecutar el programa que no aportaba por sí sola la primera respuesta?"
       ],
-      "notes": "Sitúe el ejemplo: Krakowski (2025), figura 2, documenta una conversación de GPT-4o del 3 de noviembre de 2024. Muestre primero la respuesta 2. Pulse para revelar la continuación: el usuario repitió exactamente la pregunta añadiendo que usara Python; Python devolvió 3 y GPT-4o respondió 3. Señale el enlace al original y distinga la secuencia publicada del contador opcional del navegador. Un modelo puede aprender ortografía y acertar sin herramientas. Los tokens y las letras repetidas ayudan a entender la dificultad, pero este caso no demuestra por qué se produjo el error.",
-      "optional": "El contador opcional permite editar la palabra y ejecutar un programa en el navegador. Para «strawberry» devuelve 3 r, en las posiciones 3, 8 y 9 contando desde 1. Es una demostración distinta del caso publicado; no llama a GPT-4o ni reproduce su sesión de Python.",
+      "notes": "Compare las dos respuestas con la palabra: una r en la posición 3 y otras dos en las posiciones 8 y 9. El código mostrado cuenta r minúsculas en la palabra exacta. Krakowski (2025), figura 2, documenta esta conversación de GPT-4o del 3 de noviembre de 2024. El contador del navegador es una demostración independiente. El caso publicado no explica por qué falló la primera respuesta.",
+      "optional": "El contador opcional permite editar la palabra y ejecutar un programa en el navegador. Para «strawberry» devuelve 3 r, en las posiciones 3, 8 y 9 contando desde 1. Es una demostración distinta del caso publicado. No llama a GPT-4o ni reproduce su sesión de Python.",
       "kind": "prose"
     },
     "6": {
@@ -721,17 +721,17 @@ window.AUDIENCE_ES = {
       "kind": "list"
     },
     "5": {
-      "title": "Respuesta generada y cálculo ejecutado",
-      "lead": "Un caso fechado permite distinguir dos rutas del mismo sistema: GPT-4o respondió primero 2; el seguimiento añadió Python como herramienta de recuento.",
+      "title": "Comprobar un recuento con código ejecutado",
+      "lead": "El registro de la herramienta muestra la entrada exacta, la operación y el valor devuelto. Las posiciones marcadas permiten comprobar ese resultado de forma independiente.",
       "points": [],
       "reading": [
-        "Krakowski (2025, figura 2) documenta una única conversación de ChatGPT con GPT-4o fechada el 3 de noviembre de 2024. El usuario pidió contar las r minúsculas de «strawberry» y recibió 2. Después repitió exactamente la pregunta añadiendo «Use Python». El registro muestra el recuento ejecutado por Python sobre esa cadena, su resultado 3 y la posterior respuesta 3 de GPT-4o. El original enlazado permite examinar tanto la conversación como la ejecución. La secuencia completa se conserva en la lectura y la impresión; en Presentar, el seguimiento puede revelarse con un clic.",
-        "Aquí cambia la ruta de cálculo, no se demuestra una mejora de los pesos ni se aísla la causa del primer error. Los tokens subléxicos pueden contener varias letras; el entrenamiento también puede aportar conocimiento ortográfico y permitir un recuento directo correcto. Reconocer las letras no garantiza acumular sus repeticiones sin error. Generar código solo especifica una operación; ejecutarlo correctamente sobre la cadena exacta produce el resultado. El contador opcional del navegador es una demostración independiente, no una repetición de la sesión histórica de Python. Para «strawberry» obtiene 3 r en las posiciones 3, 8 y 9 contando desde 1."
+        "La figura 2 de Krakowski (2025) muestra una conversación de GPT-4o del 3 de noviembre de 2024. El recuento directo de r minúsculas en strawberry fue 2. En la misma conversación, el usuario repitió la solicitud añadiendo «Use Python». El panel de análisis muestra text = \"strawberry\", la llamada text.count(\"r\") y el entero devuelto, 3. La respuesta posterior del asistente coincide con ese valor. El resultado correcto se ve en st[r]awbe[r][r]y: posiciones 3, 8 y 9, contando desde 1.",
+        "El registro establece la cadena y la operación usadas para la respuesta con herramienta. No muestra el cálculo detrás de la primera respuesta ni aísla la tokenización como su causa. Un diagrama de tokens ilustra una representación. Atribuir una causa requiere otro experimento. Este par observado no estima tasas de error para otras solicitudes o versiones del modelo. El contador opcional del navegador ejecuta un cálculo local independiente, sin reproducir la sesión histórica de Python."
       ],
       "discussion": [
         "¿Qué evidencia distingue el cálculo ejecutado de la respuesta generada y qué afirmación causal no queda aislada por este caso?"
       ],
-      "notes": "Atribuya el caso a Krakowski (2025), figura 2, y mantenga la fecha del ejemplo separada de la publicación: conversación de ChatGPT con GPT-4o del 3 de noviembre de 2024. Muestre 2 y pulse para revelar la misma pregunta con «Use Python», el resultado ejecutado 3 y la respuesta final 3. Es un registro publicado, no una llamada actual al modelo. El caso ilustra una ruta con herramienta; no establece una tasa de error ni identifica la tokenización como causa. Distinga el registro histórico del contador opcional, que ejecuta código local del navegador. El original está enlazado para examinarlo.",
+      "notes": "Examine juntos la cadena, la operación y el valor devuelto: text = \"strawberry\", text.count(\"r\") y resultado 3. Compruebe las tres posiciones, contando desde 1. Krakowski (2025), figura 2, fecha la conversación de GPT-4o el 3 de noviembre de 2024. El registro visible respalda el resultado de la herramienta, pero no muestra un cálculo interno que explique la respuesta inicial. El cálculo del navegador es independiente de aquella sesión histórica.",
       "optional": "El contador opcional opera sobre la entrada editable del navegador y cuenta r minúsculas. Para la cadena ASCII «strawberry», el resultado es 3 y las posiciones son 3, 8 y 9 contando desde 1. Esa ejecución es independiente de la sesión histórica de Python. Cualquier ejemplo de tokenización se refiere al tokenizador nombrado y a su literal exacto, no a una segmentación universal ni a una prueba causal del error de GPT-4o.",
       "kind": "prose"
     },

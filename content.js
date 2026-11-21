@@ -380,12 +380,12 @@ window.PRESENTATION = {
     {
       "id": "5",
       "section": "How the model sees a task",
-      "title": "How many r’s did GPT‑4o count in strawberry?",
+      "title": "Counting the r’s in strawberry",
       "eyebrow": "One conversation, two methods",
-      "lead": "A user asked GPT‑4o to count the lowercase r’s in strawberry. After the first answer, the user repeated the question in the same chat and asked for Python.",
+      "lead": "There are three lowercase r’s, at positions 3, 8 and 9. The chat record shows how GPT‑4o checked its first answer.",
       "points": [],
       "visual": "characters",
-      "notes": "Show the direct answer first. Give the audience a moment to find the three letters, then open the Python follow-up and trace the code from its input to its return value. The editable browser counter below is a separate demonstration.",
+      "notes": "Compare the first answer, 2, with the executed result, 3. Trace text.count(\"r\") on the exact string strawberry and verify the marked positions 3, 8 and 9, counting from 1. Attribute the recorded exchange to Krakowski (2025), Figure 2, with a conversation date of November 3, 2024. The browser counter is a separate demonstration. This single case neither identifies the cause of the first error nor estimates a model’s error rate.",
       "optional": "Try changing a lowercase r to uppercase R in the browser counter. The count drops by one because the check matches lowercase r exactly.",
       "sources": [
         "strawberryChat",
@@ -396,8 +396,8 @@ window.PRESENTATION = {
       "evidence": "Practice",
       "seconds": 60,
       "reading": [
-        "On November 3, 2024, GPT‑4o answered 2 when asked how many times r occurs in strawberry. The user repeated the question and added “Use Python.” Figure 2 in Sebastian Krakowski’s paper shows the resulting Python execution. It set text to the same word, evaluated text.count(\"r\") and returned 3. GPT‑4o then reported 3.",
-        "You can trace the matches yourself: st[r]awbe[r][r]y. A subword can contain several letters, so identifying a token and tallying its characters are separate operations. This conversation demonstrates that changing the method changed the answer. It leaves open why the first answer was wrong."
+        "On November 3, 2024, GPT‑4o answered 2 when asked how many times r occurs in strawberry. The user repeated the question and added “Use Python.” Figure 2 in Sebastian Krakowski’s 2025 paper shows the resulting Python execution: text = \"strawberry\", followed by text.count(\"r\"), returned 3. GPT‑4o then reported 3.",
+        "The checkable answer is 3: st[r]awbe[r][r]y, with matches at positions 3, 8 and 9 counting from 1. A subword can contain several letters, but a model can also learn spelling and sometimes count correctly without tools. This conversation shows a changed computation method and a corrected answer. It does not establish why the first answer was wrong or how frequently similar errors occur. The editable browser counter is a separate local computation, not a replay of the historical chat."
       ],
       "discussion": [
         "What evidence shows that the second answer came from running the count, and what evidence would you need to explain the first error?"

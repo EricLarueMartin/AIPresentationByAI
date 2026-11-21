@@ -55,13 +55,16 @@ body[data-view=read] .text-slide .slide-grid {min-height:0}
 .recorded-count {margin:0;min-width:0}
 .recorded-count figcaption,.count-citation {font-size:.85rem;line-height:1.5;color:var(--muted)}
 .count-prompt {margin:.6rem 0;line-height:1.5}
-.recorded-answer {display:flex;align-items:center;gap:1rem;margin:.6rem 0 1rem}
-.recorded-answer strong {font-size:2.8rem;font-weight:600;line-height:1;color:var(--text)}
-.python-followup .recorded-answer strong {color:var(--accent)}
-.python-followup,.count-playground {border-top:1px solid var(--line);padding:.7rem 0}
-.python-followup summary,.count-playground summary {cursor:pointer;color:var(--accent);line-height:1.5}
+.count-comparison {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:.75rem 0}
+.recorded-answer {display:grid;grid-template-rows:1fr auto;gap:.3rem;border-top:1px solid var(--line);margin:0;padding-top:.45rem}
+.recorded-answer span {font-size:.9rem}
+.recorded-answer strong {font-size:2.5rem;font-weight:600;line-height:1;color:var(--text)}
+.checked-count {border-color:var(--accent)}.checked-count strong,.count-return samp {color:var(--accent)}
+.count-playground {border-top:1px solid var(--line);padding:.7rem 0}
+.count-playground summary {cursor:pointer;color:var(--accent);line-height:1.5}
 .python-followup p {font-size:.95rem;line-height:1.45}
 .python-followup pre {margin:.6rem 0;padding:.55rem .85rem;background:var(--bg);color:var(--text);border-radius:.35rem;white-space:pre-wrap;overflow-wrap:anywhere}
+.count-return {margin:.3rem 0}.count-return samp {font-weight:700}
 .count-citation {display:inline-block;text-underline-offset:.2em}
 .count-playground {margin-top:1rem}.count-playground .character-example {margin-top:.8rem}
 .count-positions {display:flex;max-width:22rem}

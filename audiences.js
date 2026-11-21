@@ -65,17 +65,17 @@ window.AUDIENCE_CONTENT = {
       "kind": "prose"
     },
     "5": {
-      "title": "How many r’s are in strawberry?",
-      "lead": "Count them yourself, then look at GPT‑4o’s first answer. What do you think happened when the same user asked it to use Python?",
+      "title": "Counting the r’s in strawberry",
+      "lead": "There are three lowercase r’s, at positions 3, 8 and 9. The recorded chat shows a first answer followed by a check using Python.",
       "points": [],
       "reading": [
-        "In a conversation recorded on November 3, 2024, GPT‑4o first answered 2. The user asked the same question about strawberry again and added “Use Python.” Python counted 3, and GPT‑4o gave that result to the user. Sebastian Krakowski published screenshots of the chat and of the code’s result in Figure 2 of his paper.",
-        "There is one r near the beginning and a pair near the end: st[r]awbe[r][r]y. A model can learn the spelling of a whole piece of text and sometimes answer directly. A program can check every character in turn. The exchange leaves open why the first answer was wrong. Open the separate browser counter and add another r to see that rule work on a new input."
+        "Strawberry has three lowercase r’s: st[r]awbe[r][r]y. Counting letters from 1, they appear at positions 3, 8 and 9. In a chat recorded on November 3, 2024, GPT‑4o first answered 2. The user asked the same question again and added “Use Python.” The program text.count(\"r\"), with text set to \"strawberry\", returned 3, and GPT‑4o gave that result. Sebastian Krakowski published the chat and code result in Figure 2 of his 2025 paper.",
+        "The result can be checked against the visible spelling. Writing code alone is not the same as running it: the recorded output shows that the count was executed. A model may also know the spelling and answer correctly without a tool. This exchange leaves open why the first answer was wrong and does not measure how often models miscount. The editable browser counter is a separate demonstration that checks a new input locally."
       ],
       "discussion": [
         "Suppose the assistant had shown the Python code but given no output. What would you still want to check?"
       ],
-      "notes": "Show the direct answer first. Give the audience a moment to find the three letters, then open the Python follow-up and trace the code from its input to its return value. The editable browser counter below is a separate demonstration.",
+      "notes": "Compare the two answers with the spelling: one r at position 3 and two more at positions 8 and 9. The displayed code counts lowercase r in the exact word. Krakowski (2025), Figure 2, records this GPT‑4o exchange from November 3, 2024. The browser counter is a separate demonstration. The published case does not explain why the initial answer was wrong.",
       "optional": "Try changing a lowercase r to uppercase R in the browser counter. The count drops by one because the check matches lowercase r exactly.",
       "kind": "prose"
     },
@@ -721,17 +721,17 @@ window.AUDIENCE_CONTENT = {
       "kind": "list"
     },
     "5": {
-      "title": "Direct prediction and tool execution on the same string",
-      "lead": "In a recorded GPT‑4o session, the follow-up preserves the target string and requests an executable operation. The tool trace lets us check the argument as well as the returned value.",
+      "title": "Checking a count against executed code",
+      "lead": "The tool trace exposes the exact input, counting operation and returned value. The marked positions provide an independent check of that result.",
       "points": [],
       "reading": [
-        "Krakowski’s Figure 2 shows a November 3, 2024 GPT‑4o chat. The direct count of lowercase r in strawberry was 2. In the same conversation the user repeated the request with “Use Python.” The analysis pane shows the binding text = \"strawberry\", the call text.count(\"r\"), and the returned integer 3. The assistant’s subsequent answer agrees with that return value.",
-        "The trace establishes the literal and operation used for the tool answer. It supplies no trace of the computation behind the first answer. A tokenization diagram can illustrate one representational difficulty, while attribution of a specific error requires a separate experiment. This one observed pair also supplies no estimate of error rates for other prompts or checkpoints."
+        "Krakowski’s Figure 2 (2025) shows a November 3, 2024 GPT‑4o chat. The direct count of lowercase r in strawberry was 2. In the same conversation the user repeated the request with “Use Python.” The analysis pane shows text = \"strawberry\", the call text.count(\"r\"), and the returned integer 3. The assistant’s subsequent answer agrees with that return value. The ground truth is visible in st[r]awbe[r][r]y: positions 3, 8 and 9, indexed from 1.",
+        "The trace establishes the literal and operation used for the tool answer. It supplies no trace of the computation behind the first answer and does not isolate tokenization as its cause. A tokenization diagram illustrates a representation. Causal attribution requires a separate experiment. This observed pair supplies no error-rate estimate for other prompts or checkpoints. The optional browser counter executes a separate local computation, rather than reproducing the historical Python session."
       ],
       "discussion": [
         "Which parts of the second answer can be audited from the tool trace? What would it take to attribute the first answer to tokenization?"
       ],
-      "notes": "Show the direct answer first. Give the audience a moment to find the three letters, then open the Python follow-up and trace the code from its input to its return value. The editable browser counter below is a separate demonstration.",
+      "notes": "Audit the literal, operation and returned value together: text = \"strawberry\", text.count(\"r\"), and output 3. Verify the three positions, counting from 1. Krakowski (2025), Figure 2, identifies the GPT‑4o conversation date as November 3, 2024. The visible trace supports the tool result but supplies no internal trace explaining the initial answer. The browser computation is independent of that historical session.",
       "optional": "The source identifies the model, date and visible exchange. It does not report a checkpoint snapshot, sampling settings or a multi-trial evaluation.",
       "kind": "prose"
     },

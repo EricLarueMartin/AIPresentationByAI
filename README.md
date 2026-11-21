@@ -2,7 +2,7 @@
 
 [Open the presentation on GitHub Pages](https://ericlaruemartin.github.io/AIPresentationByAI/)
 
-How do you tell whether an AI assistant has solved a problem? Follow a worked example from a request to fit decay data through the code, the residual plot and a revised model. Other sections cover prompting, tool use, local inference, training costs and what published evaluations can tell you.
+How do you tell whether an AI assistant has solved a problem? Try the [letter count on slide 5](https://ericlaruemartin.github.io/AIPresentationByAI/?route=all&audience=technical&view=present#5) or inspect the fitted lifetime, residuals and revised model in the [decay fit on slide 7](https://ericlaruemartin.github.io/AIPresentationByAI/?route=all&audience=technical&view=present#7). Other sections cover prompting, tool use, local inference, training costs and what published evaluations can tell you.
 
 ## Choose a route
 
