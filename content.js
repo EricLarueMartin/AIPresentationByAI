@@ -251,6 +251,11 @@ window.PRESENTATION = {
       "title": "Datta et al. — From Early Encoding to Late Suppression: Interpreting LLMs on Character Counting Tasks",
       "url": "https://aclanthology.org/2026.findings-aacl.70/",
       "year": "2026"
+    },
+    "strawberryChat": {
+      "title": "Sebastian Krakowski — Human-AI agency in the age of generative AI, Figure 2 (chat and Python output)",
+      "year": "2025",
+      "url": "https://doi.org/10.1016/j.infoandorg.2025.100560"
     }
   },
   "slides": [
@@ -374,14 +379,15 @@ window.PRESENTATION = {
     {
       "id": "5",
       "section": "How the model sees a task",
-      "title": "Why can a model miscount the r’s in strawberry?",
-      "eyebrow": "From tokens to letters",
-      "lead": "Answering from tokens takes two operations. The model has to recover the spelling inside each piece and keep a tally across the pieces. It can get either step right while missing the final count.",
+      "title": "How many r’s did GPT‑4o count in strawberry?",
+      "eyebrow": "One conversation, two methods",
+      "lead": "A user asked GPT‑4o to count the lowercase r’s in strawberry. After the first answer, the user repeated the question in the same chat and asked for Python.",
       "points": [],
       "visual": "characters",
-      "notes": "Ask for a prediction before revealing the character positions. Trace the first r, then the adjacent pair near the end. A model may answer correctly without a tool. Ask what evidence the audience has that a counting rule was actually applied.",
-      "optional": "To compare methods, give the same unfamiliar string to a model twice, once for a direct answer and once with an executable string counter. Confirm which literal the tool received and read its returned value. Using a familiar word alone makes recall hard to distinguish from counting.",
+      "notes": "Show the direct answer first. Give the audience a moment to find the three letters, then open the Python follow-up and trace the code from its input to its return value. The editable browser counter below is a separate demonstration.",
+      "optional": "Try changing a lowercase r to uppercase R in the browser counter. The count drops by one because the check matches lowercase r exactly.",
       "sources": [
+        "strawberryChat",
         "counting",
         "countEncoding",
         "tokenVocab"
@@ -389,11 +395,11 @@ window.PRESENTATION = {
       "evidence": "Practice",
       "seconds": 60,
       "reading": [
-        "In strawberry, the lowercase r occurs at positions 3, 8 and 9, counting from one. A subword tokenizer can put both final r’s inside the same token. The token ID identifies a piece of text. A language model can learn that piece’s spelling, but the ID supplies no explicit tally.",
-        "Fu and colleagues asked models to report the frequency of every letter across 10,000 words. Errors were associated with repeated letters even when the models identified which letters were present. One wrong answer in a video cannot identify the cause of that particular error. Here the browser runs a counter on the exact input. Add a fourth r and watch which result changes."
+        "On November 3, 2024, GPT‑4o answered 2 when asked how many times r occurs in strawberry. The user repeated the question and added “Use Python.” Figure 2 in Sebastian Krakowski’s paper shows the resulting Python execution. It set text to the same word, evaluated text.count(\"r\") and returned 3. GPT‑4o then reported 3.",
+        "You can trace the matches yourself: st[r]awbe[r][r]y. A subword can contain several letters, so identifying a token and tallying its characters are separate operations. This conversation demonstrates that changing the method changed the answer. It leaves open why the first answer was wrong."
       ],
       "discussion": [
-        "If a model spells a word correctly and still gives the wrong count, which part of the task might have failed?"
+        "What evidence shows that the second answer came from running the count, and what evidence would you need to explain the first error?"
       ],
       "kind": "prose"
     },

@@ -52,3 +52,15 @@ body[data-view=read] .text-slide .slide-grid {min-height:0}
 .character-example #count-spelling {font:1.6rem/1.6 Consolas,monospace;letter-spacing:.05em;overflow-wrap:anywhere;white-space:pre-wrap;min-height:1.6em}
 .character-example mark {background:var(--accent);color:var(--bg);border-radius:.08em;font-weight:bold}
 .character-example code {white-space:normal;overflow-wrap:anywhere;font-size:.84rem;color:var(--muted)}
+.recorded-count {margin:0;min-width:0}
+.recorded-count figcaption,.count-citation {font-size:.85rem;line-height:1.5;color:var(--muted)}
+.count-prompt {margin:.6rem 0;line-height:1.5}
+.recorded-answer {display:flex;align-items:center;gap:1rem;margin:.6rem 0 1rem}
+.recorded-answer strong {font-size:2.8rem;font-weight:600;line-height:1;color:var(--text)}
+.python-followup .recorded-answer strong {color:var(--accent)}
+.python-followup,.count-playground {border-top:1px solid var(--line);padding:.7rem 0}
+.python-followup summary,.count-playground summary {cursor:pointer;color:var(--accent);line-height:1.5}
+.python-followup p {font-size:.95rem;line-height:1.45}
+.python-followup pre {margin:.6rem 0;padding:.55rem .85rem;background:var(--bg);color:var(--text);border-radius:.35rem;white-space:pre-wrap;overflow-wrap:anywhere}
+.count-citation {display:inline-block;text-underline-offset:.2em}
+.count-playground {margin-top:1rem}.count-playground .character-example {margin-top:.8rem}

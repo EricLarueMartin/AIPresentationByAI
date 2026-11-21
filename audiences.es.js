@@ -67,18 +67,18 @@ window.AUDIENCE_ES = {
       "kind": "prose"
     },
     "5": {
-      "title": "Las tres r de «strawberry»",
-      "lead": "Reconocer una palabra no garantiza llevar bien la cuenta de sus letras. En «strawberry», las tres r están en las posiciones 3, 8 y 9, contando desde 1.",
+      "title": "Una respuesta equivocada y una herramienta útil",
+      "lead": "En una conversación publicada, GPT-4o respondió 2 al contar las r de «strawberry». La continuación muestra qué ocurrió cuando se le pidió usar Python.",
       "points": [],
       "reading": [
-        "«Strawberry» significa fresa en inglés. Escrita en minúsculas, «strawberry» tiene una r en la posición 3 y otras dos seguidas en las posiciones 8 y 9. Como vimos antes, el modelo suele recibir fragmentos de texto llamados tokens, que pueden contener varias letras. Puede aprender cómo se escribe una palabra y a veces contar sus letras directamente. Pero reconocerlas y llevar una cuenta exacta son trabajos distintos; las repeticiones pueden dificultar el recuento.",
-        "El panel muestra las letras y permite ejecutar un pequeño programa sobre la palabra escrita. Para la cadena exacta «strawberry», ese programa cuenta 3 r. Escribir el programa no basta para obtener el resultado: hay que ejecutarlo. Aquí el número procede del código que se ejecuta, no de consultar a una IA. Los tokens ayudan a entender la dificultad, aunque no explican por sí solos todos los posibles errores."
+        "Krakowski publicó en 2025 una conversación de ChatGPT con GPT-4o, fechada el 3 de noviembre de 2024 y reproducida en la figura 2 del artículo enlazado. El usuario preguntó cuántas r minúsculas hay en «strawberry», que significa fresa en inglés. GPT-4o respondió primero 2. En la misma conversación, el usuario repitió exactamente la pregunta y añadió la indicación de usar Python. El programa devolvió 3 y GPT-4o respondió después 3. La palabra contiene una r en la posición 3 y otras dos en las posiciones 8 y 9, contando desde 1.",
+        "La herramienta realizó un recuento sobre el texto exacto. Escribir un programa no basta: debe ejecutarse para obtener su resultado. Los modelos pueden aprender cómo se escriben las palabras y a veces contar bien directamente, aunque las letras repetidas pueden complicar la cuenta. Los tokens pueden contener varias letras, pero eso no demuestra la causa del error de esta conversación. El contador opcional de esta página es otro ejemplo, ejecutado en el navegador; no repite la conversación publicada. Aquí la lectura incluye también el desenlace que quien presenta puede revelar con un clic."
       ],
       "discussion": [
-        "¿Qué diferencia hay entre reconocer las letras de una palabra y llevar la cuenta de cuántas veces aparece una?"
+        "¿Qué aportó ejecutar el programa que no aportaba por sí sola la primera respuesta?"
       ],
-      "notes": "Después de los tokens, explique la diferencia entre reconocer y contar. Los fragmentos de entrada pueden contener varias letras, pero el modelo también puede aprender ortografía y acertar sin herramientas. En «strawberry» hay tres r: posiciones 3, 8 y 9 contando desde 1. Las dos r seguidas pueden complicar el recuento aunque se reconozcan. Muestre después el contador: ejecutar el código correcto sobre esa palabra produce 3; limitarse a escribirlo no produce el resultado.",
-      "optional": "La palabra puede editarse en el panel. El programa cuenta las r minúsculas de lo que esté escrito en ese momento. El ejemplo de tokens depende del tokenizador nombrado y de su entrada literal; no representa la división de todos los modelos.",
+      "notes": "Sitúe el ejemplo: Krakowski (2025), figura 2, documenta una conversación de GPT-4o del 3 de noviembre de 2024. Muestre primero la respuesta 2. Pulse para revelar la continuación: el usuario repitió exactamente la pregunta añadiendo que usara Python; Python devolvió 3 y GPT-4o respondió 3. Señale el enlace al original y distinga la secuencia publicada del contador opcional del navegador. Un modelo puede aprender ortografía y acertar sin herramientas. Los tokens y las letras repetidas ayudan a entender la dificultad, pero este caso no demuestra por qué se produjo el error.",
+      "optional": "El contador opcional permite editar la palabra y ejecutar un programa en el navegador. Para «strawberry» devuelve 3 r, en las posiciones 3, 8 y 9 contando desde 1. Es una demostración distinta del caso publicado; no llama a GPT-4o ni reproduce su sesión de Python.",
       "kind": "prose"
     },
     "6": {
@@ -723,18 +723,18 @@ window.AUDIENCE_ES = {
       "kind": "list"
     },
     "5": {
-      "title": "De la representación subléxica al recuento exacto",
-      "lead": "El conocimiento de la ortografía y la ejecución fiable de un recuento son capacidades distintas. La predicción directa no impone por sí misma un algoritmo de conteo.",
+      "title": "Respuesta generada y cálculo ejecutado",
+      "lead": "Un caso fechado permite distinguir dos rutas del mismo sistema: GPT-4o respondió primero 2; el seguimiento añadió Python como herramienta de recuento.",
       "points": [],
       "reading": [
-        "Una representación subléxica puede agrupar varias letras en un token. La correspondencia concreta depende del tokenizador y de la cadena literal, por lo que este ejemplo no presupone la segmentación de un modelo concreto. El entrenamiento puede enseñar relaciones ortográficas y permitir respuestas directas correctas. Sin embargo, identificar una secuencia de letras no garantiza acumular correctamente sus repeticiones. En «strawberry», el recuento exacto de r minúsculas es 3, con coincidencias en las posiciones 3, 8 y 9 contando desde 1. La tokenización no es por sí sola una causa demostrada de cualquier error.",
-        "La vía ejecutable cambia de representación: el programa recorre la cadena exacta y suma las coincidencias con r. Al ejecutarse correctamente sobre «strawberry», devuelve 3. Generar código fuente solo especifica una operación posible; no demuestra que se haya realizado ni devuelve automáticamente su resultado. El contador del panel ejecuta esa operación localmente, sin una llamada a un modelo. Así se distinguen la respuesta generada, el procedimiento descrito y el resultado efectivamente calculado."
+        "Krakowski (2025, figura 2) documenta una única conversación de ChatGPT con GPT-4o fechada el 3 de noviembre de 2024. El usuario pidió contar las r minúsculas de «strawberry» y recibió 2. Después repitió exactamente la pregunta añadiendo «Use Python». El registro muestra el recuento ejecutado por Python sobre esa cadena, su resultado 3 y la posterior respuesta 3 de GPT-4o. El original enlazado permite examinar tanto la conversación como la ejecución. La secuencia completa se conserva en la lectura y la impresión; en Presentar, el seguimiento puede revelarse con un clic.",
+        "Aquí cambia la ruta de cálculo, no se demuestra una mejora de los pesos ni se aísla la causa del primer error. Los tokens subléxicos pueden contener varias letras; el entrenamiento también puede aportar conocimiento ortográfico y permitir un recuento directo correcto. Reconocer las letras no garantiza acumular sus repeticiones sin error. Generar código solo especifica una operación; ejecutarlo correctamente sobre la cadena exacta produce el resultado. El contador opcional del navegador es una demostración independiente, no una repetición de la sesión histórica de Python. Para «strawberry» obtiene 3 r en las posiciones 3, 8 y 9 contando desde 1."
       ],
       "discussion": [
-        "¿Qué aporta recorrer explícitamente la cadena que no garantiza una respuesta directa, incluso cuando el modelo conoce su ortografía?"
+        "¿Qué evidencia distingue el cálculo ejecutado de la respuesta generada y qué afirmación causal no queda aislada por este caso?"
       ],
-      "notes": "Presente el problema como un cambio entre una representación subléxica aprendida y una operación explícita sobre caracteres. Un token puede contener varias letras y el modelo puede haber aprendido su ortografía. Las repeticiones aún exigen mantener un recuento y pueden provocar errores aunque las letras se reconozcan. No atribuya a un modelo una segmentación que no se haya mostrado. Para la cadena ASCII exacta «strawberry», las r están en 3, 8 y 9 contando desde 1. El código correcto ejecutado devuelve 3; generar el código sin ejecutarlo no constituye ese resultado.",
-      "optional": "En esta cadena ASCII, las posiciones de caracteres son inequívocas. El contador busca r minúsculas en la entrada editable; el ejemplo de tokenización se refiere al tokenizador nombrado y a su literal exacto. La visualización de tokens ilustra una representación, mientras que el contador ejecuta una operación distinta sobre los caracteres.",
+      "notes": "Atribuya el caso a Krakowski (2025), figura 2, y mantenga la fecha del ejemplo separada de la publicación: conversación de ChatGPT con GPT-4o del 3 de noviembre de 2024. Muestre 2 y pulse para revelar la misma pregunta con «Use Python», el resultado ejecutado 3 y la respuesta final 3. Es un registro publicado, no una llamada actual al modelo. El caso ilustra una ruta con herramienta; no establece una tasa de error ni identifica la tokenización como causa. Distinga el registro histórico del contador opcional, que ejecuta código local del navegador. El original está enlazado para examinarlo.",
+      "optional": "El contador opcional opera sobre la entrada editable del navegador y cuenta r minúsculas. Para la cadena ASCII «strawberry», el resultado es 3 y las posiciones son 3, 8 y 9 contando desde 1. Esa ejecución es independiente de la sesión histórica de Python. Cualquier ejemplo de tokenización se refiere al tokenizador nombrado y a su literal exacto, no a una segmentación universal ni a una prueba causal del error de GPT-4o.",
       "kind": "prose"
     },
     "6": {

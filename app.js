@@ -126,7 +126,22 @@ function slideBody(s) {
     return `<div class="authored-${s.kind}">${points.map(p=>`<p>${E(p)}</p>`).join('')}</div>`;
   }
 function characterExample(){
-    return `<div class="character-example">
+    const figureUrl=E(db.sources.strawberryChat.url);
+    return `<figure class="recorded-count">
+      <figcaption>GPT‑4o · ${L('November 3, 2024','3 de noviembre de 2024')}</figcaption>
+      <p class="count-prompt">${L('How many times does lowercase r occur in','¿Cuántas veces aparece la r minúscula en')} <code>strawberry</code>?</p>
+      <p class="recorded-answer"><strong>2</strong><span>${L('GPT‑4o’s first answer','Primera respuesta de GPT‑4o')}</span></p>
+      <details class="python-followup"${state.view==='present'?'':' open'}>
+        <summary>${L('Reveal the Python follow-up','Ver qué ocurrió al pedir Python')}</summary>
+        <p>${L('The user repeated the question and added “Use Python.”','El usuario repitió la pregunta y añadió «Use Python» (usa Python).')}</p>
+        <pre><code>text = "strawberry"
+count = text.count("r")
+count</code></pre>
+        <p class="recorded-answer"><strong>3</strong><span>${L('Python output. GPT‑4o then answered 3.','Resultado de Python. GPT‑4o respondió entonces que eran 3.')}</span></p>
+      </details>
+      <a class="count-citation" href="${figureUrl}" target="_blank" rel="noopener noreferrer">${L('Original screenshots · Krakowski (2025), Figure 2','Capturas originales · Krakowski (2025), figura 2')}</a>
+    </figure>
+    <details class="count-playground"><summary>${L('Try the browser counter on another word','Probar el contador del navegador con otra palabra')}</summary><div class="character-example">
       <label for="count-word">${L('Word to count','Palabra para el recuento')}</label>
       <input id="count-word" type="text" spellcheck="false" autocapitalize="none" autocomplete="off" value="strawberry">
       <div id="token-example"><span>${L('How o200k_base encodes this input','Cómo codifica o200k_base esta entrada')}</span>
@@ -138,7 +153,7 @@ function characterExample(){
         <output for="count-word" aria-live="polite"><b id="letter-result">3</b> ${L('lowercase r matches','coincidencias de r minúscula')}</output>
       </div>
       <code>[...word].filter(c =&gt; c === 'r').length</code>
-    </div>`;
+    </div></details>`;
   }
 function bindCharacterExample(){
     const input=$('count-word');
