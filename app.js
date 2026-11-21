@@ -20,7 +20,12 @@
         state.review=JSON.parse(saved)||{};
       } else {
         const legacy=JSON.parse(read('ai-talk-review','{}'))||{};
-        for(const [key,entry] of Object.entries(legacy)){
+        // Prefer the latest dated decision. In undated drafts, lettered IDs
+        // identify the later edition of the same topic.
+        const entries=Object.entries(legacy).sort(([a,x],[b,y])=>
+          (Date.parse(y?.updated)||0)-(Date.parse(x?.updated)||0) ||
+          Number(/\d[a-z]$/.test(b))-Number(/\d[a-z]$/.test(a)));
+        for(const [key,entry] of entries){
           const [prefix,after]=key.split(':');
           const oldId=after??prefix;
           const id=db.legacyReviews[oldId]??`previous-${oldId}`;
@@ -201,7 +206,21 @@ function standardVisual(s){
   $('previous').onclick=()=>step(-1);$('next').onclick=()=>step(1);
   document.querySelectorAll('[data-review]').forEach(b=>b.onclick=()=>{state.review[reviewKey()]={...(state.review[reviewKey()]||{}),decision:b.dataset.review,updated:new Date().toISOString()};persistReview();reviewUI();outline();});
   $('review-note').oninput=()=>{state.review[reviewKey()]={...(state.review[reviewKey()]||{}),note:$('review-note').value,updated:new Date().toISOString()};persistReview();};
-  $('export-review').onclick=()=>download('ai-presentation-review.json',JSON.stringify({version:edition,audience:state.audience,route:state.route,exported:new Date().toISOString(),slides:Object.entries(state.review).map(([key,r])=>{const parts=key.split(':'),audience=parts.length>1?parts[0]:'technical',id=parts.at(-1);return {id,audience,title:map.has(id)?tr(map.get(id),audience).title:('Previous draft section '+id),...r};})},null,2));
+  $('export-review').onclick=()=>{
+    const rows=Object.entries(state.review).map(([key,record])=>{
+      const archived=key.startsWith('previous-');
+      const originalKey=archived?key.slice('previous-'.length):key;
+      const parts=originalKey.split(':');
+      const audience=parts.length>1?parts[0]:'technical';
+      const oldId=parts.at(-1);
+      const id=archived?(db.legacyReviews[oldId]||oldId):oldId;
+      const title=map.has(id)?tr(map.get(id),audience).title:('Previous draft section '+id);
+      return {...record,id,audience,title,...(archived?{previousReviewKey:originalKey}:{})};
+    });
+    download('ai-presentation-review.json',JSON.stringify({
+      version:edition,audience:state.audience,route:state.route,exported:new Date().toISOString(),slides:rows
+    },null,2));
+  };
   $('all-slides').onclick=()=>{state.route='all';state.view='read';save('ai-talk-view',state.view);render();};
   $('help-toggle').onclick=()=>$('help-dialog').showModal();$('help-close').onclick=()=>$('help-dialog').close();
   $('fullscreen-button').onclick=async()=>{try{if(document.fullscreenElement)await document.exitFullscreen();else await document.documentElement.requestFullscreen();}catch{$('announcer').textContent=L('Full screen is unavailable in this browser.','Pantalla completa no disponible.');}};
