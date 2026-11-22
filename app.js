@@ -3,12 +3,16 @@
   'use strict';
   const $=id=>document.getElementById(id), E=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const db=window.PRESENTATION;
-  const edition='Edition 7 · 21 Nov 2026';
+  const edition='Edition 8 · 21 Nov 2026';
   if(!db?.slides?.length){$('slide').innerHTML='<h1>Presentation content could not load</h1><p>Keep index.html, content.js, styles.css and app.js in the same directory.</p>';return;}
-  const map=new Map(db.slides.map(s=>[String(s.id),s]));
+  const starter=window.STARTER_GUIDE||{lessons:[],sources:{}};
+  const sourcesById={...db.sources,...starter.sources};
+  const map=new Map([...db.slides,...starter.lessons].map(s=>[s.id,s]));
   // Topic IDs stay attached to notes, translations and pre-existing links.
   // Display numbers follow the order of topics in the current guide.
-  const numberByTopic=new Map(db.slides.map((slide,index)=>[slide.id,index+1]));
+  const numberByTopic=new Map([db.slides,starter.lessons].flatMap(group=>group.map((slide,index)=>[slide.id,index+1])));
+  const starterIds=new Set(starter.lessons.map(lesson=>lesson.id));
+  const topicFragment=id=>starterIds.has(id)?id:'slide-'+numberByTopic.get(id);
   function resolveId(fragment){
     const numbered=/^slide-([1-9][0-9]*)$/.exec(fragment);
     if(numbered) return db.slides[Number(numbered[1])-1]?.id;
@@ -18,10 +22,16 @@
   }
   const read=(k,d)=>{try{return localStorage.getItem(k)??d}catch{return d}};
   const save=(k,v)=>{try{localStorage.setItem(k,v);return true}catch{return false}};
-  const state={route:new URLSearchParams(location.search).get('route')||'all',id:resolveId(decodeURIComponent(location.hash.slice(1))||'1'),view:new URLSearchParams(location.search).get('view')||read('ai-talk-view','read'),audience:new URLSearchParams(location.search).get('audience')||read('ai-talk-audience','technical'),lang:read('ai-talk-language','en'),review:{},all:false};
+  const params=new URLSearchParams(location.search);
+  const state={route:params.get('route')||'all',id:resolveId(decodeURIComponent(location.hash.slice(1))),view:params.get('view')||read('ai-talk-view','read'),audience:params.get('audience')||read('ai-talk-audience','technical'),lang:read('ai-talk-language','en'),review:{}};
   if(!db.routes[state.route]&&state.route!=='all')state.route='30';
-  if(!['general','technical','engineer'].includes(state.audience))state.audience='technical';
-  if(!map.has(state.id))state.id=db.slides[0].id;
+  if(!['starter','general','technical','engineer'].includes(state.audience))state.audience='technical';
+  if(!starter.lessons.length){
+    $('audience').querySelector('[value="starter"]').disabled=true;
+    if(state.audience==='starter')state.audience='technical';
+  }
+  if(starterIds.has(state.id))state.audience='starter';
+  else if(map.has(state.id)&&state.audience==='starter'&&!params.has('audience'))state.audience='technical';
   if(!['read','present','discuss'].includes(state.view))state.view='read';
   try {
       const saved=read('ai-talk-review-numbered',null);
@@ -47,26 +57,47 @@
     } catch {}
   if(!['en','es'].includes(state.lang))state.lang='en';
   const L=(en,es)=>state.lang==='es'?es:en;
-  const tr=(s,audience=state.audience)=>({...s,...(state.lang==='es'?window.PRESENTATION_ES?.slides?.[s.id]:{}),...(window.AUDIENCE_CONTENT?.[audience]?.[s.id]||{}),...(state.lang==='es'?window.AUDIENCE_ES?.[audience]?.[s.id]:{}),id:s.id,number:numberByTopic.get(s.id),visual:s.visual,sources:s.sources});
-  const routeTable=()=>window.AUDIENCE_ROUTES?.[state.audience]||db.routes;
-  const routeSeconds=()=>window.AUDIENCE_ROUTE_SECONDS?.[state.audience]||db.routeSeconds;
+  function tr(s,audience=state.audience){
+    if(starterIds.has(s.id))return {...s,...(state.lang==='es'?window.STARTER_ES?.[s.id]:{}),number:numberByTopic.get(s.id)};
+    return {...s,...(state.lang==='es'?window.PRESENTATION_ES?.slides?.[s.id]:{}),...(window.AUDIENCE_CONTENT?.[audience]?.[s.id]||{}),...(state.lang==='es'?window.AUDIENCE_ES?.[audience]?.[s.id]:{}),id:s.id,number:numberByTopic.get(s.id),visual:s.visual,sources:s.sources};
+  }
+  const routeTable=()=>state.audience==='starter'?starter.routes:(window.AUDIENCE_ROUTES?.[state.audience]||db.routes);
+  const routeSeconds=()=>state.audience==='starter'?starter.routeSeconds:(window.AUDIENCE_ROUTE_SECONDS?.[state.audience]||db.routeSeconds);
   const reviewKey=(id=state.id)=>state.audience==='technical'?id:state.audience+':'+id;
-  const audienceLabels={en:{general:'General audience',technical:'Scientists & engineers',engineer:'AI engineers'},es:{general:'Público general',technical:'Ciencia e ingeniería',engineer:'Ingeniería de IA'}};
-  const audienceDescriptions={en:{general:'No AI background assumed. Familiar examples and terms explained as they appear.',technical:'Scientific literacy assumed. AI concepts connect to experiments, tools and engineering decisions.',engineer:'AI background assumed. Focus on implementation choices, resource tradeoffs and evaluation design.'},es:{general:'Sin conocimientos previos de IA. Ejemplos cotidianos y términos explicados al aparecer.',technical:'Supone conocimientos científicos. Los conceptos de IA se conectan con experimentos, herramientas y decisiones de ingeniería.',engineer:'Supone conocimientos de IA. Se centra en implementación, recursos y diseño de evaluaciones.'}};
+  const audienceLabels={en:{starter:'Getting started',general:'General audience',technical:'Scientists & engineers',engineer:'AI engineers'},es:{starter:'Primeros pasos',general:'Público general',technical:'Ciencia e ingeniería',engineer:'Ingeniería de IA'}};
+  const audienceDescriptions={en:{starter:'A hands-on tutorial. Explore chat, workspaces and the command line with five measurements you can check yourself.',general:'No AI background assumed. Familiar examples and terms explained as they appear.',technical:'Scientific literacy assumed. AI concepts connect to experiments, tools and engineering decisions.',engineer:'AI background assumed. Focus on implementation choices, resource tradeoffs and evaluation design.'},es:{starter:'Un tutorial práctico. Explora el chat, los espacios de trabajo y la línea de comandos con cinco mediciones que puedes comprobar.',general:'Sin conocimientos previos de IA. Ejemplos cotidianos y términos explicados al aparecer.',technical:'Supone conocimientos científicos. Los conceptos de IA se conectan con experimentos, herramientas y decisiones de ingeniería.',engineer:'Supone conocimientos de IA. Se centra en implementación, recursos y diseño de evaluaciones.'}};
   const audienceLabel=()=>audienceLabels[state.lang][state.audience];
-  const slides=()=>state.route==='all'?db.slides.map(s=>String(s.id)):(routeTable()[state.route]||routeTable()['30']).map(String);
-  if(!slides().includes(state.id))state.route='all';
+  const isTutorial=()=>state.audience==='starter';
+  const sectionLabel=()=>isTutorial()?L('Lesson','Lección'):L('Section','Sección');
+  const slideLabel=()=>isTutorial()?L('Lesson','Lección'):text[state.lang].slide;
+  const fullGuide=()=>state.audience==='starter'?starter.lessons:db.slides;
+  const slides=()=>state.route==='all'?fullGuide().map(s=>s.id):routeTable()[state.route];
+  if(!fullGuide().some(s=>s.id===state.id))state.id=slides()[0];
+  else if(!slides().includes(state.id))state.route='all';
   const card=(title,body='',accent=false,n='')=>`<div class="diagram-card${accent?' accent':''}">${n?`<span class="step-num">${E(n)}</span>`:''}<b>${E(title)}</b>${body?`<small>${E(body)}</small>`:''}</div>`;
   const cap=s=>`<p class="visual-caption">${E(s)}</p>`;
   const caption=(en,es)=>cap(L(en,es));
   const table=(headers,rows)=>`<table><thead><tr>${headers.map(x=>`<th scope="col">${E(x)}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((x,i)=>i?`<td>${E(x)}</td>`:`<th scope="row">${E(x)}</th>`).join('')}</tr>`).join('')}</tbody></table>`;
   const matrix=(small=false)=>`<div class="matrix${small?' small':''}" aria-hidden="true">${'<span></span>'.repeat(small?8:16)}</div>`;
-  const text={en:{brand:'AT THE WORKBENCH',draft:'REVIEW EDITION 07',outline:'YOUR ROUTE',length:'Presentation length',descs:{3:'A focused three-minute route.',10:'A short route with a worked example.',30:'25 minutes + 5 minutes for discussion.',60:'50 minutes + 10 minutes for discussion.',all:'Read the complete guide, including optional depth.'},routes:{3:'3 min · Lightning',10:'10 min · Essentials',30:'30 min · The field guide',60:'60 min · A closer look',all:'Full guide · All sections'},notes:'Presenter notes',sources:'Sources',review:'Review this slide',print:'Print route',full:'Full screen',prev:'Previous',next:'Next',up:'UP NEXT',end:'End of this route',optional:'Go deeper',scope:'Sources & scope',reviewH:'Your review',reviewExplain:'Decisions are saved in this browser. Marking a slide for removal keeps it in this draft until you approve an edit.',note:'What should change?',export:'Export all review notes',saved:'Saved locally',failed:'Browser storage unavailable. Export your notes to keep them.',all:'Read the full guide',help:'Keyboard shortcuts ?',foot:'AI-assisted editorial draft · Sources and scope accompany each section · November 2026',start:'Start timer',pause:'Pause',themeLight:'Switch to light mode',themeDark:'Switch to dark mode',keep:'Keep',revise:'Revise',remove:'Propose removal',clear:'Clear decision',slide:'Slide',target:'Target',checked:'Source scope: studies support their stated tasks and conditions; a benchmark is not a guarantee for your task.',none:'This slide is a suggested practice or part of the presentation’s own workflow.',private:'Aggregate historical project result; no public report supplied.',helpH:'Keyboard shortcuts',helpD:['Previous / next slide','First / last slide','Show / hide outline','Presenter notes','Switch theme','This guide','Close this guide']},es:{brand:'EN EL BANCO DE TRABAJO',draft:'EDICIÓN 07',outline:'TU RECORRIDO',length:'Duración de la presentación',descs:{3:'Un recorrido centrado de tres minutos.',10:'Un recorrido breve con un ejemplo resuelto.',30:'25 minutos + 5 de conversación.',60:'50 minutos + 10 de conversación.',all:'Lea la guía completa, con contenido adicional.'},routes:{3:'3 min · Charla breve',10:'10 min · Lo esencial',30:'30 min · Guía práctica',60:'60 min · Con más detalle',all:'Guía completa · Todas las secciones'},notes:'Notas del ponente',sources:'Fuentes',review:'Revisar diapositiva',print:'Imprimir recorrido',full:'Pantalla completa',prev:'Anterior',next:'Siguiente',up:'A CONTINUACIÓN',end:'Fin de este recorrido',optional:'Más detalle',scope:'Fuentes y alcance',reviewH:'Tu revisión',reviewExplain:'Las decisiones se guardan en este navegador. Proponer una eliminación conserva la diapositiva hasta aprobar la edición.',note:'¿Qué debería cambiar?',export:'Exportar todas las notas',saved:'Guardado localmente',failed:'Almacenamiento no disponible. Exporta tus notas para conservarlas.',all:'Leer la guía completa',help:'Atajos de teclado ?',foot:'Borrador editorial asistido por IA · Fuentes y alcance en cada sección · Noviembre de 2026',start:'Iniciar cronómetro',pause:'Pausar',themeLight:'Cambiar al modo claro',themeDark:'Cambiar al modo oscuro',keep:'Conservar',revise:'Revisar',remove:'Proponer eliminación',clear:'Borrar decisión',slide:'Diapositiva',target:'Objetivo',checked:'Alcance: los estudios respaldan sus tareas y condiciones; una prueba no garantiza el resultado en tu tarea.',none:'Esta diapositiva propone una práctica o describe el proceso de esta presentación.',private:'Resultado histórico agregado del proyecto; no hay informe público disponible.',helpH:'Atajos de teclado',helpD:['Diapositiva anterior / siguiente','Primera / última diapositiva','Mostrar / ocultar índice','Notas del ponente','Cambiar tema','Esta guía','Cerrar esta guía']}};
+  const text={en:{brand:'AT THE WORKBENCH',draft:'REVIEW EDITION 08',outline:'YOUR ROUTE',length:'Presentation length',descs:{3:'A focused three-minute route.',10:'A short route with a worked example.',30:'25 minutes + 5 minutes for discussion.',60:'50 minutes + 10 minutes for discussion.',all:'Read the complete guide, including optional depth.'},routes:{3:'3 min · Lightning',10:'10 min · Essentials',30:'30 min · The field guide',60:'60 min · A closer look',all:'Full guide · All sections'},notes:'Presenter notes',sources:'Sources',review:'Review this slide',print:'Print route',full:'Full screen',prev:'Previous',next:'Next',up:'UP NEXT',end:'End of this route',optional:'Go deeper',scope:'Sources & scope',reviewH:'Your review',reviewExplain:'Decisions are saved in this browser. Marking a slide for removal keeps it in this draft until you approve an edit.',note:'What should change?',export:'Export all review notes',saved:'Saved locally',failed:'Browser storage unavailable. Export your notes to keep them.',all:'Read the full guide',help:'Keyboard shortcuts ?',foot:'AI-assisted editorial draft · Sources and scope accompany each section · November 2026',start:'Start timer',pause:'Pause',themeLight:'Switch to light mode',themeDark:'Switch to dark mode',keep:'Keep',revise:'Revise',remove:'Propose removal',clear:'Clear decision',slide:'Slide',target:'Target',checked:'Source scope: studies support their stated tasks and conditions; a benchmark is not a guarantee for your task.',none:'This slide is a suggested practice or part of the presentation’s own workflow.',private:'Aggregate historical project result; no public report supplied.',helpH:'Keyboard shortcuts',helpD:['Previous / next slide','First / last slide','Show / hide outline','Presenter notes','Switch theme','This guide','Close this guide']},es:{brand:'EN EL BANCO DE TRABAJO',draft:'EDICIÓN 08',outline:'TU RECORRIDO',length:'Duración de la presentación',descs:{3:'Un recorrido centrado de tres minutos.',10:'Un recorrido breve con un ejemplo resuelto.',30:'25 minutos + 5 de conversación.',60:'50 minutos + 10 de conversación.',all:'Lea la guía completa, con contenido adicional.'},routes:{3:'3 min · Charla breve',10:'10 min · Lo esencial',30:'30 min · Guía práctica',60:'60 min · Con más detalle',all:'Guía completa · Todas las secciones'},notes:'Notas del ponente',sources:'Fuentes',review:'Revisar diapositiva',print:'Imprimir recorrido',full:'Pantalla completa',prev:'Anterior',next:'Siguiente',up:'A CONTINUACIÓN',end:'Fin de este recorrido',optional:'Más detalle',scope:'Fuentes y alcance',reviewH:'Tu revisión',reviewExplain:'Las decisiones se guardan en este navegador. Proponer una eliminación conserva la diapositiva hasta aprobar la edición.',note:'¿Qué debería cambiar?',export:'Exportar todas las notas',saved:'Guardado localmente',failed:'Almacenamiento no disponible. Exporta tus notas para conservarlas.',all:'Leer la guía completa',help:'Atajos de teclado ?',foot:'Borrador editorial asistido por IA · Fuentes y alcance en cada sección · Noviembre de 2026',start:'Iniciar cronómetro',pause:'Pausar',themeLight:'Cambiar al modo claro',themeDark:'Cambiar al modo oscuro',keep:'Conservar',revise:'Revisar',remove:'Proponer eliminación',clear:'Borrar decisión',slide:'Diapositiva',target:'Objetivo',checked:'Alcance: los estudios respaldan sus tareas y condiciones; una prueba no garantiza el resultado en tu tarea.',none:'Esta diapositiva propone una práctica o describe el proceso de esta presentación.',private:'Resultado histórico agregado del proyecto; no hay informe público disponible.',helpH:'Atajos de teclado',helpD:['Diapositiva anterior / siguiente','Primera / última diapositiva','Mostrar / ocultar índice','Notas del ponente','Cambiar tema','Esta guía','Cerrar esta guía']}};
   let timerStart=0,timerElapsed=0,reviewPersisted=true;
-  function ui(){const t=text[state.lang];$('previous').setAttribute('aria-label',t.prev);$('next').setAttribute('aria-label',t.next);$('language-label').textContent=L('Language','Idioma');$('outline-toggle').setAttribute('aria-label',L('Show or hide outline','Mostrar u ocultar índice'));$('help-close').setAttribute('aria-label',L('Close','Cerrar')); document.documentElement.lang=state.lang;$('language').value=state.lang;$('brand-name').textContent=t.brand;$('draft-label').textContent=t.draft;$('outline-label').textContent=t.outline;$('route-label').textContent=t.length;for(const o of $('route').options)o.textContent=t.routes[o.value];$('route-description').textContent=t.descs[state.route];$('audience-label').textContent=L('Knowledge level','Nivel de conocimientos');$('audience').value=state.audience;for(const o of $('audience').options)o.textContent=audienceLabels[state.lang][o.value];$('audience-description').textContent=L('Choose level and length independently.','Elija el nivel y la duración por separado.');$('audience-name').textContent=audienceLabel();$('audience-context').textContent=audienceDescriptions[state.lang][state.audience];$('route-summary').textContent=(state.route==='all'?L('Full guide','Guía completa'):state.route+' min')+' · '+slides().length+L(' sections',' secciones');document.body.dataset.audience=state.audience;['notes','sources','review'].forEach(x=>$(`${x}-toggle`).textContent=t[x]);$('print-button').textContent=t.print;$('fullscreen-button').textContent=t.full;$('previous').querySelector('span').textContent=t.prev;$('next').querySelector('span').textContent=t.next;$('notes-heading').textContent=t.notes;$('sources-heading').textContent=t.scope;$('review-heading').textContent=t.reviewH;$('review-explainer').textContent=t.reviewExplain;$('review-note-label').textContent=t.note;$('export-review').textContent=t.export;$('optional-label').textContent=t.optional;$('all-slides').textContent=t.all;$('help-toggle').textContent=t.help;$('help-heading').textContent=t.helpH;$('page-foot').textContent=t.foot;$('next-label').textContent=t.up;$('notes-next-label').textContent=t.up;['keep','revise','remove',''].forEach(x=>document.querySelector(`[data-review="${x}"]`).textContent=t[x||'clear']);document.querySelectorAll('#help-dialog dd').forEach((el,i)=>el.textContent=t.helpD[i]);$('timer-toggle').textContent=timerStart?t.pause:t.start;themeLabel();}
+  function routeDescription(){
+    if(!isTutorial())return text[state.lang].descs[state.route];
+    const descriptions={
+      3:L('Tour browser chat, the workspace, the terminal and media tools.','Un vistazo al chat, el espacio de trabajo, la terminal y las herramientas multimedia.'),
+      10:L('Follow one worked example across interfaces.','Sigue un ejemplo resuelto en varias interfaces.'),
+      30:L('Guided practice with the sample data · 25 minutes + 5 for discussion.','Práctica guiada con los datos de ejemplo · 25 minutos + 5 de debate.'),
+      60:L('Hands-on lab with time to rerun, compare and discuss · 50 + 10 minutes.','Taller para ejecutar, comparar y debatir · 50 + 10 minutos.'),
+      all:L('Work through the lessons at your own pace.','Sigue las lecciones a tu ritmo.')
+    };
+    return descriptions[state.route];
+  }
+  function ui(){const t=text[state.lang];$('previous').setAttribute('aria-label',t.prev);$('next').setAttribute('aria-label',t.next);$('language-label').textContent=L('Language','Idioma');$('outline-toggle').setAttribute('aria-label',L('Show or hide outline','Mostrar u ocultar índice'));$('help-close').setAttribute('aria-label',L('Close','Cerrar')); document.documentElement.lang=state.lang;$('language').value=state.lang;$('brand-name').textContent=t.brand;$('draft-label').textContent=t.draft;$('outline-label').textContent=t.outline;$('route-label').textContent=t.length;for(const o of $('route').options)o.textContent=isTutorial()&&o.value==='all'?L('Full tutorial · All lessons','Tutorial completo · Todas las lecciones'):t.routes[o.value];$('route-description').textContent=routeDescription();$('audience-label').textContent=L('Knowledge level','Nivel de conocimientos');$('audience').value=state.audience;for(const o of $('audience').options)o.textContent=audienceLabels[state.lang][o.value];$('audience-description').textContent=L('Choose level and length independently.','Elija el nivel y la duración por separado.');$('audience-name').textContent=audienceLabel();$('audience-context').textContent=audienceDescriptions[state.lang][state.audience];$('route-summary').textContent=(state.route==='all'?(isTutorial()?L('Full tutorial','Tutorial completo'):L('Full guide','Guía completa')):state.route+' min')+' · '+slides().length+(isTutorial()?L(' lessons',' lecciones'):L(' sections',' secciones'));document.body.dataset.audience=state.audience;['notes','sources','review'].forEach(x=>$(`${x}-toggle`).textContent=t[x]);$('print-button').textContent=t.print;$('fullscreen-button').textContent=t.full;$('previous').querySelector('span').textContent=t.prev;$('next').querySelector('span').textContent=t.next;$('notes-heading').textContent=t.notes;$('sources-heading').textContent=t.scope;$('review-heading').textContent=t.reviewH;$('review-explainer').textContent=t.reviewExplain;$('review-note-label').textContent=t.note;$('export-review').textContent=t.export;$('optional-label').textContent=t.optional;$('all-slides').textContent=isTutorial()?L('Read the full tutorial','Leer el tutorial completo'):t.all;$('brand-home').setAttribute('href','#'+topicFragment(fullGuide()[0].id));$('help-toggle').textContent=t.help;$('help-heading').textContent=t.helpH;$('page-foot').textContent=t.foot;$('next-label').textContent=t.up;$('notes-next-label').textContent=t.up;['keep','revise','remove',''].forEach(x=>document.querySelector(`[data-review="${x}"]`).textContent=t[x||'clear']);document.querySelectorAll('#help-dialog dd').forEach((el,i)=>el.textContent=t.helpD[i]);$('timer-toggle').textContent=timerStart?t.pause:t.start;themeLabel();}
 function visual(s) {
     const V = window.PresentationVisuals;
     switch (s.visual) {
+      case 'tutorial-chooser': return window.TutorialTools.render(state.lang);
+      case 'tutorial': return s.mediaRoutes?mediaExamples(s.mediaRoutes):'';
       case 'worked-example':
         for(const examples of [window.WorkflowExamples,window.TrainingExamples,window.FieldExamples]){
           const figure=examples?.render(s.id,state.lang,state.audience);
@@ -140,6 +171,31 @@ function slideBody(s) {
     }
     return `<div class="authored-${s.kind}">${points.map(p=>`<p>${E(p)}</p>`).join('')}</div>`;
   }
+  function lessonExample(s){
+    if(!starterIds.has(s.id))return '';
+    function exampleFigure(example,code=false){
+      if(!example)return '';
+      const download=code?`<p class="lesson-download"><a href="data:text/plain;charset=utf-8,${encodeURIComponent(example.text+'\n')}" download="check_cooling.py">${L('Download check_cooling.py','Descargar check_cooling.py')}</a></p>`:'';
+      return `<figure class="lesson-example${code?' code':''}"><figcaption>${E(example.label)}</figcaption><pre>${E(example.text)}</pre>${download}<p><strong>${L('Check your result','Comprueba el resultado')}</strong> ${E(example.check)}</p></figure>`;
+    }
+    const sample=s.sampleFile?`<p class="lesson-download"><a href="cooling.csv" download="cooling.csv">${L('Download cooling.csv','Descargar cooling.csv')}</a> · ${L('5 synthetic measurements','5 mediciones sintéticas')}</p>`:'';
+    const setupLabels={
+      tutorialChatStart:L('How file analysis works in ChatGPT','Cómo funciona el análisis de archivos en ChatGPT'),
+      tutorialWorkspaceStart:L('Try a workspace agent in VS Code','Probar un agente en el espacio de trabajo de VS Code'),
+      tutorialCLIStart:L('How to start a Claude Code terminal session','Cómo iniciar una sesión de Claude Code en la terminal')
+    };
+    const setupSource=s.sources.find(key=>setupLabels[key]);
+    const setup=setupSource?`<p class="lesson-setup"><a href="${E(sourcesById[setupSource].url)}" target="_blank" rel="noopener noreferrer">${E(setupLabels[setupSource])}</a></p>`:'';
+    return setup+sample+exampleFigure(s.example,s.id==='start-cli')+exampleFigure(s.agentExample);
+  }
+  function mediaExamples(routes,print=false){
+    const rows=routes.map(({input,output,use,check},index)=>{
+      const path=`${E(input)} <span aria-hidden="true">→</span><span class="sr-only"> ${L('to','a')} </span> ${E(output)}`;
+      const body=`<p>${E(use)}</p><p><strong>${L('What to check','Qué comprobar')}</strong> ${E(check)}</p>`;
+      return print?`<section><h3>${path}</h3>${body}</section>`:`<details name="media-choice"${index===0?' open':''}><summary>${path}</summary>${body}</details>`;
+    }).join('');
+    return `<figure class="media-examples"><figcaption>${L('Choose an input and output','Elige una entrada y una salida')}</figcaption>${rows}</figure>`;
+  }
 const bareWordEncodings=[["cl100k_base",["spect","ro","scopy"],[68182,299,51856]],["o200k_base",["spect","roscopy"],[148686,90805]]];
 function tokenFigure(){
     return `<figure class="token-compare"><figcaption>${L('One scientific word, different token counts','Un término científico, distintos recuentos de tokens')} <code>"spectroscopy"</code></figcaption>
@@ -172,7 +228,7 @@ function standardVisual(s){
   function renderReader(){
     const s=tr(map.get(state.id)),v=state.view,root=$('reader-content');
     document.body.dataset.view=v;
-    if(v!=='present'){$('slide-counter').textContent=L('Section ','Sección ')+s.number+' · '+(slides().indexOf(state.id)+1)+' / '+slides().length;$('slide').querySelector('.slide-id').textContent=L('Section ','Sección ')+s.number;$('review-toggle').textContent=L('Review this section','Revisar esta sección');$('print-button').textContent=L('Print reading guide','Imprimir la guía');}
+    if(v!=='present'){$('slide-counter').textContent=sectionLabel()+' '+s.number+' · '+(slides().indexOf(state.id)+1)+' / '+slides().length;$('slide').querySelector('.slide-id').textContent=sectionLabel()+' '+s.number;$('review-toggle').textContent=L('Review this section','Revisar esta sección');$('print-button').textContent=L('Print reading guide','Imprimir la guía');}
     const labels={read:L('Read','Leer'),present:L('Present','Presentar'),discuss:L('Discuss','Debatir')};
     document.querySelectorAll('#view-modes [data-view]').forEach(b=>{b.textContent=labels[b.dataset.view];b.setAttribute('aria-pressed',String(v===b.dataset.view));});
     $('view-label').textContent=L('FORMAT','FORMATO');
@@ -181,13 +237,16 @@ function standardVisual(s){
     const prose=(s.reading||[s.notes]).map(p=>'<p>'+E(p)+'</p>').join('');
     const questions='<ol class="discussion-questions">'+(s.discussion||[]).map(q=>'<li>'+E(q)+'</li>').join('')+'</ol>';
     root.innerHTML=v==='discuss'?'<section class="discussion-block"><h2>'+L('Questions for discussion','Preguntas para debatir')+'</h2>'+questions+'</section><details class="reading-reference"><summary>'+L('Reference explanation','Explicación de referencia')+'</summary><div class="reader-prose">'+prose+'</div></details>':'<div class="reader-prose"><h2>'+L('Explanation','Explicación')+'</h2>'+prose+'</div><details class="reading-reference"><summary>'+L('Questions for discussion','Preguntas para debatir')+'</summary>'+questions+'</details>';
+    if(isTutorial()&&v!=='present'&&s.optional){
+      root.insertAdjacentHTML('beforeend',`<details class="reading-reference"><summary>${E(text[state.lang].optional)}</summary><p>${E(s.optional)}</p></details>`);
+    }
     $('notes-toggle').hidden=v!=='present';
     if(v!=='present'){$('notes-panel').hidden=true;$('notes-toggle').setAttribute('aria-expanded','false');}
   }
   function render(){renderSlide();renderReader();}
-  function sources(s){const t=text[state.lang];$('source-scope').textContent=t.checked;$('source-list').innerHTML=(s.sources||[]).map(k=>{const src=db.sources[k];if(!src)return `<li>${E(k)}</li>`;return `<li>${src.url?`<a href="${E(src.url)}" target="_blank" rel="noopener noreferrer">${E(src.title)}</a>`:E(src.title)}${src.year?` <small>${E(src.year)}</small>`:''}${!src.url?`<p>${E(t.private)}</p>`:''}</li>`}).join('')||`<li>${E(t.none)}</li>`;}
+  function sources(s){const t=text[state.lang];$('source-scope').textContent=isTutorial()?L('Documentation for the interfaces and capabilities used in this lesson.','Documentación de las interfaces y funciones de esta lección.'):t.checked;$('source-list').innerHTML=(s.sources||[]).map(k=>{const src=sourcesById[k];if(!src)return `<li>${E(k)}</li>`;return `<li>${src.url?`<a href="${E(src.url)}" target="_blank" rel="noopener noreferrer">${E(src.title)}</a>`:E(src.title)}${src.year?` <small>${E(src.year)}</small>`:''}${!src.url?`<p>${E(t.private)}</p>`:''}</li>`}).join('')||`<li>${E(t.none)}</li>`;}
   function outline(){let last='';$('slide-list').innerHTML=slides().map(id=>{const s=tr(map.get(id)),head=s.section!==last?`<h2 class="nav-section">${E(s.section)}</h2>`:'';last=s.section;return head+`<button class="slide-link" data-id="${E(id)}" aria-current="${state.id===id}"><span class="id">${s.number}</span><span>${E(s.title)}</span>${state.review[reviewKey(id)]?.decision?'<span class="review-dot" aria-label="Reviewed">•</span>':''}</button>`}).join('');$('route').value=state.route;}
-  function url(){try{const u=new URL(location.href);u.searchParams.set('route',state.route);u.searchParams.set('view',state.view);u.searchParams.set('audience',state.audience);u.hash='slide-'+numberByTopic.get(state.id);history.replaceState({},'',u)}catch{}const list=$('slide-list'),active=list.querySelector('[aria-current="true"]');if(active){const a=active.getBoundingClientRect(),b=list.getBoundingClientRect();if(a.top<b.top)list.scrollTop-=b.top-a.top;else if(a.bottom>b.bottom)list.scrollTop+=a.bottom-b.bottom;}}
+  function url(){try{const u=new URL(location.href);u.searchParams.set('route',state.route);u.searchParams.set('view',state.view);u.searchParams.set('audience',state.audience);u.hash=topicFragment(state.id);history.replaceState({},'',u)}catch{}const list=$('slide-list'),active=list.querySelector('[aria-current="true"]');if(active){const a=active.getBoundingClientRect(),b=list.getBoundingClientRect();if(a.top<b.top)list.scrollTop-=b.top-a.top;else if(a.bottom>b.bottom)list.scrollTop+=a.bottom-b.bottom;}}
   function renderSlide() {
     const s=tr(map.get(state.id)), ids=slides(), i=ids.indexOf(state.id);
     const t=text[state.lang], next=map.get(ids[i+1]);
@@ -195,18 +254,18 @@ function standardVisual(s){
     outline();
     const figure=visual(s);
     const figurePanel=figure?`<div class="visual">${figure}</div>`:'';
-    const displayedFigure=figure && state.view==='discuss'
+    const displayedFigure=figure && state.view==='discuss' && !isTutorial()
       ? `<details class="discussion-figure"><summary>${L('Look at the example','Ver el ejemplo')}</summary>${figurePanel}</details>`
       : figurePanel;
-    const points=slideBody(s);
+    const points=slideBody(s)+lessonExample(s);
     const focusFigure=s.visual==='worked-example' && state.view==='present' && !!figure;
     const supplementary=focusFigure && points
       ? `<details class="worked-notes"><summary>${L('More on the method','Más sobre el método')}</summary>${points}</details>`:'';
     $('slide').className=`slide visual-${s.visual} ${figure?'with-figure':'text-slide'} ${s.visual==='cover'?'cover':''} ${s.visual==='fit'?'full-visual':''}`;
-    $('slide').innerHTML=`<div class="slide-grid"><div class="slide-copy"><span class="eyebrow">${E(s.eyebrow||s.section)}</span><h1 id="slide-title">${E(s.title)}</h1><p class="lead">${E(s.lead)}</p>${focusFigure?'':points}</div>${displayedFigure}${supplementary}</div><span class="slide-id">${E(t.slide)} ${s.number}</span>`;
+    $('slide').innerHTML=`<div class="slide-grid"><div class="slide-copy"><span class="eyebrow">${E(s.eyebrow||s.section)}</span><h1 id="slide-title">${E(s.title)}</h1><p class="lead">${E(s.lead)}</p>${focusFigure?'':points}</div>${displayedFigure}${supplementary}</div><span class="slide-id">${E(slideLabel())} ${s.number}</span>`;
     const seconds=routeSeconds()?.[state.route]?.[s.id] || s.seconds || 60;
     $('chapter-label').textContent=s.section.toUpperCase();
-    $('slide-counter').textContent=`${t.slide} ${s.number} · ${t.target} ${Math.round(seconds)}s`;
+    $('slide-counter').textContent=`${slideLabel()} ${s.number} · ${t.target} ${Math.round(seconds)}s`;
     $('route-count').textContent=`${i+1} / ${ids.length}`;
     $('route-percent').textContent=`${Math.round((i+1)/ids.length*100)}%`;
     $('progress-fill').style.width=`${(i+1)/ids.length*100}%`;
@@ -219,13 +278,13 @@ function standardVisual(s){
     sources(s);
     reviewUI();
     url();
-    $('announcer').textContent=`${t.slide} ${s.number}: ${s.title}`;
+    $('announcer').textContent=`${slideLabel()} ${s.number}: ${s.title}`;
     bindVisual(s);
     document.title=`${audienceLabel()} · ${s.number} · ${s.title} — AI at the workbench`;
   }
 
-  function bindVisual(s){if($('science-demo')){if(window.ScienceDemo)window.ScienceDemo.mount($('science-demo'),state.lang);else $('science-demo').textContent=L('Scientific demo could not load.','No se pudo cargar la demostración.');}if($('params')){const update=()=>{$('params-label').textContent=`${$('params').value}B`;$('precision-label').textContent=$('precision').value;$('weight-result').textContent=(Number($('params').value)*Number($('precision').value)/8).toLocaleString(state.lang,{maximumFractionDigits:2})};$('params').oninput=update;$('precision').oninput=update;update();}}
-  function go(id){id=resolveId(id);if(!map.has(id))return;state.id=id;render();$('main').focus({preventScroll:true});window.scrollTo({top:0,behavior:'instant'});}
+  function bindVisual(s){if(s.visual==='tutorial-chooser')window.TutorialTools.mount($('slide'),state.lang);if($('science-demo')){if(window.ScienceDemo)window.ScienceDemo.mount($('science-demo'),state.lang);else $('science-demo').textContent=L('Scientific demo could not load.','No se pudo cargar la demostración.');}if($('params')){const update=()=>{$('params-label').textContent=`${$('params').value}B`;$('precision-label').textContent=$('precision').value;$('weight-result').textContent=(Number($('params').value)*Number($('precision').value)/8).toLocaleString(state.lang,{maximumFractionDigits:2})};$('params').oninput=update;$('precision').oninput=update;update();}}
+  function go(id){id=resolveId(id);if(!slides().includes(id))return;state.id=id;render();$('main').focus({preventScroll:true});window.scrollTo({top:0,behavior:'instant'});}
   function step(d){const ids=slides();const id=ids[ids.indexOf(state.id)+d];if(id)go(id);}
   function panel(name){const p=$(name+'-panel'),b=$(name+'-toggle');p.hidden=!p.hidden;b.setAttribute('aria-expanded',String(!p.hidden));}
   function reviewUI(){const r=state.review[reviewKey()]||{};$('review-note').value=r.note||'';document.querySelectorAll('[data-review]').forEach(b=>b.setAttribute('aria-pressed',String((r.decision||'')===b.dataset.review)));$('review-save-state').textContent=text[state.lang][reviewPersisted?'saved':'failed'];}
@@ -235,9 +294,15 @@ function standardVisual(s){
   function download(name,value){const a=document.createElement('a'),u=URL.createObjectURL(new Blob([value],{type:'application/json;charset=utf-8'}));a.href=u;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(u),1000);}
   $('route').insertAdjacentHTML('beforeend','<option value="all">All slides · Review library</option>');
   $('slide-list').onclick=e=>{const b=e.target.closest('[data-id]');if(b){go(b.dataset.id);if(innerWidth<901&&!document.body.classList.contains('outline-hidden'))outlineToggle();}};
-  function fitRoute(){if(!slides().includes(state.id)){const index=db.slides.findIndex(s=>s.id===state.id);state.id=slides().find(id=>db.slides.findIndex(s=>s.id===id)>=index)||slides().at(-1);}}
+  function fitRoute(){
+    const ids=slides();
+    if(ids.includes(state.id))return;
+    if(!fullGuide().some(topic=>topic.id===state.id)){state.id=ids[0];return;}
+    const current=numberByTopic.get(state.id);
+    state.id=ids.find(id=>numberByTopic.get(id)>=current)||ids.at(-1);
+  }
   $('route').onchange=()=>{state.route=$('route').value;fitRoute();render();};
-  $('audience').onchange=()=>{state.audience=$('audience').value;save('ai-talk-audience',state.audience);fitRoute();render();$('announcer').textContent=audienceLabel()+': '+slides().length+L(' sections in this route.',' secciones en este recorrido.');};
+  $('audience').onchange=()=>{state.audience=$('audience').value;save('ai-talk-audience',state.audience);fitRoute();render();$('announcer').textContent=audienceLabel()+': '+slides().length+(isTutorial()?L(' lessons in this route.',' lecciones en este recorrido.'):L(' sections in this route.',' secciones en este recorrido.'));};
   document.querySelectorAll('#view-modes [data-view]').forEach(b=>b.onclick=()=>{state.view=b.dataset.view;save('ai-talk-view',state.view);render();});
   $('language').onchange=()=>{state.lang=$('language').value;save('ai-talk-language',state.lang);render();};
   $('outline-toggle').onclick=outlineToggle;
@@ -267,11 +332,31 @@ function standardVisual(s){
   $('timer-toggle').onclick=()=>{if(timerStart){timerElapsed+=Date.now()-timerStart;timerStart=0;}else timerStart=Date.now();$('timer-toggle').textContent=text[state.lang][timerStart?'pause':'start'];};
   $('timer-reset').onclick=()=>{timerElapsed=0;if(timerStart)timerStart=Date.now();$('elapsed').textContent='00:00';};
   setInterval(()=>{const s=Math.floor((timerElapsed+(timerStart?Date.now()-timerStart:0))/1000);$('elapsed').textContent=`${Math.floor(s/60).toString().padStart(2,'0')}:${(s%60).toString().padStart(2,'0')}`;},500);
-  function preparePrint(){const root=$('print-root');root.innerHTML=slides().map(id=>{const s=tr(map.get(id));return '<section class="print-slide"><p>'+E(edition)+' · '+E(audienceLabel())+' · '+E(state.route==='all'?L('Full guide','Guía completa'):state.route+' min')+' · '+s.number+' · '+E(s.section)+'</p><h1>'+E(s.title)+'</h1><p>'+E(s.lead)+'</p>'+slideBody(s)+ (s.reading||[s.notes]).map(p=>'<p>'+E(p)+'</p>').join('')+'<h2>'+L('Discussion','Debate')+'</h2><ol>'+(s.discussion||[]).map(q=>'<li>'+E(q)+'</li>').join('')+'</ol><div class="print-notes"><ul>'+(s.sources||[]).map(k=>{const src=db.sources[k];return src?'<li>'+E(src.title)+' '+(src.url?'<a href="'+E(src.url)+'">'+E(src.url)+'</a>':'')+'</li>':''}).join('')+'</ul></div></section>';}).join('');root.hidden=false;}
+  function preparePrint(){
+    const root=$('print-root');
+    const routeLabel=state.route==='all'?(isTutorial()?L('Full tutorial','Tutorial completo'):L('Full guide','Guía completa')):state.route+' min';
+    root.innerHTML=slides().map(id=>{
+      const s=tr(map.get(id));
+      const visual=s.visual==='tutorial-chooser'?window.TutorialTools.render(state.lang,{print:true}):s.mediaRoutes?mediaExamples(s.mediaRoutes,true):'';
+      const optional=isTutorial()&&s.optional?'<h2>'+E(text[state.lang].optional)+'</h2><p>'+E(s.optional)+'</p>':'';
+      const reading=(s.reading||[s.notes]).map(p=>'<p>'+E(p)+'</p>').join('')+optional;
+      const discussion=(s.discussion||[]).map(q=>'<li>'+E(q)+'</li>').join('');
+      const refs=(s.sources||[]).map(k=>sourcesById[k]).filter(Boolean).map(src=>'<li>'+E(src.title)+' '+(src.url?'<a href="'+E(src.url)+'">'+E(src.url)+'</a>':'')+'</li>').join('');
+      return `<section class="print-slide"><p>${E(edition)} · ${E(audienceLabel())} · ${E(routeLabel)} · ${s.number} · ${E(s.section)}</p><h1>${E(s.title)}</h1><p>${E(s.lead)}</p>${slideBody(s)}${lessonExample(s)}${visual}${reading}<h2>${L('Discussion','Debate')}</h2><ol>${discussion}</ol><div class="print-notes"><ul>${refs}</ul></div></section>`;
+    }).join('');
+    root.hidden=false;
+  }
   window.addEventListener('beforeprint',preparePrint);
   $('print-button').onclick=()=>{preparePrint();window.print();};
   window.addEventListener('afterprint',()=>{$('print-root').hidden=true});
-  window.addEventListener('hashchange',()=>{const id=resolveId(decodeURIComponent(location.hash.slice(1)));if(map.has(id)&&id!==state.id){if(!slides().includes(id))state.route='all';go(id);}});
+  window.addEventListener('hashchange',()=>{
+    const id=resolveId(decodeURIComponent(location.hash.slice(1)));
+    if(!map.has(id)||id===state.id)return;
+    if(starterIds.has(id))state.audience='starter';
+    else if(isTutorial())state.audience='technical';
+    if(!slides().includes(id))state.route='all';
+    go(id);
+  });
   window.addEventListener('keydown',e=>{if(e.target.matches('input,textarea,select,[contenteditable=true]')||$('help-dialog').open)return;if(e.altKey||e.ctrlKey||e.metaKey)return;const k=e.key.toLowerCase();if(state.view!=='present'&&[' ','pagedown','pageup','home','end'].includes(k))return;if(k===' '&&e.target.closest('button,summary,a,[role=button]'))return;if(['arrowright','pagedown',' '].includes(k)){e.preventDefault();step(1)}else if(['arrowleft','pageup'].includes(k)){e.preventDefault();step(-1)}else if(k==='home'){e.preventDefault();go(slides()[0])}else if(k==='end'){e.preventDefault();go(slides().at(-1))}else if(k==='o')outlineToggle();else if(k==='n'){state.view='present';save('ai-talk-view',state.view);render();panel('notes');}else if(k==='t')$('theme-toggle').click();else if(k==='?')$('help-dialog').showModal();});
   if(innerWidth<901||read('ai-talk-outline','true')==='false'){document.body.classList.add('outline-hidden');$('outline-toggle').setAttribute('aria-expanded','false');}
   render();

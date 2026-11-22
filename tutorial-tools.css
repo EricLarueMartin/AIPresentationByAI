@@ -1,0 +1,56 @@
+/* Scoped styles for the Getting started interface/capability chooser. */
+.tt-example{color:var(--text);font:inherit;line-height:1.5;min-width:0;margin:0;container-type:inline-size;container-name:tutorial-tools}
+.tt-example *{box-sizing:border-box}
+.tt-example .tt-title{font-size:clamp(1.2rem,2.4vw,1.7rem);line-height:1.2;margin:0 0 .7rem;letter-spacing:-.025em}
+.tt-example .tt-context{font-size:14px;line-height:1.6;margin:0 0 .9rem;color:var(--muted);max-width:86ch}
+.tt-example .tt-modalities{display:flex;gap:.5rem 1rem;align-items:center;flex-wrap:wrap;padding:.6rem .8rem;border:1px solid var(--line);border-radius:6px;font-size:12px;margin-bottom:1rem}
+.tt-example .tt-modalities strong{color:var(--accent);font-weight:600}
+.tt-example .tt-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(1rem,3vw,2rem);align-items:start}
+.tt-example .tt-setup,.tt-example .tt-worked{min-width:0}
+.tt-example .tt-interface>label{display:block;font-size:12px;font-weight:650;margin-bottom:.4rem}
+.tt-example select{width:100%;max-width:100%;background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:6px;padding:.65rem;font:inherit;font-size:14px;min-height:42px}
+.tt-example .tt-profile{font-size:13px;line-height:1.6;color:var(--text);margin:.6rem 0 1rem;min-height:3.2em}
+.tt-example .tt-capabilities{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:.7rem}
+.tt-example fieldset{margin:0;padding:.6rem;border:1px solid var(--line);border-radius:6px;min-width:0}
+.tt-example legend{padding:0 .25rem;font-size:11px;font-weight:650;color:var(--accent)}
+.tt-example .tt-choice{display:flex;gap:.5rem;align-items:flex-start;font-size:12px;line-height:1.45;min-height:43px;padding:.35rem 0;cursor:pointer;overflow-wrap:anywhere}
+.tt-example input[type=checkbox]{flex:none;width:17px;height:17px;margin:1px 0 0;accent-color:var(--accent)}
+.tt-example .tt-settings{font-size:11px;line-height:1.6;color:var(--muted);margin:.6rem 0}
+.tt-example .tt-status{font-size:12px;line-height:1.55;border-inline-start:3px solid var(--accent);padding:.1rem .65rem;margin:.8rem 0}
+.tt-example .tt-status p{margin:.35rem 0}
+.tt-example .tt-status p+p{font-size:11px;color:var(--muted)}
+.tt-example .tt-run{font:inherit;font-size:12px;font-weight:600;border:1px solid var(--accent);color:var(--accent);background:var(--accent-bg,var(--panel));border-radius:6px;padding:.75rem .85rem;min-height:43px;cursor:pointer;max-width:100%}
+.tt-example .tt-run:disabled{border-color:var(--line);background:var(--panel);color:var(--muted);cursor:default}
+.tt-example :is(input,select,button,summary):focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.tt-example .tt-figure{margin:0}
+.tt-example .tt-plot{display:block;width:100%;height:auto;max-height:280px}
+.tt-example .tt-plot text{font-family:inherit;fill:var(--muted)}
+.tt-example .tt-axis-title{font-size:17px}
+.tt-example .tt-tick{font-size:18px}
+.tt-example .tt-axis{stroke:var(--muted);stroke-width:1.5;fill:none}
+.tt-example .tt-grid{stroke:var(--line);stroke-width:1;fill:none}
+.tt-example .tt-series{stroke:var(--muted);stroke-width:2;fill:none}
+.tt-example .tt-highlight{stroke:var(--accent);stroke-width:4;fill:none}
+.tt-example .tt-point{fill:var(--muted)}
+.tt-example .tt-point-active{fill:var(--accent)}
+.tt-example .tt-plot .tt-interval-label{font-size:18px;fill:var(--accent);font-weight:650}
+.tt-example figcaption{font-size:11px;line-height:1.6;color:var(--muted);margin:.5rem 0}
+.tt-example .tt-data{margin:.6rem 0;font-size:11px;color:var(--accent)}
+.tt-example summary{cursor:pointer}
+.tt-example .tt-csv{font:11px/1.5 Consolas,monospace;white-space:pre;overflow-x:auto;margin:.6rem 0;padding:.65rem;border:1px solid var(--line);border-radius:5px;background:var(--panel);color:var(--text)}
+.tt-example .tt-result{border:1px solid var(--line);background:var(--panel);border-radius:6px;padding:.8rem;margin-top:.8rem;font-size:12px;line-height:1.6;min-height:7rem}
+.tt-example .tt-result>p:first-child{margin-top:0}
+.tt-example .tt-result>p:last-child{margin-bottom:0}
+.tt-example .tt-result-heading{font-size:12px;color:var(--text);margin:0;font-weight:650}
+.tt-example .tt-rate-label{font-size:11px;margin:.65rem 0 .15rem;color:var(--muted)}
+.tt-example .tt-rate{display:block;font:clamp(22px,3vw,29px)/1.35 Consolas,monospace;color:var(--accent);letter-spacing:-.04em}
+.tt-example .tt-rate small{display:block;font-size:15px;letter-spacing:0}
+.tt-example .tt-arithmetic{font:12px/1.5 Consolas,monospace;margin:.65rem 0}
+.tt-example .tt-check-text{font-size:12px;color:var(--text);margin:.5rem 0 0}
+.tt-example .tt-mode-note,.tt-example .tt-scope{font-size:11px;line-height:1.65;color:var(--muted);margin:1rem 0 0;max-width:105ch}
+.tt-example .tt-scope{margin-top:.4rem}
+.tt-example .tt-print-setup{font-size:12px;line-height:1.7;margin:0;border-inline-start:3px solid var(--accent);padding-left:.8rem}
+@media(max-width:760px){.tt-example .tt-layout{grid-template-columns:minmax(0,1fr)}.tt-example .tt-profile{min-height:0}.tt-example .tt-plot{max-height:300px}.tt-example .tt-worked{max-width:540px;width:100%;margin:auto}}
+@container tutorial-tools (max-width:650px){.tt-layout{grid-template-columns:minmax(0,1fr)}.tt-profile{min-height:0}.tt-plot{max-height:300px}.tt-worked{max-width:540px;width:100%;margin:auto}}
+@media(max-width:420px){.tt-example .tt-capabilities{gap:.5rem}.tt-example fieldset{padding:.5rem}.tt-example .tt-choice{font-size:11px;gap:.35rem}.tt-example .tt-context{font-size:13px}.tt-example .tt-modalities{align-items:flex-start;flex-direction:column;font-size:11px}}
+@media print{.tt-example{break-inside:avoid;color:#172c32;--text:#172c32;--muted:#425c62;--accent:#176151;--line:#a9b9bd;--panel:#fff;--accent-bg:#eaf4f0}.tt-example .tt-layout{grid-template-columns:1fr 1.2fr;gap:1rem}.tt-example .tt-run,.tt-example .tt-settings{display:none}.tt-example .tt-result,.tt-example .tt-csv,.tt-example select{background:transparent}.tt-example .tt-title{font-size:20px}.tt-example .tt-context{font-size:12px}.tt-example .tt-plot{max-height:230px}}
